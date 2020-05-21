@@ -24,17 +24,18 @@ public class IKFootPlacement : MonoBehaviour
     }
     public void TakeWeapon()
     {
-        if(!anim.GetBool("Equiped"))
+        if(!anim.GetBool("Equipped"))
         {
             backWeapon.SetActive(false);
             handWeapon.SetActive(true);
-            anim.SetBool("Equiped", true);
+            anim.SetBool("Equipped", true);
         }
         else
         {
             backWeapon.SetActive(true);
             handWeapon.SetActive(false);
-            anim.SetBool("Equiped", false);
+            anim.SetBool("Equipped", false);
+            anim.SetBool("LockedCamera", false);
         }
     }
 

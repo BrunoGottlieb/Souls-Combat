@@ -30,7 +30,6 @@ public class BossScript : MonoBehaviour
             rotationOffset.y = 0;
             float lookDirection = Vector3.SignedAngle(model.forward, rotationOffset, Vector3.up);
             anim.SetFloat("LookDirection", lookDirection);
-            print("LD: " + lookDirection);
         }
 
         model.transform.eulerAngles = new Vector3(0, model.transform.eulerAngles.y, 0);

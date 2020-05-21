@@ -5,6 +5,7 @@ using UnityEngine;
 public class GirlScript : MonoBehaviour
 {
     public Transform model;
+    public Transform targetLock;
 
     private float moveSpeed = 4;
     private Animator anim;
@@ -29,13 +30,13 @@ public class GirlScript : MonoBehaviour
     {
         stickDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-        if (anim.GetBool("Equiped")) moveSpeed = 4;
+        if (anim.GetBool("Equipped")) moveSpeed = 4;
         else moveSpeed = 5;
 
         Move();
         Rotation();
         Attack();
-
+        Dodge();
     }
 
     private void Move()
@@ -49,34 +50,38 @@ public class GirlScript : MonoBehaviour
         {
             model.position += new Vector3(x * moveSpeed * Time.deltaTime, 0, z * moveSpeed * Time.deltaTime); // move o jogador para frente
             anim.SetFloat("Speed", Vector3.ClampMagnitude(stickDirection, 1).magnitude, 0.02f, Time.deltaTime); // clamp para limitar a 1, visto que a diagonal seria de 1.4
+            anim.SetFloat("Horizontal", stickDirection.x);
+            anim.SetFloat("Vertical", stickDirection.z);
         }
-
-        //anim.SetFloat("Horizontal", stickDirection.x);
-        //anim.SetFloat("Vertical", stickDirection.z);
     }
 
     private void Rotation()
     {
-        if (anim.GetBool("Attacking") || !anim.GetBool("CanMove")) return;
-        Vector3 rotationOffset = mainCamera.transform.TransformDirection(stickDirection) * 1.5f;
-        rotationOffset.y = 0;
-        model.forward += Vector3.Lerp(model.forward, rotationOffset, Time.deltaTime * 20f);
+        if (anim.GetBool("Attacking") || !anim.GetBool("CanMove")) return; // caso nao possa se mover, retorna
+
+        if (!anim.GetBool("LockedCamera")) // camera livre
+        {
+            Vector3 rotationOffset = mainCamera.transform.TransformDirection(stickDirection) * 1.5f;
+            rotationOffset.y = 0;
+            model.forward += Vector3.Lerp(model.forward, rotationOffset, Time.deltaTime * 20f);
+        } 
+        else // camera locked
+        {
+            Vector3 rotationOffset = targetLock.position - model.position;
+            rotationOffset.y = 0;
+            model.forward += Vector3.Lerp(model.forward, rotationOffset, Time.deltaTime * 20f);
+        }
     }
 
     private void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && !anim.GetBool("Attacking") && anim.GetBool("Equiped")) // ataque primario
+        if (Input.GetKeyDown(KeyCode.Mouse1) && !anim.GetBool("Attacking") && anim.GetBool("Equipped")) // ataque primario
         {
             anim.SetTrigger("LightAttack");
         }
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !anim.GetBool("Attacking") && anim.GetBool("Equiped")) // ataque secundario
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !anim.GetBool("Attacking") && anim.GetBool("Equipped")) // ataque secundario
         {
             anim.SetTrigger("HeavyAttack");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("Attacking")) // rola caso nao esteja atacando
-        {
-            anim.SetTrigger("Dodge");
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse2)) // botao do meio do mouse
@@ -84,10 +89,33 @@ public class GirlScript : MonoBehaviour
             anim.SetTrigger("Weapon");
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C)) // entra e sai do modo de camera de combate
         {
-            anim.SetBool("TargetLockMode", true);
+            if(anim.GetBool("Equipped"))
+                anim.SetBool("LockedCamera", !anim.GetBool("LockedCamera"));
         }
+    }
+
+    private void Dodge()
+    {
+        Vector3 diff = model.transform.eulerAngles - mainCamera.transform.eulerAngles;
+
+        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("Attacking")) // rola caso nao esteja atacando
+        {
+            model.transform.Rotate(0, 90, 0);
+            anim.SetTrigger("Dodge");
+        }
+
+        /*if (Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.D) && !anim.GetBool("Attacking")) // rola caso nao esteja atacando
+        {
+            model.transform.Rotate(0, 90, 0);
+            anim.SetTrigger("Dodge");
+        } 
+        else if (Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.A) && !anim.GetBool("Attacking")) // rola caso nao esteja atacando
+        {
+            model.transform.Rotate(0, diff.y, 0);
+            anim.SetTrigger("Dodge");
+        }*/
     }
 
     private void OnCollisionEnter(Collision collision)
