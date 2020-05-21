@@ -25,7 +25,12 @@ public class BossScript : MonoBehaviour
     {
         if (!anim.GetBool("Attacking"))
         {
-            model.transform.LookAt(player.transform.position);
+            //model.transform.LookAt(player.transform.position);
+            Vector3 rotationOffset = player.transform.position - model.position;
+            rotationOffset.y = 0;
+            float lookDirection = Vector3.SignedAngle(model.forward, rotationOffset, Vector3.up);
+            anim.SetFloat("LookDirection", lookDirection);
+            print("LD: " + lookDirection);
         }
 
         model.transform.eulerAngles = new Vector3(0, model.transform.eulerAngles.y, 0);
