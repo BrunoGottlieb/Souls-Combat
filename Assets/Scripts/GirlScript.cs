@@ -1,11 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GirlScript : MonoBehaviour
 {
     public Transform model;
     public Transform targetLock;
+    public GameObject estusFlask;
+    public Text lifeText;
+    private float life = 10;
 
     private float moveSpeed = 4;
     private Animator anim;
@@ -33,10 +38,13 @@ public class GirlScript : MonoBehaviour
         if (anim.GetBool("Equipped")) moveSpeed = 4;
         else moveSpeed = 5;
 
+        if (anim.GetBool("Drinking")) moveSpeed = 2;
+
         if (anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall")) return; // retorna caso o jogador tenha caido
 
         Move();
         Rotation();
+        EstusFlask();
         Attack();
         Dodge();
     }
@@ -54,6 +62,8 @@ public class GirlScript : MonoBehaviour
             anim.SetFloat("Speed", Vector3.ClampMagnitude(stickDirection, 1).magnitude, 0.02f, Time.deltaTime); // clamp para limitar a 1, visto que a diagonal seria de 1.4
             anim.SetFloat("Horizontal", stickDirection.x);
             anim.SetFloat("Vertical", stickDirection.z);
+            if (anim.GetBool("Drinking") && anim.GetFloat("Speed") > 0.25f) anim.SetFloat("Speed", 0.25f);
+            if (anim.GetBool("Drinking") && anim.GetFloat("Vertical") > 0.25f) anim.SetFloat("Vertical", 0.25f);
         }
     }
 
@@ -77,11 +87,11 @@ public class GirlScript : MonoBehaviour
 
     private void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && !anim.GetBool("Attacking") && anim.GetBool("Equipped")) // ataque primario
+        if (Input.GetKeyDown(KeyCode.Mouse1) && !anim.GetBool("Attacking") && anim.GetBool("Equipped") && !anim.GetBool("Drinking")) // ataque primario
         {
             anim.SetTrigger("LightAttack");
         }
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !anim.GetBool("Attacking") && anim.GetBool("Equipped")) // ataque secundario
+        if (Input.GetKeyDown(KeyCode.Mouse0) && !anim.GetBool("Attacking") && anim.GetBool("Equipped") && !anim.GetBool("Drinking")) // ataque secundario
         {
             anim.SetTrigger("HeavyAttack");
         }
@@ -98,11 +108,29 @@ public class GirlScript : MonoBehaviour
         }
     }
 
+    private void EstusFlask()
+    {
+        if (Input.GetKeyDown(KeyCode.Q) && !anim.GetBool("Drinking"))
+        {
+            anim.SetTrigger("Drink");
+            estusFlask.SetActive(true);
+            StartCoroutine(DisableEstus());
+        }
+    }
+
+    IEnumerator DisableEstus()
+    {
+        yield return new WaitForSeconds(1f);
+        UpdateLife(2);
+        yield return new WaitForSeconds(0.5f);
+        estusFlask.SetActive(false);
+    }
+
     private void Dodge()
     {
         Vector3 diff = model.transform.eulerAngles - mainCamera.transform.eulerAngles;
 
-        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("Attacking")) // rola caso nao esteja atacando
+        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("Attacking") && !anim.GetBool("Drinking")) // rola caso nao esteja atacando e nem bebendo estus
         {
             model.transform.Rotate(0, 90, 0);
             anim.SetTrigger("Dodge");
@@ -117,6 +145,7 @@ public class GirlScript : MonoBehaviour
         Animator otherAnim = other.transform.root.GetComponentInChildren<Animator>();
         if (other.gameObject.name.Contains("Magic") && !anim.GetBool("Intangible")) // caso sejam as espadas magicas
         {
+            UpdateLife(-1.5f);
             RegisterDamage();
             RandomDamageAnimation(null);
         } else if (otherAnim != null) // caso seja um ataque do boss
@@ -134,6 +163,7 @@ public class GirlScript : MonoBehaviour
         {
             RegisterDamage();
             anim.SetTrigger("FallDamage");
+            UpdateLife(-4);
             return;
         }
     }
@@ -152,10 +182,12 @@ public class GirlScript : MonoBehaviour
         if(bossAnim != null)
             if (bossAnim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick") || bossAnim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick 0"))
             {
+                UpdateLife(-6f);
                 anim.SetTrigger("FallDamage");
                 return;
             }
 
+        UpdateLife(-2f);
         switch (Random.Range(0, 3))
         {
             case 0:
@@ -177,6 +209,13 @@ public class GirlScript : MonoBehaviour
         audioSource.volume = volume;
         audioSource.Play();
         Destroy(audioSource, destructionTime);
+    }
+
+    private void UpdateLife(float amount)
+    {
+        life += amount;
+        if (life > 10) life = 10;
+        lifeText.text = life.ToString("0.0");
     }
 
 }
