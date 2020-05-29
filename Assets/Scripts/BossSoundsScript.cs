@@ -5,11 +5,23 @@ using UnityEngine;
 public class BossSoundsScript : MonoBehaviour
 {
     public AudioClip swordSwing;
+    public AudioClip fastSwing;
+    public AudioClip longSwordSwing;
     public AudioClip[] takeDamage;
 
     public void PlaySwordSwing()
     {
         CreateAndPlay(swordSwing, 2);
+    }
+
+    public void PlayLongSwordSwing()
+    {
+        CreateAndPlay(longSwordSwing, 3);
+    }
+
+    public void PlayFastSwordSwing()
+    {
+        CreateAndPlay(fastSwing, 1);
     }
 
     public void PlayTakeDamage()

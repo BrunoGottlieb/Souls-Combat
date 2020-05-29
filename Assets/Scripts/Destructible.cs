@@ -12,16 +12,22 @@ public class Destructible : MonoBehaviour
         //playerAnim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-       if (collision.transform.GetComponentInChildren<Animator>().GetBool("Attacking"))
+        Animator otherAnim = other.transform.GetComponentInParent<Animator>();
+        print(other.gameObject.name + " | " + other.gameObject.tag);
+        if ((otherAnim.GetComponent<Animator>() != null && otherAnim.GetBool("Attacking") || otherAnim.GetBool("Dodge")) || other.gameObject.name.Contains("Magic"))
         {
-            print("Colidi com " + collision.gameObject.name);
-            ContactPoint contact = collision.contacts[0];
-            Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
-            Vector3 pos = contact.point;
             Destroy();
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+       if (collision.gameObject.tag == "GreatSword")
+       {
+            Destroy();
+       }
     }
 
     private void Destroy()

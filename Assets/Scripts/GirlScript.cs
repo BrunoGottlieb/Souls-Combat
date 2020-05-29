@@ -33,6 +33,8 @@ public class GirlScript : MonoBehaviour
         if (anim.GetBool("Equipped")) moveSpeed = 4;
         else moveSpeed = 5;
 
+        if (anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall")) return; // retorna caso o jogador tenha caido
+
         Move();
         Rotation();
         Attack();
@@ -106,28 +108,55 @@ public class GirlScript : MonoBehaviour
             anim.SetTrigger("Dodge");
         }
 
-        /*if (Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.D) && !anim.GetBool("Attacking")) // rola caso nao esteja atacando
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.name.Contains("Magic") && !anim.GetBool("Intangible"))
         {
-            model.transform.Rotate(0, 90, 0);
-            anim.SetTrigger("Dodge");
-        } 
-        else if (Input.GetKeyDown(KeyCode.Space) && Input.GetKey(KeyCode.A) && !anim.GetBool("Attacking")) // rola caso nao esteja atacando
-        {
-            model.transform.Rotate(0, diff.y, 0);
-            anim.SetTrigger("Dodge");
-        }*/
+            RegisterDamage();
+            RandomDamageAnimation(null);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        print(collision.gameObject.name + " colidiu comigo");
         if(collision.gameObject.tag == "GreatSword" && collision.transform.GetComponentInChildren<Animator>().GetBool("Attacking") && !anim.GetBool("Intangible"))
         {
-            CreateAndPlay(swordDamageSound, 2);
-            anim.SetTrigger("TakeDamage");
-            capsuleCol.isTrigger = true;
-            rb.isKinematic = true;
-            anim.SetBool("Intangible", true);
+            RegisterDamage();
+            RandomDamageAnimation(collision.transform.root.GetComponentInChildren<Animator>());
+        }
+    }
+
+    private void RegisterDamage()
+    {
+        CreateAndPlay(swordDamageSound, 2);
+        capsuleCol.isTrigger = true;
+        rb.isKinematic = true;
+        anim.SetBool("CanMove", false);
+        anim.SetBool("Intangible", true);
+    }
+
+    private void RandomDamageAnimation(Animator bossAnim)
+    {
+        if(bossAnim != null)
+            if (bossAnim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick") || bossAnim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick 0"))
+            {
+                anim.SetTrigger("FallDamage");
+                return;
+            }
+
+        switch (Random.Range(0, 3))
+        {
+            case 0:
+                anim.SetTrigger("TakeDamage");
+                break;
+            case 1:
+                anim.SetTrigger("TakeDamageLeft");
+                break;
+            case 2:
+                anim.SetTrigger("TakeDamageRight");
+                break;
         }
     }
 
