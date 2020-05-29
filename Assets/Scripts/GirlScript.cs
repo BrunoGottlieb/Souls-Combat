@@ -112,19 +112,29 @@ public class GirlScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name.Contains("Magic") && !anim.GetBool("Intangible"))
+        print("ACERTOU O PLAYER: " + other.transform.root.name);
+
+        Animator otherAnim = other.transform.root.GetComponentInChildren<Animator>();
+        if (other.gameObject.name.Contains("Magic") && !anim.GetBool("Intangible")) // caso sejam as espadas magicas
         {
             RegisterDamage();
             RandomDamageAnimation(null);
-        }
+        } else if (otherAnim != null) // caso seja um ataque do boss
+            if (other.transform.root.tag == "GreatSword" && otherAnim.GetBool("Attacking") && !anim.GetBool("Intangible"))
+            {
+                RegisterDamage();
+                RandomDamageAnimation(other.transform.root.GetComponentInChildren<Animator>());
+            }
+        
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnParticleCollision(GameObject other)
     {
-        if(collision.gameObject.tag == "GreatSword" && collision.transform.GetComponentInChildren<Animator>().GetBool("Attacking") && !anim.GetBool("Intangible"))
+        if (other.transform.root.name.Contains("Earth") && !anim.GetBool("Intangible"))
         {
             RegisterDamage();
-            RandomDamageAnimation(collision.transform.root.GetComponentInChildren<Animator>());
+            anim.SetTrigger("FallDamage");
+            return;
         }
     }
 
@@ -133,8 +143,8 @@ public class GirlScript : MonoBehaviour
         CreateAndPlay(swordDamageSound, 2);
         capsuleCol.isTrigger = true;
         rb.isKinematic = true;
-        anim.SetBool("CanMove", false);
         anim.SetBool("Intangible", true);
+        anim.SetBool("CanMove", false);
     }
 
     private void RandomDamageAnimation(Animator bossAnim)

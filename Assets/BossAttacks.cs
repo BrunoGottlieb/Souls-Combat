@@ -213,7 +213,7 @@ public class BossAttacks : MonoBehaviour
     {
         float x_offset = Random.Range(-1, 1);
         float z_offset = Random.Range(-1, 1);
-        Instantiate(magicSwordFromSky, new Vector3(player.transform.position.x + x_offset, player.transform.position.y + 3, player.transform.position.z + z_offset), Quaternion.identity);
+        GameObject earth = Instantiate(magicSwordFromSky, new Vector3(player.transform.position.x + x_offset, player.transform.position.y + 3, player.transform.position.z + z_offset), Quaternion.identity);
         yield return new WaitForSeconds(0.2f);
         if(counter > 0)
             StartCoroutine(DropSwordsFromSky(counter - 1));
@@ -223,54 +223,37 @@ public class BossAttacks : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.G)) // ataque de longe
         {
-            anim.SetTrigger("Attack");
+            anim.SetTrigger("DoubleDash");
         }
 
         if (Input.GetKeyDown(KeyCode.H)) // ataque de perto
         {
-            anim.SetTrigger("SpinAttack");
+            anim.SetTrigger("Dash");
         }
 
-        if (Input.GetKeyDown(KeyCode.J)) // ataque de perto
+        if (Input.GetKeyDown(KeyCode.F)) // ataque de perto
         {
-            anim.SetTrigger("JumpAttack");
+            anim.SetTrigger("SpinAttack");
         }
 
         if (Input.GetKeyDown(KeyCode.L)) // ataque de perto
         {
-            anim.SetTrigger("LowAttack");
+            anim.SetTrigger("Combo");
         }
 
-        if (Input.GetKeyDown(KeyCode.K)) // ataque de perto
+        if (Input.GetKeyDown(KeyCode.J)) // ataque de perto
         {
-            anim.SetTrigger("StraightKick");
-        }
-
-        if (Input.GetKeyDown(KeyCode.B)) // ataque de perto
-        {
-            anim.SetFloat("Vertical", 0);
-            anim.SetFloat("Horizontal", 1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.V)) // ataque de perto
-        {
-            anim.SetFloat("Vertical", 0);
-            anim.SetFloat("Horizontal", -1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.X)) // ataque de perto
-        {
-            anim.SetTrigger("Casting");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z)) // ataque de perto
-        {
-            anim.SetTrigger("FastAttack");
+            anim.SetTrigger("Combo1");
         }
 
         if (Input.GetKeyDown(KeyCode.M)) // ataque de perto
         {
             anim.SetTrigger("CastMagicSwords");
+        }
+
+        if (Input.GetKeyDown(KeyCode.V)) // ataque de perto
+        {
+            anim.SetTrigger("Casting");
         }
     }
 }

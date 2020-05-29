@@ -40,7 +40,7 @@ public class BossScript : MonoBehaviour
         model.transform.eulerAngles = new Vector3(0, model.transform.eulerAngles.y, 0);
         //model.transform.position = new Vector3(model.transform.position.x, 0, model.transform.position.z);
 
-        GreatSwordCollider(anim.GetBool("Attacking")); // seta a GreatSword com collider on enquanto estiver atacando
+        //GreatSwordCollider(anim.GetBool("Attacking")); // seta a GreatSword com collider on enquanto estiver atacando
 
     }
 
@@ -58,7 +58,7 @@ public class BossScript : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    /*private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Player" && collision.transform.GetComponentInChildren<Animator>().GetBool("Attacking") && !anim.GetBool("Attacking") && !anim.GetBool("TakingDamage"))
         {
@@ -67,10 +67,10 @@ public class BossScript : MonoBehaviour
             collision.gameObject.GetComponent<Rigidbody>().isKinematic = true;
             //capsuleCol.isTrigger = true;
             //rb.isKinematic = true;
-            //anim.SetBool("Intangible", true);
+            anim.SetBool("Intangible", true);
         }
     }
-
+    */
     private void CreateAndPlay(AudioClip clip, float destructionTime, float volume = 1f) // toca um som e o destroi deopis de x segundos
     {
         AudioSource audioSource = gameObject.AddComponent<AudioSource>();

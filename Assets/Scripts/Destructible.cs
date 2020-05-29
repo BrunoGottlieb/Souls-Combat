@@ -14,9 +14,8 @@ public class Destructible : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Animator otherAnim = other.transform.GetComponentInParent<Animator>();
-        print(other.gameObject.name + " | " + other.gameObject.tag);
-        if ((otherAnim.GetComponent<Animator>() != null && otherAnim.GetBool("Attacking") || otherAnim.GetBool("Dodge")) || other.gameObject.name.Contains("Magic"))
+        Animator otherAnim = other.transform.root.GetComponentInChildren<Animator>();
+        if ((otherAnim != null && otherAnim.GetBool("Attacking") || otherAnim.GetBool("Dodge")) || other.gameObject.name.Contains("Magic"))
         {
             Destroy();
         }
@@ -28,6 +27,11 @@ public class Destructible : MonoBehaviour
        {
             Destroy();
        }
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        Destroy();
     }
 
     private void Destroy()
