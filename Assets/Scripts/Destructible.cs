@@ -15,7 +15,7 @@ public class Destructible : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Animator otherAnim = other.transform.root.GetComponentInChildren<Animator>();
-        if ((otherAnim != null && otherAnim.GetBool("Attacking") || otherAnim.GetBool("Dodge")) || other.gameObject.name.Contains("Magic"))
+        if (otherAnim != null && otherAnim.GetBool("Attacking") || other.gameObject.name.Contains("Magic"))
         {
             Destroy();
         }
@@ -38,8 +38,8 @@ public class Destructible : MonoBehaviour
     {
         PlayDestructionSound();
         Vector3 scale = this.transform.localScale;
-        Instantiate(destroyedObj, transform.position, transform.rotation);
-        destroyedObj.transform.localScale = scale;
+        Instantiate(destroyedObj, transform.position, transform.rotation, transform.parent);
+        destroyedObj.transform.localScale = Vector3.one;
         Destroy(this.gameObject);
     }
 

@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class GirlScript : MonoBehaviour
 {
+    public LifeBarScript lifeBarScript;
     public Transform model;
     public Transform targetLock;
     public GameObject estusFlask;
-    public Text lifeText;
-    private float life = 10;
+    public GameObject healEffect;
 
     private float moveSpeed = 4;
     private Animator anim;
@@ -21,6 +21,8 @@ public class GirlScript : MonoBehaviour
     private Rigidbody rb;
 
     public AudioClip swordDamageSound;
+
+    private float lastDamageTakenTime = 0;
 
     void Start()
     {
@@ -40,7 +42,7 @@ public class GirlScript : MonoBehaviour
 
         if (anim.GetBool("Drinking")) moveSpeed = 2;
 
-        if (anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall")) return; // retorna caso o jogador tenha caido
+        if (anim.GetBool("Dead") || anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall")) return; // retorna caso o jogador tenha caido ou esteja morto
 
         Move();
         Rotation();
@@ -56,14 +58,14 @@ public class GirlScript : MonoBehaviour
         if (x > 1) x = 1; // assegura que o jogador nao ira se mover mais rapido em diagonal
         if (z > 1) z = 1;
 
-        if (anim.GetBool("CanMove"))
+        if (anim.GetBool("CanMove")) // confere se o jogador pode se mover
         {
             model.position += new Vector3(x * moveSpeed * Time.deltaTime, 0, z * moveSpeed * Time.deltaTime); // move o jogador para frente
             anim.SetFloat("Speed", Vector3.ClampMagnitude(stickDirection, 1).magnitude, 0.02f, Time.deltaTime); // clamp para limitar a 1, visto que a diagonal seria de 1.4
             anim.SetFloat("Horizontal", stickDirection.x);
             anim.SetFloat("Vertical", stickDirection.z);
-            if (anim.GetBool("Drinking") && anim.GetFloat("Speed") > 0.25f) anim.SetFloat("Speed", 0.25f);
-            if (anim.GetBool("Drinking") && anim.GetFloat("Vertical") > 0.25f) anim.SetFloat("Vertical", 0.25f);
+            if (anim.GetBool("Drinking") && anim.GetFloat("Speed") > 0.25f) anim.SetFloat("Speed", 0.25f); // desacelera o jogador caso ele esteja bebendo
+            if (anim.GetBool("Drinking") && anim.GetFloat("Vertical") > 0.25f) anim.SetFloat("Vertical", 0.25f); // desacelera o jogador caso ele esteja bebendo
         }
     }
 
@@ -114,25 +116,30 @@ public class GirlScript : MonoBehaviour
         {
             anim.SetTrigger("Drink");
             estusFlask.SetActive(true);
-            StartCoroutine(DisableEstus());
+            StartCoroutine(DrinkEstus());
         }
     }
 
-    IEnumerator DisableEstus()
+    IEnumerator DrinkEstus()
     {
         yield return new WaitForSeconds(1f);
-        UpdateLife(2);
+        if (anim.GetCurrentAnimatorStateInfo(2).IsName("None") && lifeBarScript.estusFlask > 0) // confere se o jogador nao esta tomando dano
+        {
+            lifeBarScript.UpdateLife(3);
+            Instantiate(healEffect, model.position, Quaternion.identity, model.transform);
+        }
         yield return new WaitForSeconds(0.5f);
         estusFlask.SetActive(false);
+        yield return new WaitForSeconds(3f);
     }
 
     private void Dodge()
     {
         Vector3 diff = model.transform.eulerAngles - mainCamera.transform.eulerAngles;
 
-        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("Attacking") && !anim.GetBool("Drinking")) // rola caso nao esteja atacando e nem bebendo estus
+        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("Attacking") && !anim.GetBool("Drinking") && !anim.GetCurrentAnimatorStateInfo(1).IsName("Sprinting Forward Roll")) // rola caso nao esteja atacando e nem bebendo estus
         {
-            model.transform.Rotate(0, 90, 0);
+            //model.transform.Rotate(0, 90, 0);
             anim.SetTrigger("Dodge");
         }
 
@@ -140,16 +147,16 @@ public class GirlScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print("ACERTOU O PLAYER: " + other.transform.root.name);
+        //print("ACERTOU O PLAYER: " + other.transform.root.name);
 
         Animator otherAnim = other.transform.root.GetComponentInChildren<Animator>();
-        if (other.gameObject.name.Contains("Magic") && !anim.GetBool("Intangible")) // caso sejam as espadas magicas
+        if (other.gameObject.name.Contains("Magic") && !anim.GetBool("Intangible") && DamageInterval()) // caso sejam as espadas magicas
         {
-            UpdateLife(-1.5f);
             RegisterDamage();
+            lifeBarScript.UpdateLife(-0.5f);
             RandomDamageAnimation(null);
         } else if (otherAnim != null) // caso seja um ataque do boss
-            if (other.transform.root.tag == "GreatSword" && otherAnim.GetBool("Attacking") && !anim.GetBool("Intangible"))
+            if (other.transform.root.tag == "GreatSword" && otherAnim.GetBool("Attacking") && !anim.GetBool("Intangible") && DamageInterval())
             {
                 RegisterDamage();
                 RandomDamageAnimation(other.transform.root.GetComponentInChildren<Animator>());
@@ -163,17 +170,23 @@ public class GirlScript : MonoBehaviour
         {
             RegisterDamage();
             anim.SetTrigger("FallDamage");
-            UpdateLife(-4);
+            lifeBarScript.UpdateLife(-4);
             return;
         }
     }
 
+    private bool DamageInterval() // garante que tenha meio segundo entre um dano e outro
+    {
+        return (Time.time > lastDamageTakenTime + 0.5f);
+    }
+
     private void RegisterDamage()
     {
+        lastDamageTakenTime = Time.time;
         CreateAndPlay(swordDamageSound, 2);
         capsuleCol.isTrigger = true;
         rb.isKinematic = true;
-        anim.SetBool("Intangible", true);
+        //anim.SetBool("Intangible", true);
         anim.SetBool("CanMove", false);
     }
 
@@ -182,12 +195,12 @@ public class GirlScript : MonoBehaviour
         if(bossAnim != null)
             if (bossAnim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick") || bossAnim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick 0"))
             {
-                UpdateLife(-6f);
+                lifeBarScript.UpdateLife(-6f);
                 anim.SetTrigger("FallDamage");
                 return;
             }
 
-        UpdateLife(-2f);
+        lifeBarScript.UpdateLife(-2f);
         switch (Random.Range(0, 3))
         {
             case 0:
@@ -209,13 +222,6 @@ public class GirlScript : MonoBehaviour
         audioSource.volume = volume;
         audioSource.Play();
         Destroy(audioSource, destructionTime);
-    }
-
-    private void UpdateLife(float amount)
-    {
-        life += amount;
-        if (life > 10) life = 10;
-        lifeText.text = life.ToString("0.0");
     }
 
 }

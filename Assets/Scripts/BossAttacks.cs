@@ -11,6 +11,7 @@ public class BossAttacks : MonoBehaviour
     public Transform model;
     public Transform player;
     public BoxCollider leftFootCollider;
+    private Animator playerAnim;
     //public Transform greatSword;
 
     // Attacks
@@ -36,13 +37,14 @@ public class BossAttacks : MonoBehaviour
     {
         anim = model.GetComponent<Animator>();
         lastAttackTime = Time.time;
+        playerAnim = player.GetComponent<Animator>();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Keypad0)) AI = !AI;
 
-        if (AI)
+        if (AI && !playerAnim.GetBool("Dead"))
         {
             AI_Manager(); // gerencia os movimentos do boss
         } else
@@ -52,7 +54,7 @@ public class BossAttacks : MonoBehaviour
 
         bossAttackingDebug.color = anim.GetBool("Attacking") ? Color.green : Color.red;
         bossMovingDebug.color = moving ? Color.green : Color.red;
-        brainIcon.gameObject.active = AI ? true : false;
+        brainIcon.gameObject.active = AI ? true : false; // icone que indica se a AI esta ativada ou nao
 
     }
 
@@ -100,24 +102,24 @@ public class BossAttacks : MonoBehaviour
         float distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
         distanceDebug.text = distance.ToString("0.0");
 
-        if (distance > 20)
+        if (distance > 20) // caso o boss esteja a mais de 20 unidades, ele corre ate o player
         {
             moving = true;
             anim.SetFloat("Vertical", 1);
             anim.SetFloat("Horizontal", 0);
             brainDebug.text = "Run";
-        } else if (distance > 12 && !moving)
+        } else if (distance > 12 && !moving) // caso ele esteja a meia distancia, comeca a caminhar
         {
             lastAttackTime = Time.time; // tempo onde comecou a caminhar
             moving = true;
             anim.SetFloat("Vertical", 0.5f);
             brainDebug.text = "Walk";
         }
-        if (anim.GetFloat("Vertical") >= 0.4f && anim.GetFloat("Vertical") < 1)
+        if (anim.GetFloat("Vertical") >= 0.4f && anim.GetFloat("Vertical") < 1) // caso o boss esteja caminhando
         {
             walkTimeDebug.gameObject.SetActive(true);
             walkTimeDebug.transform.GetChild(1).GetComponent<Text>().text = (walkTime - (Time.time - lastAttackTime)).ToString("00.0");
-            if ((walkTime - (Time.time - lastAttackTime)) <= 0)
+            if ((walkTime - (Time.time - lastAttackTime)) <= 0) // caminha por no maximo 10 segundos e entao faz algum ataque a distancia
             {
                 moving = false;
                 FarAttack();
@@ -129,7 +131,7 @@ public class BossAttacks : MonoBehaviour
         }
 
 
-        if (moving && distance < 10) moving = false;
+        if (moving && distance < 10) moving = false; // para de se mover caso esteja proximo ao player
 
         if(!anim.GetBool("Attacking") && Time.time > lastAttackTime + waitTime && !moving)
         {
@@ -141,7 +143,7 @@ public class BossAttacks : MonoBehaviour
 
             int rand = Random.Range(0, 8);
 
-            print("Rand: " + rand);
+            //print("Rand: " + rand);
 
             switch (rand)
             {
