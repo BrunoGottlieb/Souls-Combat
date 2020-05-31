@@ -10,6 +10,7 @@ TagManager:
   - GreatSword
   - Sword
   - Magic
+  - Boss
   layers:
   - Default
   - TransparentFX

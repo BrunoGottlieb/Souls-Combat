@@ -14,19 +14,25 @@ public class Destructible : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        print(other.gameObject.name + " colidiu com " + this.gameObject.name);
         Animator otherAnim = other.transform.root.GetComponentInChildren<Animator>();
-        if (otherAnim != null && otherAnim.GetBool("Attacking") || other.gameObject.name.Contains("Magic") || other.gameObject.tag == "Magic")
+        
+        if ((otherAnim != null && otherAnim.GetBool("Attacking")) && (other.gameObject.tag == "GreatSword" || other.gameObject.tag == "Sword")) // atingido por espadas
+        {
+            Destroy();
+        }
+        else if(other.gameObject.name.Contains("Magic") || other.gameObject.tag == "Magic") // atingido por magica
         {
             Destroy();
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision) // colisao porque eh o corpo do boss
     {
-       if (collision.gameObject.tag == "GreatSword")
-       {
+        if (collision.gameObject.name.Contains("Boss")) // atingido pelo boss se movendo
+        {
             Destroy();
-       }
+        }
     }
 
     private void OnParticleCollision(GameObject other)

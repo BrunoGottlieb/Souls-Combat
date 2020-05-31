@@ -24,6 +24,8 @@ public class GirlScript : MonoBehaviour
 
     private float lastDamageTakenTime = 0;
 
+    private Vector3 forwardLocked;
+
     [HideInInspector]
     public bool insideAuraMagic = false;
 
@@ -80,22 +82,77 @@ public class GirlScript : MonoBehaviour
         }
     }
 
+    private void DodgeController()
+    {
+        Vector3 relativeForward = mainCamera.transform.TransformDirection(Vector3.forward);
+        Vector3 relativeRight = mainCamera.transform.TransformDirection(Vector3.right);
+        Vector3 relativeLeft = mainCamera.transform.TransformDirection(-Vector3.right);
+        Vector3 relativeBack = mainCamera.transform.TransformDirection(-Vector3.forward);
+
+        relativeForward.y = 0;
+        relativeRight.y = 0;
+        relativeLeft.y = 0;
+        relativeBack.y = 0;
+
+        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space) && CanDodge())
+        {
+            forwardLocked = (relativeForward + relativeRight).normalized;
+        }
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space) && CanDodge())
+        {
+            forwardLocked = (relativeBack + relativeRight).normalized;
+        }
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space) && CanDodge())
+        {
+            forwardLocked = (relativeBack + relativeLeft).normalized;
+        }
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space) && CanDodge())
+        {
+            forwardLocked = (relativeForward + relativeLeft).normalized;
+        }
+
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.Space) && CanDodge())
+        {
+            forwardLocked = relativeRight;
+        }
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.Space) && CanDodge())
+        {
+            forwardLocked = relativeLeft;
+        }
+        else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space) && CanDodge())
+        {
+            forwardLocked = relativeForward;
+        }
+        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space) && CanDodge())
+        {
+            forwardLocked = relativeBack;
+        }
+        else 
+        {
+            forwardLocked = targetLock.position - model.position;
+            forwardLocked.y = 0;
+        }
+    }
+
     private void Rotation()
     {
         if (anim.GetBool("Attacking") || !anim.GetBool("CanMove")) return; // caso nao possa se mover, retorna
 
         if (!anim.GetBool("LockedCamera")) // camera livre
         {
-            Vector3 rotationOffset = mainCamera.transform.TransformDirection(stickDirection) * 1.5f;
+            Vector3 rotationOffset = mainCamera.transform.TransformDirection(stickDirection) * 4f;
             rotationOffset.y = 0;
-            model.forward += Vector3.Lerp(model.forward, rotationOffset, Time.deltaTime * 20f);
-        } 
+            model.forward += Vector3.Lerp(model.forward, rotationOffset, Time.deltaTime * 30f);
+        }
         else // camera locked
         {
-            Vector3 rotationOffset = targetLock.position - model.position;
-            rotationOffset.y = 0;
-            model.forward += Vector3.Lerp(model.forward, rotationOffset, Time.deltaTime * 20f);
+            //Vector3 rotationOffset = targetLock.position - model.position;
+            //rotationOffset.y = 0;
+
+            model.forward += Vector3.Lerp(model.forward, forwardLocked, Time.deltaTime * 30f);
+            DodgeController(); // vira instantaneamente para o lado do dodge
         }
+
     }
 
     private void Attack()
@@ -148,11 +205,15 @@ public class GirlScript : MonoBehaviour
     {
         Vector3 diff = model.transform.eulerAngles - mainCamera.transform.eulerAngles;
 
-        if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("Attacking") && !anim.GetBool("Drinking") && !anim.GetCurrentAnimatorStateInfo(1).IsName("Sprinting Forward Roll")) // rola caso nao esteja atacando e nem bebendo estus
+        if (Input.GetKeyDown(KeyCode.Space) && CanDodge()) // rola caso nao esteja atacando e nem bebendo estus
         {
             anim.SetTrigger("Dodge");
         }
+    }
 
+    private bool CanDodge() // Verifica se o player pode rolar
+    {
+        return !anim.GetBool("Attacking") && !anim.GetBool("Drinking") && !anim.GetCurrentAnimatorStateInfo(1).IsName("Sprinting Forward Roll");
     }
 
     private void OnParticleCollision(GameObject other)

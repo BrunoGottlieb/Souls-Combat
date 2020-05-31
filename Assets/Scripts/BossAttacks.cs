@@ -184,7 +184,6 @@ public class BossAttacks : MonoBehaviour
         }
         else if (Time.time - lastActionTime > chillTime) // se esta se movendo ha mais de x seg, executa um ataque
         {
-            print("Executa um ataque pois esta caminhando ha muito tempo");
             anim.SetFloat("Vertical", 0);
             action = "FarAttack";
         } 
@@ -292,6 +291,16 @@ public class BossAttacks : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             anim.SetTrigger("Spell");
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            anim.SetTrigger("SpinAttack");
+        }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            anim.SetTrigger("Casting");
         }
     }
 

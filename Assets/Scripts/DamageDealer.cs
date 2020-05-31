@@ -10,7 +10,7 @@ public class DamageDealer : MonoBehaviour
 
     private float lastSoundTime = 0;
 
-    public float GetDamage()
+    public float GetDamage() // caso algun script queira saber o quanto de dano esse objeto causa
     {
         return damageAmount;
     }
@@ -18,6 +18,8 @@ public class DamageDealer : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!damageOn) return; // retorna caso nao possa causar dano
+
+        if (other.gameObject.layer != 11 && other.gameObject.layer != 13) return; // nao atinge o que nao for da layer Player ou Scenary
 
         if (other.gameObject.name == "Girl") // caso tenha colidido com o player
         {

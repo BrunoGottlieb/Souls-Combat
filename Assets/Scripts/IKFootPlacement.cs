@@ -80,8 +80,8 @@ public class IKFootPlacement : MonoBehaviour
 
     public void SetIntangibleOn()
     {
-        capsuleCol.isTrigger = true;
-        rb.isKinematic = true;
+        //capsuleCol.isTrigger = true;
+        //rb.isKinematic = true;
     }
 
     public void RestoreRigidbodyAndCollider()

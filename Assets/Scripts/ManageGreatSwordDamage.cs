@@ -11,6 +11,11 @@ public class ManageGreatSwordDamage : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.gameObject.GetComponent<BossAttacks>().greatSword.damageAmount = damageAmount; // atualiza o dano da GreatSword
+
+        if (animator.GetBool("Phase2")) // incrementa a forca em 0.5 caso seja a phase 2 do boss
+        {
+            animator.gameObject.GetComponent<BossAttacks>().greatSword.damageAmount = damageAmount + 0.5f; // atualiza o dano da GreatSword
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
