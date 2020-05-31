@@ -25,10 +25,6 @@ public class BossAttacks : MonoBehaviour
     public GameObject auraMagic;
 
     private Animator anim;
-    private float lastAttackTime;
-    private float waitTime = 7;
-    private float walkTime = 10;
-    private bool moving;
 
     [Header("Debug")]
     public GameObject brainIcon;
@@ -38,14 +34,24 @@ public class BossAttacks : MonoBehaviour
     public Text distanceDebug;
     public Text brainDebug;
     public Text damageDebug;
+    public Text actionDebugText;
 
     [Header("Audio")]
     public AudioClip preFireballSound;
 
+    [Header("AI Manager")]
+    public float nearValue;
+    public float farValue;
+    public float chillTime;
+    private string action;
+    private float lastActionTime;
+    private float distance;
+    private float chillDirection;
+    private bool phase2;
+
     private void Start()
     {
         anim = model.GetComponent<Animator>();
-        lastAttackTime = Time.time;
         playerAnim = player.GetComponent<Animator>();
     }
 
@@ -63,23 +69,236 @@ public class BossAttacks : MonoBehaviour
 
         greatSword.damageOn = anim.GetBool("Attacking"); // GreatSword causa dano apenas se o boss estiver atacando
 
-        if (anim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick") || anim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick 0")) // controla o dano do chute
-        {
-            leftFootCollider.gameObject.GetComponent<DamageDealer>().damageOn = true;
-        }
-        else
-        {
-            leftFootCollider.gameObject.GetComponent<DamageDealer>().damageOn = false;
-        }
+        phase2 = anim.GetBool("Phase2");
 
+        DebugUI(); // indicadores no canvas
+    }
+
+    private void DebugUI()
+    {
         bossAttackingDebug.color = anim.GetBool("Attacking") ? Color.green : Color.red;
         damageDebug.text = greatSword.damageAmount.ToString();
-        bossMovingDebug.color = moving ? Color.green : Color.red;
+        bossMovingDebug.color = action == "Move" ? Color.green : Color.red;
         brainIcon.gameObject.active = AI ? true : false; // icone que indica se a AI esta ativada ou nao
+        actionDebugText.text = action;
+    }
+
+    private void FarAttack()
+    {
+        brainDebug.text = "Far Attack";
+        anim.SetFloat("Vertical", 0);
+        anim.SetFloat("Horizontal", 0);
+        int rand = Random.Range(0, 5);
+        switch (rand)
+        {
+            case 0:
+                anim.SetTrigger("CastMagicSwords"); // Magic swords from sky
+                break;
+            case 1:
+                anim.SetTrigger("Casting"); // Earth Shatter
+                break;
+            case 2:
+                anim.SetTrigger("Dash");
+                break;
+            case 3:
+                anim.SetTrigger("DoubleDash");
+                break;
+            case 4:
+                anim.SetTrigger("Spell"); // Fireball
+                break;
+            default:
+                break;
+        }
+
+        action = "Wait"; // impede que essa acao seja executada novamente
+    }
+
+    private void NearAttack()
+    {
+        anim.SetFloat("Vertical", 0);
+        anim.SetFloat("Horizontal", 0);
+
+        int rand = Random.Range(0, 9);
+
+        switch (rand)
+        {
+            case 0:
+                anim.SetTrigger("DoubleDash");
+                brainDebug.text = "Double Dash";
+                break;
+            case 1:
+                anim.SetTrigger("Dash");
+                brainDebug.text = "Dash";
+                break;
+            case 2:
+                anim.SetTrigger("SpinAttack");
+                brainDebug.text = "Spin Attack";
+                break;
+            case 3:
+                anim.SetTrigger("Combo");
+                brainDebug.text = "Combo";
+                break;
+            case 4:
+                anim.SetTrigger("Casting");
+                brainDebug.text = "Casting";
+                break;
+            case 5:
+                anim.SetTrigger("Combo1");
+                brainDebug.text = "Combo1";
+                break;
+            case 6:
+                anim.SetTrigger("CastMagicSwords");
+                brainDebug.text = "Magic";
+                break;
+            case 7:
+                anim.SetTrigger("Spell");
+                brainDebug.text = "Spell";
+                break;
+            case 8:
+                anim.SetTrigger("AuraCast");
+                brainDebug.text = "Aura Cast";
+                break;
+            default:
+                break;
+        }
+
+        action = "Wait"; // impede que o ataque seja executado novamente
 
     }
 
-    public void SpawnEarthShatter()
+    private void MoveToPlayer() // boss vai ate o player
+    {
+        brainDebug.text = "Move";
+
+        anim.SetFloat("Horizontal", 0); // boss nao ira se mover para os lados enquanto vai na direcao do player
+
+        float speedValue = distance / 15; // controla a velocidade com que o boss ira se mover
+        if (speedValue > 1) speedValue = 1; // impede que a velocidade seja maior do que 1
+
+        walkTimeDebug.text = (Time.time - lastActionTime).ToString("0.0");
+
+        if (distance < nearValue) // caso esteja proximo ao player, para de caminhar
+        {
+            anim.SetFloat("Vertical", 0);
+            CallNextMove();
+        }
+        else if (Time.time - lastActionTime > chillTime) // se esta se movendo ha mais de x seg, executa um ataque
+        {
+            print("Executa um ataque pois esta caminhando ha muito tempo");
+            anim.SetFloat("Vertical", 0);
+            action = "FarAttack";
+        } 
+        else
+        {
+            anim.SetFloat("Vertical", speedValue); // move-se ate o player
+        }
+    }
+
+    private void WaitForPlayer() // move-se horizontalmente esperando o jogador se aproximar
+    {
+        brainDebug.text = "Chill";
+
+        anim.SetFloat("Horizontal", chillDirection);
+        anim.SetFloat("Vertical", 0);
+
+        if ((distance <= nearValue && Time.time - lastActionTime > chillTime/2) && !phase2) // caso esteja proximo do jogador, ataca
+        {
+            CallNextMove();
+        } else
+
+        if((distance > farValue && Time.time - lastActionTime > chillTime/2) && !phase2) // caso se afastou do jogador, executa um ataque de longe
+        {
+            FarAttack();
+        } else
+
+        if ((Time.time - lastActionTime > chillTime) || phase2)
+        {
+            if (chillDirection < 0)
+            {
+                FarAttack();
+            } else
+            {
+                NearAttack();
+            }
+        }
+
+    }
+
+    private void AI_Manager()
+    {
+        distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
+        distanceDebug.text = distance.ToString("0.0"); // mostra a distancia no debug
+
+        if (action == "Wait") return; // caso ja esteja executando alguma acao, espera
+
+        if(action == "Move")
+        {
+            MoveToPlayer(); // move-se ate o player
+        }
+
+        if(action == "WaitForPlayer")
+        {
+            WaitForPlayer(); // move-se horizontalmente esperando o jogador se aproximar
+        }
+
+        if(action == "FarAttack")
+        {
+            FarAttack(); // executa um unico ataque a distancia
+        }
+
+        if(action == "NearAttack")
+        {
+            NearAttack();
+        }
+    }
+
+    public void CallNextMove()
+    {
+        lastActionTime = Time.time; // atualiza o tempo onde mandou executar a ultima acao
+
+        if (distance >= farValue) // caso o boss esteja longe do player
+        {
+            action = "Move";
+        } 
+        else if (distance > nearValue && distance < farValue) // caso esteja no meio termo
+        {
+            int rand = Random.Range(0, 2);
+            if (rand == 0) chillDirection = -0.5f;
+            if (rand == 1) chillDirection = 0.5f;
+            action = "WaitForPlayer";
+        }
+        else if (distance <= nearValue)// caso esteja proximo ao jogador
+        {
+            action = "NearAttack";
+        }
+    }
+
+    private bool IsBossTakingDamage() // retorna se o boss esta tomando dano, para nao executar as magias
+    {
+        return !anim.GetCurrentAnimatorStateInfo(2).IsName("none");
+    }
+
+    #region Debug
+
+    private void DebugAttack()
+    {
+        anim.SetFloat("Vertical", 0);
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            anim.SetTrigger("AuraCast");
+        }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            anim.SetTrigger("Spell");
+        }
+    }
+
+    #endregion
+
+    #region Magias
+    public void SpawnEarthShatter() // metodo chamado pela animacao
     {
         Vector3 bossPos = model.transform.position;
         Vector3 bossDirection = model.transform.forward;
@@ -92,170 +311,25 @@ public class BossAttacks : MonoBehaviour
         Destroy(earthShatter, 4);
     }
 
-    private void FarAttack()
-    {
-        brainDebug.text = "Far Attack";
-        anim.SetFloat("Vertical", 0);
-        anim.SetFloat("Horizontal", 0);
-        int rand = Random.Range(0, 5);
-        switch (rand)
-        {
-            case 0:
-                anim.SetTrigger("CastMagicSwords");
-                break;
-            case 1:
-                anim.SetTrigger("Casting");
-                break;
-            case 2:
-                anim.SetTrigger("Dash");
-                break;
-            case 3:
-                anim.SetTrigger("DoubleDash");
-                break;
-            case 4:
-                anim.SetTrigger("Spell");
-                break;
-            default:
-                break;
-
-        }
-    }
-
-    private void AI_Manager()
-    {
-        float distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
-        distanceDebug.text = distance.ToString("0.0");
-
-        if (distance > 20) // caso o boss esteja a mais de 20 unidades, ele corre ate o player
-        {
-            moving = true;
-            anim.SetFloat("Vertical", 1);
-            anim.SetFloat("Horizontal", 0);
-            brainDebug.text = "Run";
-        } else if (distance > 12 && !moving) // caso ele esteja a meia distancia, comeca a caminhar
-        {
-            lastAttackTime = Time.time; // tempo onde comecou a caminhar
-            moving = true;
-            anim.SetFloat("Vertical", 0.5f);
-            brainDebug.text = "Walk";
-        }
-        if(distance < 4) // para de caminhar caso esteja proximo ao player
-        {
-            anim.SetFloat("Vertical", 0);
-        }
-        if (anim.GetFloat("Vertical") >= 0.4f && anim.GetFloat("Vertical") < 1) // caso o boss esteja caminhando
-        {
-            walkTimeDebug.gameObject.SetActive(true);
-            walkTimeDebug.text = (walkTime - (Time.time - lastAttackTime)).ToString("00.0");
-            if ((walkTime - (Time.time - lastAttackTime)) <= 0) // caminha por no maximo 10 segundos e entao faz algum ataque a distancia
-            {
-                moving = false;
-                FarAttack();
-            }
-        }
-        else
-        {
-            walkTimeDebug.gameObject.SetActive(false);
-        }
-
-
-        if (moving && distance < 10) moving = false; // para de se mover caso esteja proximo ao player
-
-        if(!anim.GetBool("Attacking") && Time.time > lastAttackTime + waitTime && !moving)
-        {
-            lastAttackTime = Time.time;
-            waitTime = 2;
-
-            anim.SetFloat("Vertical", 0);
-            anim.SetFloat("Horizontal", 0);
-
-            int rand = Random.Range(0, 9);
-
-            //print("Rand: " + rand);
-
-            switch (rand)
-            {
-                case 0:
-                    anim.SetTrigger("DoubleDash");
-                    brainDebug.text = "Attack";
-                    break;
-                case 1:
-                    anim.SetTrigger("Dash");
-                    brainDebug.text = "Attack";
-                    break;
-                case 2:
-                    anim.SetTrigger("SpinAttack");
-                    brainDebug.text = "Attack";
-                    break;
-                case 3:
-                    anim.SetTrigger("Combo");
-                    brainDebug.text = "Attack";
-                    break;
-                case 4:
-                    anim.SetTrigger("Casting");
-                    brainDebug.text = "Casting";
-                    break;
-                case 5:
-                    anim.SetTrigger("Combo1");
-                    brainDebug.text = "Attack";
-                    break;
-                case 6:
-                    anim.SetTrigger("CastMagicSwords");
-                    brainDebug.text = "Magic";
-                    break;
-                case 7:
-                    anim.SetTrigger("Spell");
-                    brainDebug.text = "Spell";
-                    break;
-                case 8:
-                    int chill = Random.Range(0, 2);
-                    if(chill == 0)
-                    {
-                        anim.SetFloat("Horizontal", 1);
-                        brainDebug.text = "Chill";
-                    }
-                    else
-                    {
-                        anim.SetFloat("Horizontal", -1);
-                        brainDebug.text = "Chill";
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-        }
-        return;
-    }
-
-    public void TurnKickColliderOn()
-    {
-        leftFootCollider.enabled = true;
-    }
-
-    public void TurnKickColliderOff()
-    {
-        leftFootCollider.enabled = false;
-    }
-
-    public void SwordsFromSkyAttack()
+    public void SwordsFromSkyAttack() // metodo chamado pela animacao
     {
         StartCoroutine(DropSwordsFromSky(15));
     }
 
     IEnumerator DropSwordsFromSky(int counter)
     {
-        float x_offset = Random.Range(-1, 1);
-        float z_offset = Random.Range(-1, 1);
+        float x_offset = Random.Range(-1, 1); // range aleatorio
+        float z_offset = Random.Range(-1, 1); // range aleatorio
         GameObject earth = Instantiate(magicSwordFromSky, new Vector3(player.transform.position.x + x_offset, player.transform.position.y + 3, player.transform.position.z + z_offset), Quaternion.identity);
         yield return new WaitForSeconds(0.2f);
-        if(counter > 0)
+        if (counter > 0) // continua spawnando espadas enquanto nao tiver spawnado todas as solicitadas
             StartCoroutine(DropSwordsFromSky(counter - 1));
     }
 
-    public void CastAura()
+    public void CastAura() // metodo chamado pela animacao
     {
-        if(!IsBossTakingDamage()){ // confere se o boss nao esta levando dano
+        if (!IsBossTakingDamage())
+        { // confere se o boss nao esta levando dano
             Vector3 spawnPos = model.transform.position;
             spawnPos.y = 0.02f;
             GameObject aura = Instantiate(auraMagic, spawnPos, Quaternion.identity);
@@ -263,56 +337,7 @@ public class BossAttacks : MonoBehaviour
         }
     }
 
-    private void DebugAttack() // forma manual de ver os ataques
-    {
-        if (Input.GetKeyDown(KeyCode.G)) // ataque de longe
-        {
-            anim.SetTrigger("DoubleDash");
-        }
-
-        if (Input.GetKeyDown(KeyCode.H)) // ataque de perto
-        {
-            anim.SetTrigger("Dash");
-        }
-
-        if (Input.GetKeyDown(KeyCode.F)) // ataque de perto
-        {
-            anim.SetTrigger("SpinAttack");
-        }
-
-        if (Input.GetKeyDown(KeyCode.L)) // ataque de perto
-        {
-            anim.SetTrigger("Combo");
-        }
-
-        if (Input.GetKeyDown(KeyCode.J)) // ataque de perto
-        {
-            anim.SetTrigger("Combo1");
-        }
-
-        if (Input.GetKeyDown(KeyCode.M)) // ataque de perto
-        {
-            anim.SetTrigger("CastMagicSwords");
-        }
-
-        if (Input.GetKeyDown(KeyCode.V)) // ataque de perto
-        {
-            anim.SetTrigger("Casting");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z)) // ataque de perto
-        {
-            anim.SetTrigger("Spell");
-            SoundManager.CreateAndPlay(preFireballSound, spellPosition.gameObject, 2);
-        }
-
-        if (Input.GetKeyDown(KeyCode.B)) // ataque de perto
-        {
-            anim.SetTrigger("AuraCast");
-        }
-    }
-
-    public void FireSpell()
+    public void FireSpell() // lanca o projetil, metodo chamado pela animacao
     {
         if (!IsBossTakingDamage())
         {
@@ -321,9 +346,22 @@ public class BossAttacks : MonoBehaviour
         }
     }
 
-    private bool IsBossTakingDamage() // retorna se o boss esta tomando dano, para nao executar as magias
+    #endregion
+
+    #region Kick
+
+    public void TurnKickColliderOn()
     {
-        return !anim.GetCurrentAnimatorStateInfo(2).IsName("none");
+        leftFootCollider.enabled = true;
+        leftFootCollider.GetComponent<DamageDealer>().damageOn = true;
     }
+
+    public void TurnKickColliderOff()
+    {
+        leftFootCollider.enabled = false;
+        leftFootCollider.GetComponent<DamageDealer>().damageOn = false;
+    }
+
+    #endregion
 
 }

@@ -21,7 +21,7 @@ public class BossScript : MonoBehaviour
 
     void Update()
     {
-        
+        /*
         if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && !anim.GetBool("Attacking")) 
         {
             Vector3 rotationOffset = player.transform.position - model.position;
@@ -31,13 +31,13 @@ public class BossScript : MonoBehaviour
         } else if (!anim.GetBool("Attacking"))
         {
             model.transform.LookAt(player.transform.position); // olha para o player caso nao esteja atacando
-        }
+        }*/
         
 
-        /*if (!anim.GetBool("Attacking"))
+        if (!anim.GetBool("Attacking"))
         {
             model.transform.LookAt(player.transform.position); // olha para o player caso nao esteja atacando
-        }*/
+        }
 
         model.transform.eulerAngles = new Vector3(0, model.transform.eulerAngles.y, 0);
         //model.transform.position = new Vector3(model.transform.position.x, 0, model.transform.position.z);

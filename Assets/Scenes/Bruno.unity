@@ -2910,7 +2910,11 @@ MonoBehaviour:
   distanceDebug: {fileID: 1014052662}
   brainDebug: {fileID: 1610857596}
   damageDebug: {fileID: 430271630}
+  actionDebugText: {fileID: 1761029180}
   preFireballSound: {fileID: 8300000, guid: 63b41099278eaa943ba1d955118d587f, type: 3}
+  nearValue: 4
+  farValue: 7
+  chillTime: 4
 --- !u!114 &132738817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3479,7 +3483,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 302424376}
-  m_LocalRotation: {x: -0.072905526, y: 0.000000034304414, z: 0.0000000025076548,
+  m_LocalRotation: {x: -0.07290553, y: -0.000000033208615, z: -0.000000002427552,
     w: 0.99733883}
   m_LocalPosition: {x: 4.61, y: 1.509, z: -1.7119999}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -3663,7 +3667,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 387997240}
-  m_LocalRotation: {x: -0.6756899, y: -0.16701585, z: 0.545916, w: -0.46639544}
+  m_LocalRotation: {x: -0.6756898, y: -0.16701606, z: 0.54591614, w: -0.46639523}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -21245,7 +21249,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728827580}
-  m_LocalRotation: {x: 0.6344334, y: 0.30192763, z: -0.633195, w: 0.3246509}
+  m_LocalRotation: {x: 0.6344256, y: 0.30191833, z: -0.6332053, w: 0.3246547}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -21688,7 +21692,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 845772706}
-  m_LocalRotation: {x: 0.6455223, y: 0.28899613, z: -0.6366778, w: 0.3072843}
+  m_LocalRotation: {x: 0.6455223, y: 0.28899613, z: -0.63667786, w: 0.30728433}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -22204,7 +22208,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   girlAnim: {fileID: 421706268}
-  lifeText: {fileID: 1761029180}
   lifeBar: {fileID: 1701510997}
   lifeGhost: {fileID: 1847717643}
   estusFlask: 5
@@ -31977,7 +31980,7 @@ GameObject:
   - component: {fileID: 1512565731}
   - component: {fileID: 1512565730}
   m_Layer: 5
-  m_Name: LifeDebug
+  m_Name: ActionDebug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32016,7 +32019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3721519, g: 0.7264151, b: 0.2775454, a: 1}
+  m_Color: {r: 0.27843142, g: 0.6780116, b: 0.7254902, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -37506,7 +37509,7 @@ GameObject:
   - component: {fileID: 1761029181}
   - component: {fileID: 1761029180}
   m_Layer: 5
-  m_Name: LifeText
+  m_Name: ActionDebugText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37521,7 +37524,7 @@ RectTransform:
   m_GameObject: {fileID: 1761029178}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 1512565729}
   m_RootOrder: 0
@@ -37562,7 +37565,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 10
+  m_Text: Action
 --- !u!222 &1761029181
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -38852,7 +38855,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010216062}
-  m_LocalRotation: {x: -0.14555536, y: 0.7006413, z: -0.42299646, w: -0.5558682}
+  m_LocalRotation: {x: -0.1455464, y: 0.7006313, z: -0.4229991, w: -0.55588114}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

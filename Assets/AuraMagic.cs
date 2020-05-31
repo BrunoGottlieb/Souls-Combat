@@ -24,7 +24,7 @@ public class AuraMagic : MonoBehaviour
 
     IEnumerator DisableAura()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
         isEnabled = false; // desativa o poder da aura
         player.GetComponentInParent<GirlScript>().insideAuraMagic = false;
         Destroy(this.gameObject);

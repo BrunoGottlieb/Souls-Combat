@@ -12,7 +12,6 @@ public class LifeBarScript : MonoBehaviour
     private float life = 10; // total de vida
     private float ghost = 10; // total de vida
     public Animator girlAnim;
-    public Text lifeText; // texto debug
 
     public Image lifeBar; // barra de vida verdadeira
     public Image lifeGhost; // ghost da barra de vida
@@ -79,7 +78,6 @@ public class LifeBarScript : MonoBehaviour
             Die();
         }
 
-        lifeText.text = life.ToString("0.0");
         lifeBar.rectTransform.sizeDelta = new Vector2(life * 100, 25); // atualiza o tamanho da barra de vida
     }
 
