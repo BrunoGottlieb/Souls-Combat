@@ -7,31 +7,40 @@ using UnityEngine.UI;
 
 public class BossAttacks : MonoBehaviour
 {
-    public bool AI;
-    public Transform model;
-    public Transform player;
-    public BoxCollider leftFootCollider;
-    private Animator playerAnim;
-    //public Transform greatSword;
+    [Header("Control")]
+    public bool AI; // comanda se a inteligencia artificial estara ativada ou nao
 
-    // Attacks
+    [Header("References")]
+    public Transform model; // boneco do boss
+    public Transform player; // garota
+    public BoxCollider leftFootCollider; // pe esquerdo para o chute
+    public Transform spellPosition; // mao esquerda, posicao da spell
+    private Animator playerAnim; // referencia ao animator do player, pega no start
+    public DamageDealer greatSword; // script que controla o dano da GreatSword
+
+    [Header("Attacks")]
     public GameObject earthShatterPrefab;
     public GameObject magicSwordFromSky;
+    public GameObject spell;
+    public GameObject auraMagic;
 
     private Animator anim;
     private float lastAttackTime;
     private float waitTime = 7;
     private float walkTime = 10;
+    private bool moving;
 
-    // Debug
+    [Header("Debug")]
     public GameObject brainIcon;
     public Image bossAttackingDebug;
     public Image bossMovingDebug;
-    public Image walkTimeDebug;
+    public Text walkTimeDebug;
     public Text distanceDebug;
     public Text brainDebug;
+    public Text damageDebug;
 
-    private bool moving;
+    [Header("Audio")]
+    public AudioClip preFireballSound;
 
     private void Start()
     {
@@ -52,7 +61,19 @@ public class BossAttacks : MonoBehaviour
             DebugAttack(); // comando manual para ataque
         }
 
+        greatSword.damageOn = anim.GetBool("Attacking"); // GreatSword causa dano apenas se o boss estiver atacando
+
+        if (anim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick") || anim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick 0")) // controla o dano do chute
+        {
+            leftFootCollider.gameObject.GetComponent<DamageDealer>().damageOn = true;
+        }
+        else
+        {
+            leftFootCollider.gameObject.GetComponent<DamageDealer>().damageOn = false;
+        }
+
         bossAttackingDebug.color = anim.GetBool("Attacking") ? Color.green : Color.red;
+        damageDebug.text = greatSword.damageAmount.ToString();
         bossMovingDebug.color = moving ? Color.green : Color.red;
         brainIcon.gameObject.active = AI ? true : false; // icone que indica se a AI esta ativada ou nao
 
@@ -76,7 +97,7 @@ public class BossAttacks : MonoBehaviour
         brainDebug.text = "Far Attack";
         anim.SetFloat("Vertical", 0);
         anim.SetFloat("Horizontal", 0);
-        int rand = Random.Range(0, 4);
+        int rand = Random.Range(0, 5);
         switch (rand)
         {
             case 0:
@@ -90,6 +111,9 @@ public class BossAttacks : MonoBehaviour
                 break;
             case 3:
                 anim.SetTrigger("DoubleDash");
+                break;
+            case 4:
+                anim.SetTrigger("Spell");
                 break;
             default:
                 break;
@@ -115,10 +139,14 @@ public class BossAttacks : MonoBehaviour
             anim.SetFloat("Vertical", 0.5f);
             brainDebug.text = "Walk";
         }
+        if(distance < 4) // para de caminhar caso esteja proximo ao player
+        {
+            anim.SetFloat("Vertical", 0);
+        }
         if (anim.GetFloat("Vertical") >= 0.4f && anim.GetFloat("Vertical") < 1) // caso o boss esteja caminhando
         {
             walkTimeDebug.gameObject.SetActive(true);
-            walkTimeDebug.transform.GetChild(1).GetComponent<Text>().text = (walkTime - (Time.time - lastAttackTime)).ToString("00.0");
+            walkTimeDebug.text = (walkTime - (Time.time - lastAttackTime)).ToString("00.0");
             if ((walkTime - (Time.time - lastAttackTime)) <= 0) // caminha por no maximo 10 segundos e entao faz algum ataque a distancia
             {
                 moving = false;
@@ -141,7 +169,7 @@ public class BossAttacks : MonoBehaviour
             anim.SetFloat("Vertical", 0);
             anim.SetFloat("Horizontal", 0);
 
-            int rand = Random.Range(0, 8);
+            int rand = Random.Range(0, 9);
 
             //print("Rand: " + rand);
 
@@ -176,6 +204,10 @@ public class BossAttacks : MonoBehaviour
                     brainDebug.text = "Magic";
                     break;
                 case 7:
+                    anim.SetTrigger("Spell");
+                    brainDebug.text = "Spell";
+                    break;
+                case 8:
                     int chill = Random.Range(0, 2);
                     if(chill == 0)
                     {
@@ -221,6 +253,16 @@ public class BossAttacks : MonoBehaviour
             StartCoroutine(DropSwordsFromSky(counter - 1));
     }
 
+    public void CastAura()
+    {
+        if(!IsBossTakingDamage()){ // confere se o boss nao esta levando dano
+            Vector3 spawnPos = model.transform.position;
+            spawnPos.y = 0.02f;
+            GameObject aura = Instantiate(auraMagic, spawnPos, Quaternion.identity);
+            aura.transform.eulerAngles = new Vector3(180, 0, 0);
+        }
+    }
+
     private void DebugAttack() // forma manual de ver os ataques
     {
         if (Input.GetKeyDown(KeyCode.G)) // ataque de longe
@@ -257,5 +299,31 @@ public class BossAttacks : MonoBehaviour
         {
             anim.SetTrigger("Casting");
         }
+
+        if (Input.GetKeyDown(KeyCode.Z)) // ataque de perto
+        {
+            anim.SetTrigger("Spell");
+            SoundManager.CreateAndPlay(preFireballSound, spellPosition.gameObject, 2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.B)) // ataque de perto
+        {
+            anim.SetTrigger("AuraCast");
+        }
     }
+
+    public void FireSpell()
+    {
+        if (!IsBossTakingDamage())
+        {
+            Vector3 relativePos = player.position - spellPosition.position;
+            Instantiate(spell, spellPosition.position, Quaternion.LookRotation(relativePos, Vector3.up));
+        }
+    }
+
+    private bool IsBossTakingDamage() // retorna se o boss esta tomando dano, para nao executar as magias
+    {
+        return !anim.GetCurrentAnimatorStateInfo(2).IsName("none");
+    }
+
 }

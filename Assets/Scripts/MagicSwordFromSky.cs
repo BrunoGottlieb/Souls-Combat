@@ -26,6 +26,7 @@ public class MagicSwordFromSky : MonoBehaviour
         {
             hasPlayedHitSound = true; // garante que tocara o som atingindo o chao apenas uma vez
             CreateAndPlay(hitGroundSound, 1);
+            this.GetComponent<DamageDealer>().damageOn = false; // espada nao causara mais dano ao estar no chao
         }
     }
 

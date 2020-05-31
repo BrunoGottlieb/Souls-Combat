@@ -24,6 +24,9 @@ public class GirlScript : MonoBehaviour
 
     private float lastDamageTakenTime = 0;
 
+    [HideInInspector]
+    public bool insideAuraMagic = false;
+
     void Start()
     {
         anim = model.GetComponent<Animator>();
@@ -43,6 +46,14 @@ public class GirlScript : MonoBehaviour
         if (anim.GetBool("Drinking")) moveSpeed = 2;
 
         if (anim.GetBool("Dead") || anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall")) return; // retorna caso o jogador tenha caido ou esteja morto
+
+        if (insideAuraMagic) // caso esteja dentro da aura magica
+        {
+            anim.SetFloat("Speed", 0);
+            anim.SetFloat("Horizontal", 0);
+            anim.SetFloat("Vertical", 0);
+            return;
+        }
 
         Move();
         Rotation();
@@ -139,40 +150,24 @@ public class GirlScript : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && !anim.GetBool("Attacking") && !anim.GetBool("Drinking") && !anim.GetCurrentAnimatorStateInfo(1).IsName("Sprinting Forward Roll")) // rola caso nao esteja atacando e nem bebendo estus
         {
-            //model.transform.Rotate(0, 90, 0);
             anim.SetTrigger("Dodge");
         }
 
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        //print("ACERTOU O PLAYER: " + other.transform.root.name);
-
-        Animator otherAnim = other.transform.root.GetComponentInChildren<Animator>();
-        if (other.gameObject.name.Contains("Magic") && !anim.GetBool("Intangible") && DamageInterval()) // caso sejam as espadas magicas
-        {
-            RegisterDamage();
-            lifeBarScript.UpdateLife(-0.5f);
-            RandomDamageAnimation(null);
-        } else if (otherAnim != null) // caso seja um ataque do boss
-            if (other.transform.root.tag == "GreatSword" && otherAnim.GetBool("Attacking") && !anim.GetBool("Intangible") && DamageInterval())
-            {
-                RegisterDamage();
-                RandomDamageAnimation(other.transform.root.GetComponentInChildren<Animator>());
-            }
-        
     }
 
     private void OnParticleCollision(GameObject other)
     {
         if (other.transform.root.name.Contains("Earth") && !anim.GetBool("Intangible"))
         {
-            RegisterDamage();
-            anim.SetTrigger("FallDamage");
-            lifeBarScript.UpdateLife(-4);
+            RegisterDamage(4);
             return;
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.name.Contains("AuraMagic"))
+            insideAuraMagic = true;
     }
 
     private bool DamageInterval() // garante que tenha meio segundo entre um dano e outro
@@ -180,28 +175,28 @@ public class GirlScript : MonoBehaviour
         return (Time.time > lastDamageTakenTime + 0.5f);
     }
 
-    private void RegisterDamage()
+    public void RegisterDamage(float damageAmount)
     {
-        lastDamageTakenTime = Time.time;
-        CreateAndPlay(swordDamageSound, 2);
+        if (damageAmount == 0 || anim.GetBool("Intangible") || !DamageInterval()) return; // retorna caso nao esteja apto a causar dano
+
+        lastDamageTakenTime = Time.time; // atualiza o tempo do ultimo dano tomado
         capsuleCol.isTrigger = true;
         rb.isKinematic = true;
         //anim.SetBool("Intangible", true);
         anim.SetBool("CanMove", false);
+        lifeBarScript.UpdateLife(-damageAmount); // diminui a quantia de dano na vida
+        DamageAnimation(damageAmount);
     }
 
-    private void RandomDamageAnimation(Animator bossAnim)
+    private void DamageAnimation(float damageAmount)
     {
-        if(bossAnim != null)
-            if (bossAnim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick") || bossAnim.GetCurrentAnimatorStateInfo(1).IsName("Straight Kick 0"))
-            {
-                lifeBarScript.UpdateLife(-6f);
-                anim.SetTrigger("FallDamage");
-                return;
-            }
+        if (damageAmount >= 4) // caso o dano seja muito forte, derruba o player
+        {
+            anim.SetTrigger("FallDamage");
+            return;
+        }
 
-        lifeBarScript.UpdateLife(-2f);
-        switch (Random.Range(0, 3))
+        switch (Random.Range(0, 3)) // caso o dano seja pequeno sorteia uma animacao
         {
             case 0:
                 anim.SetTrigger("TakeDamage");
@@ -213,15 +208,6 @@ public class GirlScript : MonoBehaviour
                 anim.SetTrigger("TakeDamageRight");
                 break;
         }
-    }
-
-    private void CreateAndPlay(AudioClip clip, float destructionTime, float volume = 1f)
-    {
-        AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-        audioSource.clip = clip;
-        audioSource.volume = volume;
-        audioSource.Play();
-        Destroy(audioSource, destructionTime);
     }
 
 }

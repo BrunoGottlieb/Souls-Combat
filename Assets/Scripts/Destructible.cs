@@ -15,7 +15,7 @@ public class Destructible : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Animator otherAnim = other.transform.root.GetComponentInChildren<Animator>();
-        if (otherAnim != null && otherAnim.GetBool("Attacking") || other.gameObject.name.Contains("Magic"))
+        if (otherAnim != null && otherAnim.GetBool("Attacking") || other.gameObject.name.Contains("Magic") || other.gameObject.tag == "Magic")
         {
             Destroy();
         }
@@ -51,6 +51,7 @@ public class Destructible : MonoBehaviour
         AudioSource audioSource = audio.AddComponent<AudioSource>();
         audioSource.clip = destructionSound;
         audioSource.spatialBlend = 1;
+        audioSource.minDistance = 40;
         audioSource.Play();
         Destroy(audioSource, 3);
     }

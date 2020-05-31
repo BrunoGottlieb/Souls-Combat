@@ -9,6 +9,7 @@ TagManager:
   - Walkable
   - GreatSword
   - Sword
+  - Magic
   layers:
   - Default
   - TransparentFX
