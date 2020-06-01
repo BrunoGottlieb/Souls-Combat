@@ -11,6 +11,7 @@ public class GirlScript : MonoBehaviour
     public Transform targetLock;
     public GameObject estusFlask;
     public GameObject healEffect;
+    public Transform boss;
 
     private float moveSpeed = 4;
     private Animator anim;
@@ -55,6 +56,11 @@ public class GirlScript : MonoBehaviour
             anim.SetFloat("Horizontal", 0);
             anim.SetFloat("Vertical", 0);
             return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            anim.SetTrigger("FallForward");
         }
 
         Move();
@@ -253,7 +259,15 @@ public class GirlScript : MonoBehaviour
     {
         if (damageAmount >= 4) // caso o dano seja muito forte, derruba o player
         {
-            anim.SetTrigger("FallDamage");
+            Vector3 dir = (boss.transform.position - model.transform.position).normalized; // direcao para o boss
+            float dot = Vector3.Dot(dir, model.transform.forward);
+
+            print("dot: " + dot.ToString());
+
+            if(dot >= 0) // estava olhando para o boss, cai de costas
+                anim.SetTrigger("FallDamage");
+            else if (dot < 0) // estava de costas para o boss, cai de frente
+                anim.SetTrigger("FallForward");
             return;
         }
 
@@ -269,6 +283,7 @@ public class GirlScript : MonoBehaviour
                 anim.SetTrigger("TakeDamageRight");
                 break;
         }
+        
     }
 
 }

@@ -22,6 +22,7 @@ public class IKFootPlacement : MonoBehaviour
         capsuleCol = this.GetComponent<CapsuleCollider>();
         rb = GetComponentInParent<Rigidbody>();
     }
+
     public void TakeWeapon()
     {
         if(!anim.GetBool("Equipped"))

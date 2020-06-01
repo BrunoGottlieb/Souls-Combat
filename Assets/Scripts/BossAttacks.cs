@@ -89,6 +89,12 @@ public class BossAttacks : MonoBehaviour
         anim.SetFloat("Vertical", 0);
         anim.SetFloat("Horizontal", 0);
         int rand = Random.Range(0, 5);
+
+        if (anim.GetBool("Phase2") && Random.Range(0, 2) == 0) // chance de lancar uma spell antes de um ataque de longe
+        {
+            anim.SetTrigger("Spell"); // Fireball
+        }
+
         switch (rand)
         {
             case 0:
