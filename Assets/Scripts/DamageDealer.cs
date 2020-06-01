@@ -21,7 +21,7 @@ public class DamageDealer : MonoBehaviour
 
         if (other.gameObject.layer != 11 && other.gameObject.layer != 13) return; // nao atinge o que nao for da layer Player ou Scenary
 
-        if (other.gameObject.name == "Girl") // caso tenha colidido com o player
+        if (other.gameObject.name == "Girl" || other.gameObject.tag == "Walkable") // caso tenha colidido com o player
         {
             if (other.GetComponent<Animator>().GetBool("Intangible")) return; // nao faz dano e nem som caso o player nao possa ser acertado
             other.transform.GetComponentInParent<GirlScript>().RegisterDamage(damageAmount); // infringe o dano no player

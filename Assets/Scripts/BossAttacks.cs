@@ -48,6 +48,7 @@ public class BossAttacks : MonoBehaviour
     private float distance;
     private float chillDirection;
     private bool phase2;
+    private bool canBeginAI; // da um tempinho antes dele sair atacando pela primeira vez
 
     private void Start()
     {
@@ -59,6 +60,19 @@ public class BossAttacks : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Keypad0)) AI = !AI;
 
+        distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
+        distanceDebug.text = distance.ToString("0.0"); // mostra a distancia no debug
+
+        if(distance < 15 && !anim.GetBool("Equipped")) // pega a GreatSword quando o player chegar
+        {
+            anim.SetTrigger("DrawSword");
+            StartCoroutine(StartAI());
+        }
+
+        if (!anim.GetBool("Equipped")) return; // caso ainda nao tenha pego a GreatSword das costas
+
+        if (!canBeginAI) return; // caso ainda nao possa iniciar a AI
+
         if (AI && !playerAnim.GetBool("Dead"))
         {
             AI_Manager(); // gerencia os movimentos do boss
@@ -69,9 +83,15 @@ public class BossAttacks : MonoBehaviour
 
         greatSword.damageOn = anim.GetBool("Attacking"); // GreatSword causa dano apenas se o boss estiver atacando
 
-        phase2 = anim.GetBool("Phase2");
+        phase2 = anim.GetBool("Phase2"); // coloca numa variavel para encurtar o nome
 
         DebugUI(); // indicadores no canvas
+    }
+
+    IEnumerator StartAI()
+    {
+        yield return new WaitForSeconds(4);
+        canBeginAI = true;
     }
 
     private void DebugUI()
@@ -231,9 +251,6 @@ public class BossAttacks : MonoBehaviour
 
     private void AI_Manager()
     {
-        distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
-        distanceDebug.text = distance.ToString("0.0"); // mostra a distancia no debug
-
         if (action == "Wait") return; // caso ja esteja executando alguma acao, espera
 
         if(action == "Move")
@@ -281,6 +298,11 @@ public class BossAttacks : MonoBehaviour
     private bool IsBossTakingDamage() // retorna se o boss esta tomando dano, para nao executar as magias
     {
         return !anim.GetCurrentAnimatorStateInfo(2).IsName("none");
+    }
+
+    private void DrawGreatSword()
+    {
+
     }
 
     #region Debug

@@ -46,6 +46,8 @@ public class GirlScript : MonoBehaviour
         if (anim.GetBool("Equipped")) moveSpeed = 4;
         else moveSpeed = 5;
 
+        //if (!Input.GetKey(KeyCode.Space)) moveSpeed /= 2; // caso nao esteja correndo, velocidade de movimento eh reduzida pela metade
+
         if (anim.GetBool("Drinking")) moveSpeed = 2;
 
         if (anim.GetBool("Dead") || anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall")) return; // retorna caso o jogador tenha caido ou esteja morto
@@ -80,9 +82,10 @@ public class GirlScript : MonoBehaviour
         if (anim.GetBool("CanMove")) // confere se o jogador pode se mover
         {
             model.position += new Vector3(x * moveSpeed * Time.deltaTime, 0, z * moveSpeed * Time.deltaTime); // move o jogador para frente
-            anim.SetFloat("Speed", Vector3.ClampMagnitude(stickDirection, 1).magnitude, 0.02f, Time.deltaTime); // clamp para limitar a 1, visto que a diagonal seria de 1.4
-            anim.SetFloat("Horizontal", stickDirection.x);
-            anim.SetFloat("Vertical", stickDirection.z);
+            float clampValue = 1; //Input.GetKey(KeyCode.Space) ? 1 : 0.35f; // controla a velocidade de caminhar e correr
+            anim.SetFloat("Speed", Vector3.ClampMagnitude(stickDirection, clampValue).magnitude, 0.02f, Time.deltaTime); // clamp para limitar a 1, visto que a diagonal seria de 1.4
+            anim.SetFloat("Horizontal", stickDirection.x); // lockedCamera
+            anim.SetFloat("Vertical", stickDirection.z); // lockedCamera
             if (anim.GetBool("Drinking") && anim.GetFloat("Speed") > 0.25f) anim.SetFloat("Speed", 0.25f); // desacelera o jogador caso ele esteja bebendo
             if (anim.GetBool("Drinking") && anim.GetFloat("Vertical") > 0.25f) anim.SetFloat("Vertical", 0.25f); // desacelera o jogador caso ele esteja bebendo
         }

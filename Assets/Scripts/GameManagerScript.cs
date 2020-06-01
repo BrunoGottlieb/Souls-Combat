@@ -5,11 +5,24 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public bool music;
+    public AudioSource musicSource;
+    public AudioSource windSource;
+    private Animator bossAnim;
+
+    private bool hasTriggeredMusic = false;
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        bossAnim = GameObject.FindGameObjectWithTag("Boss").GetComponent<Animator>();
+
+        if (!music)
+        {
+            musicSource.Stop();
+            windSource.Stop();
+        }
     }
 
     // Update is called once per frame
@@ -18,6 +31,12 @@ public class GameManagerScript : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        if(bossAnim.GetBool("Equipped") == true && music && !hasTriggeredMusic) // caso o boss pegou a greaSword e ainda nao havia triggado a musica
+        {
+            musicSource.Play();
+            hasTriggeredMusic = true;
         }
     }
 }

@@ -14,7 +14,6 @@ public class Destructible : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        print(other.gameObject.name + " colidiu com " + this.gameObject.name);
         Animator otherAnim = other.transform.root.GetComponentInChildren<Animator>();
         
         if ((otherAnim != null && otherAnim.GetBool("Attacking")) && (other.gameObject.tag == "GreatSword" || other.gameObject.tag == "Sword")) // atingido por espadas
