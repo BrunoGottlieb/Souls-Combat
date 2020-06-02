@@ -26,6 +26,11 @@ public class LifeBarScript : MonoBehaviour
     public GameObject youDiedScreen;
     private ColorGrading colorGradingLayer = null;
 
+    // Bleeding
+    public GameObject bleedingParent;
+    public Image bleedingBar;
+    private float bleeding;
+
     private void Start()
     {
         estusFlaskText.text = estusFlask.ToString();
@@ -50,7 +55,7 @@ public class LifeBarScript : MonoBehaviour
             lifeGhost.rectTransform.sizeDelta = new Vector2(Mathf.Lerp(ghost, life, 5 * Time.deltaTime) * 100, 25);
         }
 
-        if (girlAnim.GetBool("Dead"))
+        if (girlAnim.GetBool("Dead")) // ativa a tela de You Died
         {
             colorGradingLayer.saturation.value = Mathf.Lerp(colorGradingLayer.saturation.value, -100, 1 * Time.deltaTime);
             youDiedScreen.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(youDiedScreen.GetComponent<CanvasGroup>().alpha, 1, 0.5f * Time.deltaTime);
@@ -62,18 +67,22 @@ public class LifeBarScript : MonoBehaviour
         if (amount < 0) // caso esteja decrementando a vida
         {
             lastTime = Time.time;
-        } else
+        } 
+        else // esta aumentado a vida
         {
             estusFlask -= 1; // diminui 1 estus na quantia disponivel
-            estusFlaskText.text = estusFlask.ToString();
+            estusFlaskText.text = estusFlask.ToString(); // atualiza a quantia de estus no icone na tela
+            //canBleed = false; // para o bleeding do player
+            StopAllCoroutines(); // para todos os bleedings
+            bleedingParent.SetActive(false);
         }
 
-        life += amount;
+        life += amount; // realiza a mudanca na vida
 
-        if (life > 10) life = 10;
-        if (life < 0) life = 0;
+        if (life > 10) life = 10; // garante que ela nao seja maior que o permitido
+        if (life < 0) life = 0;// garante que ela nao seja menor que o permitido
 
-        if (life == 0 && !girlAnim.GetBool("Dead"))
+        if (life == 0 && !girlAnim.GetBool("Dead")) // mata o jogador caso ainda nao tenha feito
         {
             Die();
         }
@@ -81,8 +90,34 @@ public class LifeBarScript : MonoBehaviour
         lifeBar.rectTransform.sizeDelta = new Vector2(life * 100, 25); // atualiza o tamanho da barra de vida
     }
 
+    public void StartBleeding() // metodo chamado pelo impacto da fireball
+    {
+        bleeding = 400;
+        bleedingBar.rectTransform.sizeDelta = new Vector2(bleeding, 20);
+        bleedingParent.SetActive(true);
+        StartCoroutine(Burning(10));
+    }
+
+    IEnumerator Burning(int cicles)
+    {
+        yield return new WaitForSeconds(1f);
+        if(cicles > 0)
+        {
+            UpdateLife(-0.2f);
+            bleeding -= 40;
+            bleedingBar.rectTransform.sizeDelta = new Vector2(bleeding, 20);
+            StartCoroutine(Burning(cicles - 1));
+        } else
+        {
+            bleedingParent.SetActive(false);
+        }
+    }
+
     private void Die()
     {
+        girlAnim.SetFloat("Vertical", 0);
+        girlAnim.SetFloat("Horizontal", 0);
+        girlAnim.SetFloat("Speed", 0);
         girlAnim.SetTrigger("DieForward");
         girlAnim.SetBool("Dead", true);
         youDiedScreen.SetActive(true);

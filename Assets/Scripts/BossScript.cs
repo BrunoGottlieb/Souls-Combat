@@ -9,8 +9,10 @@ public class BossScript : MonoBehaviour
 
     private Animator anim;
     public Transform player;
+    public GirlScript girlScript;
 
     public AudioClip takeDamageSound;
+    public BossLifeBarScript bossLifeScript;
 
     private float lastDamageTakenTime = 0;
 
@@ -34,15 +36,26 @@ public class BossScript : MonoBehaviour
            model.transform.LookAt(player.transform.position); // olha para o player caso nao esteja atacando
         }
         */
-        
-        if (!anim.GetBool("Attacking"))
+
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && anim.GetCurrentAnimatorStateInfo(1).IsName("None")) // move as pernas ao rotacionar caso esteja parado
+        {
+            Vector3 rotationOffset = player.transform.position - model.position;
+            rotationOffset.y = 0;
+            float lookDirection = Vector3.SignedAngle(model.forward, rotationOffset, Vector3.up);
+            anim.SetFloat("LookDirection", lookDirection);
+        }
+        else if (!anim.GetBool("Attacking"))
         {
             model.transform.LookAt(player.transform.position); // olha para o player caso nao esteja atacando
         }
 
+        /*if (!anim.GetBool("Attacking"))
+        {
+            model.transform.LookAt(player.transform.position); // olha para o player caso nao esteja atacando
+        }*/
+
         model.transform.eulerAngles = new Vector3(0, model.transform.eulerAngles.y, 0);
         //model.transform.position = new Vector3(model.transform.position.x, 0, model.transform.position.z);
-
     }
 
     private void GreatSwordCollider(bool b) // seta a GreatSword com collider on enquanto estiver atacando
@@ -56,7 +69,8 @@ public class BossScript : MonoBehaviour
         {
             lastDamageTakenTime = Time.time;
             CreateAndPlay(takeDamageSound, 2); // som de dano
-            if(!anim.GetBool("TakingDamage")) // caso ja nao esteja tocando a animacao de dano
+            bossLifeScript.UpdateLife(-girlScript.swordCurrentDamage); // diminui a vida do boss com o dano da espada do player
+            if (!anim.GetBool("TakingDamage")) // caso ja nao esteja tocando a animacao de dano
                 anim.SetTrigger("TakeDamage"); // animacao de dano
         }
     }

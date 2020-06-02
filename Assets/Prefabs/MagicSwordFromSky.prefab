@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e6d8eb95c4a7974d9ff783400110a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallSpeed: 20
+  fallSpeed: 15
   hitGroundSound: {fileID: 8300000, guid: 9a7075e0f34611c4e9b63b8391d760ce, type: 3}
 --- !u!54 &3164931339487502800
 Rigidbody:
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageOn: 1
-  damageAmount: 0.9
+  damageAmount: 0.6
   impactSound: []
 --- !u!1001 &7331409215119038075
 PrefabInstance:

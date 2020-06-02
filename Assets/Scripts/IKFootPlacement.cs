@@ -21,6 +21,7 @@ public class IKFootPlacement : MonoBehaviour
         anim = this.GetComponent<Animator>();
         capsuleCol = this.GetComponent<CapsuleCollider>();
         rb = GetComponentInParent<Rigidbody>();
+        handWeapon.SetActive(false); // espada da mao comeca desativada
     }
 
     public void TakeWeapon()
@@ -83,6 +84,7 @@ public class IKFootPlacement : MonoBehaviour
     {
         //capsuleCol.isTrigger = true;
         //rb.isKinematic = true;
+        anim.SetBool("Intangible", true);
     }
 
     public void RestoreRigidbodyAndCollider()
@@ -90,6 +92,7 @@ public class IKFootPlacement : MonoBehaviour
         capsuleCol.isTrigger = false;
         rb.isKinematic = false;
         //anim.SetBool("CanMove", true);
+        anim.SetBool("Intangible", false);
     }
 
     public void SetAttackingTrue()

@@ -23,6 +23,7 @@ public class BossAttacks : MonoBehaviour
     public GameObject magicSwordFromSky;
     public GameObject spell;
     public GameObject auraMagic;
+    public GameObject[] impactPrefab;
 
     private Animator anim;
 
@@ -34,7 +35,6 @@ public class BossAttacks : MonoBehaviour
     public Text distanceDebug;
     public Text brainDebug;
     public Text damageDebug;
-    public Text actionDebugText;
 
     [Header("Audio")]
     public AudioClip preFireballSound;
@@ -63,7 +63,9 @@ public class BossAttacks : MonoBehaviour
         distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
         distanceDebug.text = distance.ToString("0.0"); // mostra a distancia no debug
 
-        if(distance < 15 && !anim.GetBool("Equipped")) // pega a GreatSword quando o player chegar
+        DebugUI(); // indicadores no canvas
+
+        if (distance < 15 && !anim.GetBool("Equipped")) // pega a GreatSword quando o player chegar
         {
             anim.SetTrigger("DrawSword");
             StartCoroutine(StartAI());
@@ -85,7 +87,6 @@ public class BossAttacks : MonoBehaviour
 
         phase2 = anim.GetBool("Phase2"); // coloca numa variavel para encurtar o nome
 
-        DebugUI(); // indicadores no canvas
     }
 
     IEnumerator StartAI()
@@ -96,11 +97,10 @@ public class BossAttacks : MonoBehaviour
 
     private void DebugUI()
     {
-        bossAttackingDebug.color = anim.GetBool("Attacking") ? Color.green : Color.red;
         damageDebug.text = greatSword.damageAmount.ToString();
-        bossMovingDebug.color = action == "Move" ? Color.green : Color.red;
-        brainIcon.gameObject.active = AI ? true : false; // icone que indica se a AI esta ativada ou nao
-        actionDebugText.text = action;
+        bossAttackingDebug.gameObject.SetActive(anim.GetBool("Attacking"));
+        bossMovingDebug.gameObject.SetActive(action == "Move");
+        brainIcon.gameObject.SetActive(AI); // icone que indica se a AI esta ativada ou nao
     }
 
     private void FarAttack()
@@ -144,7 +144,10 @@ public class BossAttacks : MonoBehaviour
         anim.SetFloat("Vertical", 0);
         anim.SetFloat("Horizontal", 0);
 
-        int rand = Random.Range(0, 9);
+        int rand = 0; 
+
+        if(!anim.GetBool("Phase2")) rand = Random.Range(0, 9);
+        if(anim.GetBool("Phase2")) rand = Random.Range(0, 11);
 
         switch (rand)
         {
@@ -183,6 +186,14 @@ public class BossAttacks : MonoBehaviour
             case 8:
                 anim.SetTrigger("AuraCast");
                 brainDebug.text = "Aura Cast";
+                break;
+            case 9:
+                anim.SetTrigger("Impact");
+                brainDebug.text = "Impact";
+                break;
+            case 10:
+                anim.SetTrigger("Strong");
+                brainDebug.text = "Strong";
                 break;
             default:
                 break;
@@ -300,11 +311,6 @@ public class BossAttacks : MonoBehaviour
         return !anim.GetCurrentAnimatorStateInfo(2).IsName("none");
     }
 
-    private void DrawGreatSword()
-    {
-
-    }
-
     #region Debug
 
     private void DebugAttack()
@@ -321,6 +327,11 @@ public class BossAttacks : MonoBehaviour
             anim.SetTrigger("Spell");
         }
 
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            anim.SetTrigger("Impact");
+        }
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             anim.SetTrigger("SpinAttack");
@@ -329,6 +340,11 @@ public class BossAttacks : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X))
         {
             anim.SetTrigger("Casting");
+        }
+
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            anim.SetTrigger("Strong");
         }
     }
 
@@ -357,7 +373,7 @@ public class BossAttacks : MonoBehaviour
     {
         float x_offset = Random.Range(-1, 1); // range aleatorio
         float z_offset = Random.Range(-1, 1); // range aleatorio
-        GameObject earth = Instantiate(magicSwordFromSky, new Vector3(player.transform.position.x + x_offset, player.transform.position.y + 3, player.transform.position.z + z_offset), Quaternion.identity);
+        GameObject earth = Instantiate(magicSwordFromSky, new Vector3(player.transform.position.x + x_offset, player.transform.position.y + 5, player.transform.position.z + z_offset), Quaternion.identity);
         yield return new WaitForSeconds(0.2f);
         if (counter > 0) // continua spawnando espadas enquanto nao tiver spawnado todas as solicitadas
             StartCoroutine(DropSwordsFromSky(counter - 1));
@@ -381,6 +397,14 @@ public class BossAttacks : MonoBehaviour
             Vector3 relativePos = player.position - spellPosition.position;
             Instantiate(spell, spellPosition.position, Quaternion.LookRotation(relativePos, Vector3.up));
         }
+    }
+
+    public void Impact() // Metodo chamado pela animacao de impact attack
+    {
+        GameObject impactObj = Instantiate(impactPrefab[0], greatSword.transform.position, Quaternion.identity);
+        GameObject impactObj1 = Instantiate(impactPrefab[1], greatSword.transform.position, Quaternion.identity);
+        Destroy(impactObj, 1.5f);
+        Destroy(impactObj1, 1.5f);
     }
 
     #endregion

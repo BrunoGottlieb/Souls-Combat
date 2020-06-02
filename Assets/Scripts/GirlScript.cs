@@ -29,6 +29,8 @@ public class GirlScript : MonoBehaviour
 
     [HideInInspector]
     public bool insideAuraMagic = false;
+    [HideInInspector]
+    public float swordCurrentDamage; // dano deste ataque da sword, setado pelo script nas animacoes
 
     void Start()
     {
@@ -50,7 +52,7 @@ public class GirlScript : MonoBehaviour
 
         if (anim.GetBool("Drinking")) moveSpeed = 2;
 
-        if (anim.GetBool("Dead") || anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall")) return; // retorna caso o jogador tenha caido ou esteja morto
+        if (anim.GetBool("Dead") || anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall") || anim.GetCurrentAnimatorStateInfo(2).IsName("Getting Thrown")) return; // retorna caso o jogador tenha caido ou esteja morto
 
         if (insideAuraMagic) // caso esteja dentro da aura magica
         {
@@ -227,9 +229,15 @@ public class GirlScript : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        if (other.transform.root.name.Contains("Earth") && !anim.GetBool("Intangible"))
+        if(other.gameObject.name.Contains("Shock") && !anim.GetBool("Intangible"))
         {
             RegisterDamage(4);
+            return;
+        }
+
+        if (other.transform.root.name.Contains("Earth") && !anim.GetBool("Intangible"))
+        {
+            RegisterDamage(4.2f);
             return;
         }
     }
@@ -240,9 +248,9 @@ public class GirlScript : MonoBehaviour
             insideAuraMagic = true;
     }
 
-    private bool DamageInterval() // garante que tenha meio segundo entre um dano e outro
+    private bool DamageInterval() // garante que tenha um tempo entre um dano e outro
     {
-        return (Time.time > lastDamageTakenTime + 0.5f);
+        return (Time.time > lastDamageTakenTime + 0.25f);
     }
 
     public void RegisterDamage(float damageAmount)
@@ -264,8 +272,6 @@ public class GirlScript : MonoBehaviour
         {
             Vector3 dir = (boss.transform.position - model.transform.position).normalized; // direcao para o boss
             float dot = Vector3.Dot(dir, model.transform.forward);
-
-            print("dot: " + dot.ToString());
 
             if(dot >= 0) // estava olhando para o boss, cai de costas
                 anim.SetTrigger("FallDamage");

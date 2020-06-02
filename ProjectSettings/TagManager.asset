@@ -11,6 +11,7 @@ TagManager:
   - Sword
   - Magic
   - Boss
+  - SoundManager
   layers:
   - Default
   - TransparentFX
