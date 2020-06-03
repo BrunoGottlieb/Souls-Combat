@@ -6,6 +6,7 @@ public class Destructible : MonoBehaviour
 {
     public GameObject destroyedObj;
     public AudioClip destructionSound;
+    public GameObject spark;
 
     private void Start()
     {
@@ -41,6 +42,7 @@ public class Destructible : MonoBehaviour
 
     private void Destroy()
     {
+        Instantiate(spark, this.transform.position, Quaternion.identity);
         PlayDestructionSound();
         Vector3 scale = this.transform.localScale;
         Instantiate(destroyedObj, transform.position, transform.rotation, transform.parent);

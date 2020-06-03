@@ -17,7 +17,7 @@ public class BossAttacks : MonoBehaviour
     public Transform spellPosition; // mao esquerda, posicao da spell
     private Animator playerAnim; // referencia ao animator do player, pega no start
     public DamageDealer greatSword; // script que controla o dano da GreatSword
-    //public CameraShaker shaker; // script na camera que treme a tela
+    public CameraShaker shaker; // script na camera que treme a tela
 
     [Header("Attacks")]
     public GameObject earthShatterPrefab;
@@ -271,8 +271,6 @@ public class BossAttacks : MonoBehaviour
     {
         if (action == "Wait" || anim.GetBool("Dead") || anim.GetBool("Transposing")) return; // caso ja esteja executando alguma acao, espera
 
-        print("AI Manager");
-
         if (action == "Move")
         {
             MoveToPlayer(); // move-se ate o player
@@ -371,6 +369,8 @@ public class BossAttacks : MonoBehaviour
         GameObject earthShatter = Instantiate(earthShatterPrefab, spawnPos, Quaternion.identity);
         earthShatter.transform.rotation = bossRotation;
         Destroy(earthShatter, 4);
+
+        shaker.ShakeCamera(1.5f);
     }
 
     public void SwordsFromSkyAttack() // metodo chamado pela animacao

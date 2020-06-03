@@ -33,6 +33,8 @@ public class GirlScript : MonoBehaviour
     [HideInInspector]
     public float swordCurrentDamage; // dano deste ataque da sword, setado pelo script nas animacoes
 
+    public CameraShaker shaker;
+
     void Start()
     {
         anim = model.GetComponent<Animator>();
@@ -267,6 +269,7 @@ public class GirlScript : MonoBehaviour
         anim.SetBool("CanMove", false);
         lifeBarScript.UpdateLife(-damageAmount); // diminui a quantia de dano na vida
         DamageAnimation(damageAmount);
+        shaker.ShakeCamera(0.3f);
     }
 
     private void DamageAnimation(float damageAmount)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RockSpikeScript : MonoBehaviour
 {
-    public float colliderLife = 0.25f;
+    public float colliderLife = 1f;
     private ParticleSystem ps;
 
     private void OnEnable()

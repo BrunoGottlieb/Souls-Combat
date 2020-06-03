@@ -12213,6 +12213,7 @@ GameObject:
   - component: {fileID: 65989466}
   - component: {fileID: 65989465}
   - component: {fileID: 65989464}
+  - component: {fileID: 65989467}
   m_Layer: 16
   m_Name: cm
   m_TagString: Untagged
@@ -12327,6 +12328,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &65989467
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 65989462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 2
+  m_FrequencyGain: 2
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &91800039 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1029525424331349451, guid: 2533b27ae58f88b48bcd5cdb2d9e14c3,
@@ -12687,6 +12705,7 @@ MonoBehaviour:
   leftFootCollider: {fileID: 338196103}
   spellPosition: {fileID: 1148580554}
   greatSword: {fileID: 1668633709}
+  shaker: {fileID: 302424383}
   earthShatterPrefab: {fileID: 1314945738539566, guid: 32c9fd11a72259d45aa26ae41c34c5aa,
     type: 3}
   magicSwordFromSky: {fileID: 7331409214266133120, guid: 33b44d6e09f7666489440c04933236ed,
@@ -12939,6 +12958,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 637036848}
     m_Modifications:
+    - target: {fileID: 1500829778, guid: 3a0a274174219a1448d517634533bc61, type: 3}
+      propertyPath: spark
+      value: 
+      objectReference: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
+        type: 3}
     - target: {fileID: 1500829779, guid: 3a0a274174219a1448d517634533bc61, type: 3}
       propertyPath: m_IsTrigger
       value: 0
@@ -22726,6 +22750,7 @@ GameObject:
   - component: {fileID: 302424380}
   - component: {fileID: 302424381}
   - component: {fileID: 302424382}
+  - component: {fileID: 302424383}
   m_Layer: 16
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -22911,6 +22936,19 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
+--- !u!114 &302424383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302424376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd00f17501315e344a463f1c27315517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  freeLookCam: {fileID: 887284371}
 --- !u!1 &306348297
 GameObject:
   m_ObjectHideFlags: 0
@@ -28360,6 +28398,12 @@ PrefabInstance:
       propertyPath: destructionSound
       value: 
       objectReference: {fileID: 8300000, guid: e83f7483bc3d10e4d930bf71a3b24fc5, type: 3}
+    - target: {fileID: 7485958628423057581, guid: ed0f0b2cfbc5478428e71f29854f6bf4,
+        type: 3}
+      propertyPath: spark
+      value: 
+      objectReference: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed0f0b2cfbc5478428e71f29854f6bf4, type: 3}
 --- !u!1 &397391903
@@ -54622,6 +54666,7 @@ GameObject:
   - component: {fileID: 547903093}
   - component: {fileID: 547903092}
   - component: {fileID: 547903091}
+  - component: {fileID: 547903094}
   m_Layer: 16
   m_Name: cm
   m_TagString: Untagged
@@ -54736,6 +54781,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &547903094
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 547903089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &564918288
 GameObject:
   m_ObjectHideFlags: 0
@@ -60405,7 +60467,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728827580}
-  m_LocalRotation: {x: 0.6202246, y: 0.26928446, z: -0.5973448, w: 0.4312617}
+  m_LocalRotation: {x: 0.62022454, y: 0.26928443, z: -0.5973448, w: 0.43126163}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -70768,7 +70830,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 845772706}
-  m_LocalRotation: {x: 0.6846689, y: 0.17733115, z: -0.5765373, w: 0.40912956}
+  m_LocalRotation: {x: 0.6846689, y: 0.17733115, z: -0.5765373, w: 0.40912953}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -71370,8 +71432,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
   m_PivotOffset: {x: 0, y: 0, z: 0}
-  m_AmplitudeGain: 0
-  m_FrequencyGain: 0
+  m_AmplitudeGain: 2
+  m_FrequencyGain: 2
   mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &895974938
 GameObject:
@@ -84861,6 +84923,7 @@ MonoBehaviour:
   swordDamageSound: {fileID: 8300000, guid: 055e9bcf41fd0be4e88d16931c5f9e1f, type: 3}
   insideAuraMagic: 0
   swordCurrentDamage: 0
+  shaker: {fileID: 302424383}
 --- !u!54 &1212045095
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -84968,6 +85031,7 @@ GameObject:
   - component: {fileID: 1235654429}
   - component: {fileID: 1235654428}
   - component: {fileID: 1235654427}
+  - component: {fileID: 1235654430}
   m_Layer: 16
   m_Name: cm
   m_TagString: Untagged
@@ -85082,6 +85146,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1235654430
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235654425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 2
+  m_FrequencyGain: 2
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1238454600
 GameObject:
   m_ObjectHideFlags: 0
@@ -85632,6 +85713,7 @@ GameObject:
   - component: {fileID: 1366227794}
   - component: {fileID: 1366227793}
   - component: {fileID: 1366227792}
+  - component: {fileID: 1366227795}
   m_Layer: 16
   m_Name: cm
   m_TagString: Untagged
@@ -85746,6 +85828,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1366227795
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366227790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1412181294
 GameObject:
   m_ObjectHideFlags: 0
@@ -90936,6 +91035,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 637036848}
     m_Modifications:
+    - target: {fileID: 1500829778, guid: 3a0a274174219a1448d517634533bc61, type: 3}
+      propertyPath: spark
+      value: 
+      objectReference: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
+        type: 3}
     - target: {fileID: 1500829780, guid: 3a0a274174219a1448d517634533bc61, type: 3}
       propertyPath: m_Mass
       value: 10
@@ -91395,6 +91499,12 @@ PrefabInstance:
       propertyPath: destructionSound
       value: 
       objectReference: {fileID: 8300000, guid: e83f7483bc3d10e4d930bf71a3b24fc5, type: 3}
+    - target: {fileID: 7485958628423057581, guid: ed0f0b2cfbc5478428e71f29854f6bf4,
+        type: 3}
+      propertyPath: spark
+      value: 
+      objectReference: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed0f0b2cfbc5478428e71f29854f6bf4, type: 3}
 --- !u!4 &1612174277 stripped
@@ -91497,7 +91607,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossAnim: {fileID: 132738819}
-  dustExplosionPrefab: {fileID: 1000012142692022, guid: a475880e7da0e9548aa05cb7933752cd,
+  dustExplosionPrefab: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
     type: 3}
 --- !u!114 &1668633709
 MonoBehaviour:
@@ -106200,6 +106310,12 @@ PrefabInstance:
       propertyPath: destructionSound
       value: 
       objectReference: {fileID: 8300000, guid: e83f7483bc3d10e4d930bf71a3b24fc5, type: 3}
+    - target: {fileID: 7485958628423057581, guid: ed0f0b2cfbc5478428e71f29854f6bf4,
+        type: 3}
+      propertyPath: spark
+      value: 
+      objectReference: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed0f0b2cfbc5478428e71f29854f6bf4, type: 3}
 --- !u!1 &1815722647
@@ -116624,6 +116740,7 @@ GameObject:
   - component: {fileID: 1974079136}
   - component: {fileID: 1974079135}
   - component: {fileID: 1974079134}
+  - component: {fileID: 1974079137}
   m_Layer: 16
   m_Name: cm
   m_TagString: Untagged
@@ -116738,6 +116855,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1974079137
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974079132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  m_PivotOffset: {x: 0, y: 0, z: 0}
+  m_AmplitudeGain: 1
+  m_FrequencyGain: 1
+  mNoiseOffsets: {x: 0, y: 0, z: 0}
 --- !u!1 &1975397171
 GameObject:
   m_ObjectHideFlags: 0
@@ -127159,6 +127293,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 637036848}
     m_Modifications:
+    - target: {fileID: 1500829778, guid: 3a0a274174219a1448d517634533bc61, type: 3}
+      propertyPath: spark
+      value: 
+      objectReference: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
+        type: 3}
     - target: {fileID: 1500829780, guid: 3a0a274174219a1448d517634533bc61, type: 3}
       propertyPath: m_Mass
       value: 10
@@ -127548,6 +127687,12 @@ PrefabInstance:
       propertyPath: destructionSound
       value: 
       objectReference: {fileID: 8300000, guid: e83f7483bc3d10e4d930bf71a3b24fc5, type: 3}
+    - target: {fileID: 7485958628423057581, guid: ed0f0b2cfbc5478428e71f29854f6bf4,
+        type: 3}
+      propertyPath: spark
+      value: 
+      objectReference: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed0f0b2cfbc5478428e71f29854f6bf4, type: 3}
 --- !u!1 &8296172667391223644 stripped

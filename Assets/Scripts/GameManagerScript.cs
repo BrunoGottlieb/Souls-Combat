@@ -32,11 +32,11 @@ public class GameManagerScript : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-
-        if(bossAnim.GetBool("Equipped") == true && music && !hasTriggeredMusic) // caso o boss pegou a greaSword e ainda nao havia triggado a musica
-        {
-            musicSource.Play();
-            hasTriggeredMusic = true;
-        }
     }
+
+    public void BeginMusic()
+    {
+        if(music) musicSource.Play();
+    }
+
 }
