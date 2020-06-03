@@ -92,6 +92,7 @@ public class LifeBarScript : MonoBehaviour
 
     public void StartBleeding() // metodo chamado pelo impacto da fireball
     {
+        if (IsDead()) return; // nao comeca a sangrar caso o player ja esteja morto
         bleeding = 400;
         bleedingBar.rectTransform.sizeDelta = new Vector2(bleeding, 20);
         bleedingParent.SetActive(true);
@@ -115,13 +116,19 @@ public class LifeBarScript : MonoBehaviour
 
     private void Die()
     {
-        girlAnim.SetFloat("Vertical", 0);
+        girlAnim.SetFloat("Vertical", 0); // para qualquer movimento do player
         girlAnim.SetFloat("Horizontal", 0);
         girlAnim.SetFloat("Speed", 0);
-        girlAnim.SetTrigger("DieForward");
-        girlAnim.SetBool("Dead", true);
-        youDiedScreen.SetActive(true);
+        girlAnim.SetTrigger("DieForward"); // animacao de morte
+        girlAnim.SetBool("Dead", true); // seta o estado como morto
+        youDiedScreen.SetActive(true); // ativa a tela final
         girlAnim.gameObject.GetComponent<IKFootPlacement>().SetIntangibleOn();
+        bleedingParent.SetActive(false); // tira o bleeding para ele não ficar na frente da escrita
+    }
+
+    public bool IsDead()
+    {
+        return girlAnim.GetBool("Dead");
     }
 
 }

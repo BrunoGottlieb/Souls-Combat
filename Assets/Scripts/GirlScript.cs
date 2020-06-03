@@ -48,8 +48,6 @@ public class GirlScript : MonoBehaviour
         if (anim.GetBool("Equipped")) moveSpeed = 4;
         else moveSpeed = 5;
 
-        //if (!Input.GetKey(KeyCode.Space)) moveSpeed /= 2; // caso nao esteja correndo, velocidade de movimento eh reduzida pela metade
-
         if (anim.GetBool("Drinking")) moveSpeed = 2;
 
         if (anim.GetBool("Dead") || anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall") || anim.GetCurrentAnimatorStateInfo(2).IsName("Getting Thrown")) return; // retorna caso o jogador tenha caido ou esteja morto
@@ -60,11 +58,6 @@ public class GirlScript : MonoBehaviour
             anim.SetFloat("Horizontal", 0);
             anim.SetFloat("Vertical", 0);
             return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            anim.SetTrigger("FallForward");
         }
 
         Move();
@@ -81,7 +74,7 @@ public class GirlScript : MonoBehaviour
         if (x > 1) x = 1; // assegura que o jogador nao ira se mover mais rapido em diagonal
         if (z > 1) z = 1;
 
-        if (anim.GetBool("CanMove")) // confere se o jogador pode se mover
+        if (anim.GetBool("CanMove"))
         {
             model.position += new Vector3(x * moveSpeed * Time.deltaTime, 0, z * moveSpeed * Time.deltaTime); // move o jogador para frente
             float clampValue = 1; //Input.GetKey(KeyCode.Space) ? 1 : 0.35f; // controla a velocidade de caminhar e correr
@@ -91,6 +84,7 @@ public class GirlScript : MonoBehaviour
             if (anim.GetBool("Drinking") && anim.GetFloat("Speed") > 0.25f) anim.SetFloat("Speed", 0.25f); // desacelera o jogador caso ele esteja bebendo
             if (anim.GetBool("Drinking") && anim.GetFloat("Vertical") > 0.25f) anim.SetFloat("Vertical", 0.25f); // desacelera o jogador caso ele esteja bebendo
         }
+        
     }
 
     private void DodgeController()
@@ -147,7 +141,7 @@ public class GirlScript : MonoBehaviour
 
     private void Rotation()
     {
-        if (anim.GetBool("Attacking") || !anim.GetBool("CanMove")) return; // caso nao possa se mover, retorna
+        if (anim.GetBool("Attacking")) return; // caso nao possa se mover, retorna
 
         if (!anim.GetBool("LockedCamera")) // camera livre
         {
@@ -220,6 +214,11 @@ public class GirlScript : MonoBehaviour
         {
             anim.SetTrigger("Dodge");
         }
+    }
+
+    private bool CanMove()
+    {
+        return anim.GetCurrentAnimatorStateInfo(2).IsName("None");
     }
 
     private bool CanDodge() // Verifica se o player pode rolar

@@ -8,7 +8,7 @@ public class GirlSoundsScript : MonoBehaviour
     public AudioClip swordAttack; // ataque principal
     public AudioClip secondHit; // segundo ataque do combo do botao esquerdo do mouse
     public AudioClip thirdHit; // terceiro ataque do combo do botao esquerdo do mouse
-
+    public AudioClip killed; // som tocado no comeco da animacao de morte
     public AudioClip dogeRoll; // som de rolar
     public AudioClip standingUp; // som de se levantar do chao
     public AudioClip fallOnGround; // caindo no chao
@@ -72,6 +72,11 @@ public class GirlSoundsScript : MonoBehaviour
     public void ReachWeapon()
     {
         CreateAndPlay(reachWeapon, 1);
+    }
+
+    public void PlayKilled()
+    {
+        CreateAndPlay(killed, 2, 1);
     }
 
     private void CreateAndPlay(AudioClip clip, float destructionTime, float volume = 1f)

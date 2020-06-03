@@ -144,7 +144,7 @@ public class BossAttacks : MonoBehaviour
         anim.SetFloat("Vertical", 0);
         anim.SetFloat("Horizontal", 0);
 
-        int rand = 0; 
+        int rand = 0;
 
         if(!anim.GetBool("Phase2")) rand = Random.Range(0, 9);
         if(anim.GetBool("Phase2")) rand = Random.Range(0, 11);
@@ -262,7 +262,7 @@ public class BossAttacks : MonoBehaviour
 
     private void AI_Manager()
     {
-        if (action == "Wait") return; // caso ja esteja executando alguma acao, espera
+        if (action == "Wait" || anim.GetBool("Dead")) return; // caso ja esteja executando alguma acao, espera
 
         if(action == "Move")
         {

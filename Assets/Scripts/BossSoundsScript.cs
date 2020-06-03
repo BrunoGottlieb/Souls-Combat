@@ -8,8 +8,10 @@ public class BossSoundsScript : MonoBehaviour
     public AudioClip fastSwing;
     public AudioClip longSwordSwing;
     public AudioClip reachGreatSword;
+    public AudioClip killed;
     public AudioClip[] takeDamage;
     public AudioClip[] footStep;
+    public AudioClip[] greatSwordHit;
     public AudioSource footSoundSource;
     public BossLifeBarScript bossLifeBar;
 
@@ -31,12 +33,17 @@ public class BossSoundsScript : MonoBehaviour
     public void PlayReachGreatSword()
     {
         CreateAndPlay(reachGreatSword, 2, 1, 20);
-        bossLifeBar.fillBossLifeBar = true;
+        bossLifeBar.FillBossLifeBar();
     }
 
     public void PlayTakeDamage()
     {
         CreateAndPlay(takeDamage[Random.Range(0, takeDamage.Length)], 2);
+    }
+
+    public void PlayKilled()
+    {
+        CreateAndPlay(killed, 2, 1, 20);
     }
 
     public void PlayFootStep()
@@ -45,6 +52,11 @@ public class BossSoundsScript : MonoBehaviour
         if(!footSoundSource.isPlaying)
             footSoundSource.Play();
         //CreateAndPlay(footStep[Random.Range(0, footStep.Length)], 1, 0.5f);
+    }
+
+    public void PlayGreatSwordHit()
+    {
+        CreateAndPlay(greatSwordHit[Random.Range(0, greatSwordHit.Length)], 1.5f, 1, 10);
     }
 
     private void CreateAndPlay(AudioClip clip, float destructionTime, float volume = 1f, float minDistance = 15f)
