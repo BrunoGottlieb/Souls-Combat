@@ -65,7 +65,7 @@ public class BossScript : MonoBehaviour
             //bossLifeScript.UpdateLife(-girlScript.swordCurrentDamage); // diminui a vida do boss com o dano da espada do player
             StopAllCoroutines(); // reinicia o timer de 2seg do texto
             StartCoroutine(ShowHitCounter()); // exibe informacao sobre o dano
-            if (!anim.GetBool("TakingDamage")) // caso ja nao esteja tocando a animacao de dano
+            if (!anim.GetBool("TakingDamage") && !anim.GetBool("Attacking")) // caso ja nao esteja tocando a animacao de dano
                 anim.SetTrigger("TakeDamage"); // animacao de dano
         }
     }

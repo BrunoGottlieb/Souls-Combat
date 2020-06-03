@@ -12,6 +12,7 @@ public class GirlScript : MonoBehaviour
     public GameObject estusFlask;
     public GameObject healEffect;
     public Transform boss;
+    public Animator bossAnim;
 
     private float moveSpeed = 4;
     private Animator anim;
@@ -45,10 +46,10 @@ public class GirlScript : MonoBehaviour
     {
         stickDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-        if (anim.GetBool("Equipped")) moveSpeed = 4;
-        else moveSpeed = 5;
+        if (anim.GetBool("Equipped")) moveSpeed = 4; // velocidade com a espada
+        else moveSpeed = 5; // velocidade sem a espada
 
-        if (anim.GetBool("Drinking")) moveSpeed = 2;
+        if (anim.GetBool("Drinking")) moveSpeed = 2; // velocidade bebendo estus
 
         if (anim.GetBool("Dead") || anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall") || anim.GetCurrentAnimatorStateInfo(2).IsName("Getting Thrown")) return; // retorna caso o jogador tenha caido ou esteja morto
 
@@ -87,52 +88,52 @@ public class GirlScript : MonoBehaviour
         
     }
 
-    private void DodgeController()
+    private void DodgeController() // Dodge da locked camera
     {
         Vector3 relativeForward = mainCamera.transform.TransformDirection(Vector3.forward);
         Vector3 relativeRight = mainCamera.transform.TransformDirection(Vector3.right);
         Vector3 relativeLeft = mainCamera.transform.TransformDirection(-Vector3.right);
-        Vector3 relativeBack = mainCamera.transform.TransformDirection(-Vector3.forward);
+        Vector3 relativeBack = mainCamera.transform.TransformDirection(-Vector3.forward) * 5;
 
         relativeForward.y = 0;
         relativeRight.y = 0;
         relativeLeft.y = 0;
         relativeBack.y = 0;
 
-        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space) && CanDodge())
+        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = (relativeForward + relativeRight).normalized;
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space) && CanDodge())
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = (relativeBack + relativeRight).normalized;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space) && CanDodge())
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = (relativeBack + relativeLeft).normalized;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space) && CanDodge())
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = (relativeForward + relativeLeft).normalized;
         }
 
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.Space) && CanDodge())
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = relativeRight;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.Space) && CanDodge())
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = relativeLeft;
         }
-        else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space) && CanDodge())
+        else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = relativeForward;
         }
-        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space) && CanDodge())
+        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = relativeBack;
         }
-        else 
+        else if(!anim.GetBool("Dodging"))
         {
             forwardLocked = targetLock.position - model.position;
             forwardLocked.y = 0;
@@ -154,8 +155,8 @@ public class GirlScript : MonoBehaviour
             //Vector3 rotationOffset = targetLock.position - model.position;
             //rotationOffset.y = 0;
 
-            model.forward += Vector3.Lerp(model.forward, forwardLocked, Time.deltaTime * 30f);
             DodgeController(); // vira instantaneamente para o lado do dodge
+            model.forward += Vector3.Lerp(model.forward, forwardLocked, Time.deltaTime * 20f);
         }
 
     }
@@ -196,7 +197,7 @@ public class GirlScript : MonoBehaviour
     IEnumerator DrinkEstus()
     {
         yield return new WaitForSeconds(1f);
-        if (anim.GetCurrentAnimatorStateInfo(2).IsName("None") && lifeBarScript.estusFlask > 0) // confere se o jogador nao esta tomando dano
+        if (/*anim.GetCurrentAnimatorStateInfo(2).IsName("None") &&*/ lifeBarScript.estusFlask > 0) // confere se o jogador ainda tem estus flask
         {
             lifeBarScript.UpdateLife(3);
             Instantiate(healEffect, model.position, Quaternion.identity, model.transform);
@@ -208,7 +209,7 @@ public class GirlScript : MonoBehaviour
 
     private void Dodge()
     {
-        Vector3 diff = model.transform.eulerAngles - mainCamera.transform.eulerAngles;
+        //Vector3 diff = model.transform.eulerAngles - mainCamera.transform.eulerAngles;
 
         if (Input.GetKeyDown(KeyCode.Space) && CanDodge()) // rola caso nao esteja atacando e nem bebendo estus
         {
@@ -254,8 +255,11 @@ public class GirlScript : MonoBehaviour
 
     public void RegisterDamage(float damageAmount)
     {
-        if (damageAmount == 0 || anim.GetBool("Intangible") || !DamageInterval()) return; // retorna caso nao esteja apto a causar dano
+        if (damageAmount == 0 || anim.GetBool("Intangible") || !DamageInterval() || bossAnim.GetBool("Dead")) return; // retorna caso nao esteja apto a causar dano no player
 
+        anim.SetFloat("Speed", 0);
+        anim.SetFloat("Vertical", 0);
+        anim.SetFloat("Horizontal", 0);
         lastDamageTakenTime = Time.time; // atualiza o tempo do ultimo dano tomado
         capsuleCol.isTrigger = true;
         rb.isKinematic = true;

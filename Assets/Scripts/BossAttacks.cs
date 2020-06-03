@@ -17,6 +17,7 @@ public class BossAttacks : MonoBehaviour
     public Transform spellPosition; // mao esquerda, posicao da spell
     private Animator playerAnim; // referencia ao animator do player, pega no start
     public DamageDealer greatSword; // script que controla o dano da GreatSword
+    //public CameraShaker shaker; // script na camera que treme a tela
 
     [Header("Attacks")]
     public GameObject earthShatterPrefab;
@@ -49,6 +50,7 @@ public class BossAttacks : MonoBehaviour
     private float chillDirection;
     private bool phase2;
     private bool canBeginAI; // da um tempinho antes dele sair atacando pela primeira vez
+    //private int lastFarAttack; // guarda o ultimo ataque executado, para garantir que nao serao as espadas de novo
 
     private void Start()
     {
@@ -58,6 +60,11 @@ public class BossAttacks : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            //shaker.ShakeCamera(1, 1);
+        }
+
         if (Input.GetKeyDown(KeyCode.Keypad0)) AI = !AI;
 
         distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
@@ -262,9 +269,11 @@ public class BossAttacks : MonoBehaviour
 
     private void AI_Manager()
     {
-        if (action == "Wait" || anim.GetBool("Dead")) return; // caso ja esteja executando alguma acao, espera
+        if (action == "Wait" || anim.GetBool("Dead") || anim.GetBool("Transposing")) return; // caso ja esteja executando alguma acao, espera
 
-        if(action == "Move")
+        print("AI Manager");
+
+        if (action == "Move")
         {
             MoveToPlayer(); // move-se ate o player
         }
@@ -350,7 +359,7 @@ public class BossAttacks : MonoBehaviour
 
     #endregion
 
-    #region Magias
+    #region Magics
     public void SpawnEarthShatter() // metodo chamado pela animacao
     {
         Vector3 bossPos = model.transform.position;
@@ -373,8 +382,8 @@ public class BossAttacks : MonoBehaviour
     {
         float x_offset = Random.Range(-1, 1); // range aleatorio
         float z_offset = Random.Range(-1, 1); // range aleatorio
-        GameObject earth = Instantiate(magicSwordFromSky, new Vector3(player.transform.position.x + x_offset, player.transform.position.y + 5, player.transform.position.z + z_offset), Quaternion.identity);
-        yield return new WaitForSeconds(0.2f);
+        GameObject earth = Instantiate(magicSwordFromSky, new Vector3(player.transform.position.x + x_offset, player.transform.position.y + 6, player.transform.position.z + z_offset), Quaternion.identity);
+        yield return new WaitForSeconds(0.25f);
         if (counter > 0) // continua spawnando espadas enquanto nao tiver spawnado todas as solicitadas
             StartCoroutine(DropSwordsFromSky(counter - 1));
     }

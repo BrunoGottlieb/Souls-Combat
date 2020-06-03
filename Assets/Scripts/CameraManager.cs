@@ -3,7 +3,6 @@ using UnityEngine;
 [RequireComponent(typeof(CinemachineFreeLook))]
 public class CameraManager : MonoBehaviour
 {
-
     private CinemachineFreeLook freeLookCam;
     // Use this for initialization
     void Start()

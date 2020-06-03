@@ -23446,6 +23446,7 @@ GameObject:
   - component: {fileID: 4847842177874722}
   - component: {fileID: 198770071860600260}
   - component: {fileID: 199200675544817314}
+  - component: {fileID: 7473163338057761492}
   m_Layer: 0
   m_Name: RockSpike
   m_TagString: Untagged
@@ -27069,7 +27070,7 @@ ParticleSystem:
     m_EnergyLossOnCollision:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.5
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -27119,8 +27120,8 @@ ParticleSystem:
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
-    minKillSpeed: 0
-    maxKillSpeed: 10000
+    minKillSpeed: 1
+    maxKillSpeed: 10
     radiusScale: 0.4
     collidesWith:
       serializedVersion: 2
@@ -28151,6 +28152,19 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &7473163338057761492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820009973093294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de44d4d6f84cfe14db66f30708382951, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliderLife: 0.25
 --- !u!1 &1874298289322158
 GameObject:
   m_ObjectHideFlags: 0

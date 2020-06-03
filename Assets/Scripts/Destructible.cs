@@ -44,7 +44,7 @@ public class Destructible : MonoBehaviour
         PlayDestructionSound();
         Vector3 scale = this.transform.localScale;
         Instantiate(destroyedObj, transform.position, transform.rotation, transform.parent);
-        destroyedObj.transform.localScale = Vector3.one;
+        destroyedObj.transform.localScale = scale;
         Destroy(this.gameObject);
     }
 
