@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class Destructible : MonoBehaviour
 {
-    public GameObject destroyedObj;
+    public GameObject destroyedObj; 
     public AudioClip destructionSound;
     public GameObject spark;
+    public GameManagerScript gameManager;
 
     private void Start()
     {
-        //playerAnim = GameObject.FindGameObjectWithTag("Player").GetComponent<Animator>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -46,6 +47,8 @@ public class Destructible : MonoBehaviour
         PlayDestructionSound();
         Vector3 scale = this.transform.localScale;
         Instantiate(destroyedObj, transform.position, transform.rotation, transform.parent);
+        Renderer[] rend = destroyedObj.GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in rend) r.material = gameManager.objectsMaterial;
         destroyedObj.transform.localScale = scale;
         Destroy(this.gameObject);
     }

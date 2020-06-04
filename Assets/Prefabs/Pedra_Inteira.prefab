@@ -78,6 +78,7 @@ MonoBehaviour:
   destroyedObj: {fileID: 3868930159166837124, guid: f5524cc3e27dafd40a3cbdf803c22ebe,
     type: 3}
   destructionSound: {fileID: 8300000, guid: e83f7483bc3d10e4d930bf71a3b24fc5, type: 3}
+  spark: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e, type: 3}
 --- !u!1001 &128930744415472180
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -159,8 +160,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: -3033667219593020291, guid: aa6293f3ab8a2e640a2623a595018b6b,
-        type: 3}
+      objectReference: {fileID: 2100000, guid: 0fe09d884d05833478278bfad09bb050, type: 2}
     - target: {fileID: -927199367670048503, guid: ef5bc7d353b09e74a94f85c266ed9b49,
         type: 3}
       propertyPath: m_Name

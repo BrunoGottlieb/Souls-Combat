@@ -12,6 +12,7 @@ TagManager:
   - Magic
   - Boss
   - SoundManager
+  - GameManager
   layers:
   - Default
   - TransparentFX
