@@ -53,7 +53,7 @@ public class GirlScript : MonoBehaviour
 
         if (anim.GetBool("Drinking")) moveSpeed = 2; // velocidade bebendo estus
 
-        if (anim.GetBool("Dead") || anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall") || anim.GetCurrentAnimatorStateInfo(2).IsName("Getting Thrown")) return; // retorna caso o jogador tenha caido ou esteja morto
+        //if (anim.GetBool("Dead") || anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall") || anim.GetCurrentAnimatorStateInfo(2).IsName("Getting Thrown")) return; // retorna caso o jogador tenha caido ou esteja morto
 
         if (insideAuraMagic) // caso esteja dentro da aura magica
         {
@@ -62,6 +62,8 @@ public class GirlScript : MonoBehaviour
             anim.SetFloat("Vertical", 0);
             return;
         }
+
+        if (!anim.GetCurrentAnimatorStateInfo(2).IsName("None")) return; // retorna caso esteja tomando dano ou esteja morto
 
         Move();
         Rotation();

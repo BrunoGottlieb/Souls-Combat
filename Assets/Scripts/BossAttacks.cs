@@ -416,6 +416,11 @@ public class BossAttacks : MonoBehaviour
         Destroy(impactObj1, 1.5f);
     }
 
+    public void LightGreatSwordUp()
+    {
+        greatSword.gameObject.GetComponent<GreatSwordScript>().EnableGreatSwordFire(); // ativa o fogo da GreatSword
+    }
+
     #endregion
 
     #region Kick

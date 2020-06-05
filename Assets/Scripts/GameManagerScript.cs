@@ -82,10 +82,11 @@ public class GameManagerScript : MonoBehaviour
             defaultMode.SetActive(false); // desativa os objetos exclusivos do default mode
             objectsMaterial = dustObjectsMaterial; // seta o material dos objetos destrutiveis como os de areia
             RenderSettings.ambientMode = AmbientMode.Flat;
-            RenderSettings.ambientEquatorColor = flatColor; // modo de cor unica
+            RenderSettings.ambientLight = flatColor; // modo de cor unica
             RenderSettings.skybox = dustSkybox; // ativa o skybox com o material correto
             RenderSettings.fog = true; // ativa a fog
-            ambientOcclusionLayer.enabled.value = true; // ativa o ambientOcclusion
+            //ambientOcclusionLayer.enabled.value = true; // ativa o ambientOcclusion
+            ambientOcclusionLayer.intensity.value = 1.6f; // ativa o ambientOcclusion
             colorGradingLayer.contrast.value = 10f; // valor do contraste
             colorGradingLayer.mixerRedOutRedIn.value = 100f;
             colorGradingLayer.mixerBlueOutRedIn.value = -150f;
@@ -102,7 +103,8 @@ public class GameManagerScript : MonoBehaviour
             dustMode.SetActive(false); // desativa os objetos exclusivos do dustMode
             RenderSettings.skybox = defaultSkybox; // desativa o skybox
             RenderSettings.fog = false; // desativa a fog
-            ambientOcclusionLayer.enabled.value = false; // desativa o ambientOcclusion
+            //ambientOcclusionLayer.enabled.value = false; // desativa o ambientOcclusion
+            ambientOcclusionLayer.intensity.value = 0f; // desativa o ambientOcclusion
             colorGradingLayer.contrast.value = 0f; // valor do contraste
             colorGradingLayer.mixerRedOutRedIn.value = 100f;
             colorGradingLayer.mixerBlueOutRedIn.value = 0f;

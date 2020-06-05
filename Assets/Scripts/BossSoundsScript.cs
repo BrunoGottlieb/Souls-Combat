@@ -9,6 +9,7 @@ public class BossSoundsScript : MonoBehaviour
     public AudioClip longSwordSwing;
     public AudioClip reachGreatSword;
     public AudioClip killed;
+    public AudioClip transposing;
     public AudioClip[] takeDamage;
     public AudioClip[] footStep;
     public AudioClip[] greatSwordHit;
@@ -45,6 +46,11 @@ public class BossSoundsScript : MonoBehaviour
     public void PlayKilled()
     {
         CreateAndPlay(killed, 2, 1, 20);
+    }
+
+    public void PlayTransposingSound()
+    {
+        CreateAndPlay(transposing, 3.5f, 1, 20);
     }
 
     public void PlayFootStep()
