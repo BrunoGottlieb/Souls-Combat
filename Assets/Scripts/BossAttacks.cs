@@ -50,7 +50,11 @@ public class BossAttacks : MonoBehaviour
     private float chillDirection;
     private bool phase2;
     private bool canBeginAI; // da um tempinho antes dele sair atacando pela primeira vez
-    //private int lastFarAttack; // guarda o ultimo ataque executado, para garantir que nao serao as espadas de novo
+    private int lastAttack; // guarda o ultimo ataque executado, para garantir que nao serao as espadas de novo
+
+    // SlowBossDown
+    private bool slowDown;
+    private string actionAfterSlowDown;
 
     private void Start()
     {
@@ -60,11 +64,6 @@ public class BossAttacks : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            //shaker.ShakeCamera(1, 1);
-        }
-
         if (Input.GetKeyDown(KeyCode.Keypad0)) AI = !AI;
 
         distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
@@ -118,7 +117,13 @@ public class BossAttacks : MonoBehaviour
         brainDebug.text = "Far Attack";
         anim.SetFloat("Vertical", 0);
         anim.SetFloat("Horizontal", 0);
-        int rand = Random.Range(0, 5);
+
+        int rand = 0;
+        do
+        {
+            rand = Random.Range(0, 5);
+        } while (rand == lastAttack);
+        lastAttack = rand;
 
         if (anim.GetBool("Phase2") && Random.Range(0, 2) == 0) // chance de lancar uma spell antes de um ataque de longe
         {
@@ -155,9 +160,12 @@ public class BossAttacks : MonoBehaviour
         anim.SetFloat("Horizontal", 0);
 
         int rand = 0;
-
-        if(!anim.GetBool("Phase2")) rand = Random.Range(0, 9);
-        if(anim.GetBool("Phase2")) rand = Random.Range(0, 11);
+        do
+        {
+            if (!anim.GetBool("Phase2")) rand = Random.Range(0, 9);
+            if (anim.GetBool("Phase2")) rand = Random.Range(0, 11);
+        } while (rand == lastAttack);
+        lastAttack = rand;
 
         switch (rand)
         {
@@ -213,6 +221,28 @@ public class BossAttacks : MonoBehaviour
 
     }
 
+    private void SlowBossDown()
+    {
+        anim.SetFloat("Vertical", Mathf.Lerp(anim.GetFloat("Vertical"), 0, 1 * Time.deltaTime));
+
+        if(anim.GetFloat("Vertical") <= 0.2f)
+        {
+            slowDown = false;
+            if (actionAfterSlowDown == "CallNextMove")
+            {
+                CallNextMove();
+            } 
+            else if (actionAfterSlowDown == "FarAttack")
+            {
+                action = "FarAttack";
+            } 
+            else
+            {
+                Debug.LogError("Not supposed to be here");
+            }
+        }
+    }
+
     private void MoveToPlayer() // boss vai ate o player
     {
         brainDebug.text = "Move";
@@ -224,16 +254,28 @@ public class BossAttacks : MonoBehaviour
 
         walkTimeDebug.text = (Time.time - lastActionTime).ToString("0.0");
 
+        if (slowDown)
+        {
+            SlowBossDown();
+            return;
+        }
+
         if (distance < nearValue) // caso esteja proximo ao player, para de caminhar
         {
-            anim.SetFloat("Vertical", 0);
-            CallNextMove();
+            //anim.SetFloat("Vertical", 0);
+            //CallNextMove();
+
+            actionAfterSlowDown = "CallNextMove";
+            slowDown = true;
         }
         else if (Time.time - lastActionTime > chillTime) // se esta se movendo ha mais de x seg, executa um ataque
         {
-            anim.SetFloat("Vertical", 0);
-            action = "FarAttack";
-        } 
+            //anim.SetFloat("Vertical", 0);
+            //action = "FarAttack";
+
+            actionAfterSlowDown = "FarAttack";
+            slowDown = true;
+        }
         else
         {
             anim.SetFloat("Vertical", speedValue); // move-se ate o player
@@ -356,6 +398,21 @@ public class BossAttacks : MonoBehaviour
         {
             anim.SetTrigger("Strong");
         }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            anim.SetTrigger("CastMagicSwords");
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            anim.SetTrigger("Dash");
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            anim.SetTrigger("Combo");
+        }
     }
 
     #endregion
@@ -398,7 +455,8 @@ public class BossAttacks : MonoBehaviour
             Vector3 spawnPos = model.transform.position;
             spawnPos.y = 0.02f;
             GameObject aura = Instantiate(auraMagic, spawnPos, Quaternion.identity);
-            aura.transform.eulerAngles = new Vector3(180, 0, 0);
+            aura.transform.eulerAngles = new Vector3(-90, 0, 0);
+            aura.transform.position += new Vector3(0, 0.2f, 0);
         }
     }
 

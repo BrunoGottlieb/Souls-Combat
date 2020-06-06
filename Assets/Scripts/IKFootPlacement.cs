@@ -105,4 +105,9 @@ public class IKFootPlacement : MonoBehaviour
         anim.SetBool("Attacking", false);
     }
 
+    public void SetCanAttackTrue()
+    {
+        anim.SetBool("CanAttack", true);
+    }
+
 }

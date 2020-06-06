@@ -15,11 +15,11 @@ public class InputManager : MonoBehaviour
     public static KeyCode estusJoystick = KeyCode.Joystick1Button2;
 
     // Primary Attack
-    public static KeyCode primaryKeyboard = KeyCode.Mouse0;
+    public static KeyCode primaryKeyboard = KeyCode.Mouse1;
     public static KeyCode primaryJoystick = KeyCode.Joystick1Button4;
 
     // Secondary Attack
-    public static KeyCode secondaryKeyboard = KeyCode.Mouse1;
+    public static KeyCode secondaryKeyboard = KeyCode.Mouse0;
     public static KeyCode secondaryJoystick = KeyCode.Joystick1Button5;
 
     // Draw Sword

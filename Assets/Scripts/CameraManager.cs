@@ -23,14 +23,14 @@ public class CameraManager : MonoBehaviour
 
         lockedCam.m_YAxis.m_InputAxisValue = y_input;
 
-
+        /*
         foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
         {
             if (Input.GetKey(vKey))
             {
                 print(vKey);
             }
-        }
+        }*/
 
     }
 }

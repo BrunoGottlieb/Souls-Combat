@@ -16,7 +16,7 @@ public class GreatSwordScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((bossAnim.GetBool("Attacking") || other.gameObject.layer == 9) && (other.gameObject.layer == 9 || other.gameObject.layer == 13) && Time.time > lastTime + 0.1f) // Ground ou Scenary
+        if ((bossAnim.GetBool("Attacking")/* || other.gameObject.layer == 9)*/ && /*(other.gameObject.layer == 9 || */other.gameObject.layer == 13) && Time.time > lastTime + 0.1f) // Ground ou Scenary
         {
             if(dustExplosionPrefab != null)
             {

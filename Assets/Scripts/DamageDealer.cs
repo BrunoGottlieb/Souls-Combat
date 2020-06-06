@@ -19,7 +19,7 @@ public class DamageDealer : MonoBehaviour
     {
         if (!damageOn) return; // retorna caso nao possa causar dano
 
-        if (other.gameObject.layer != 9 && other.gameObject.layer != 11 && other.gameObject.layer != 13) return; // nao atinge o que nao for da layer Ground, Player ou Scenary
+        if (/*other.gameObject.layer != 9 && */other.gameObject.layer != 11 && other.gameObject.layer != 13) return; // nao atinge o que nao for da layer Ground, Player ou Scenary
 
         if (other.gameObject.name == "Girl") // caso tenha colidido com o player
         {

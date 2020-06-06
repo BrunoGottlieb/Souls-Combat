@@ -188,11 +188,11 @@ public class GirlScript : MonoBehaviour
 
     private void Attack()
     {
-        if (InputManager.GetPrimaryAttackInput() && !anim.GetBool("Attacking") && anim.GetBool("Equipped") && !anim.GetBool("Drinking")) // ataque primario
+        if (InputManager.GetPrimaryAttackInput() && anim.GetBool("CanAttack") && anim.GetBool("Equipped") && !anim.GetBool("Drinking")) // ataque primario
         {
             anim.SetTrigger("LightAttack");
         }
-        if (InputManager.GetSecondaryAttackInput() && !anim.GetBool("Attacking") && anim.GetBool("Equipped") && !anim.GetBool("Drinking")) // ataque secundario
+        if (InputManager.GetSecondaryAttackInput() && anim.GetBool("CanAttack") && anim.GetBool("Equipped") && !anim.GetBool("Drinking")) // ataque secundario
         {
             anim.SetTrigger("HeavyAttack");
         }
