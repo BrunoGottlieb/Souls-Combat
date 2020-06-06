@@ -188,21 +188,21 @@ public class GirlScript : MonoBehaviour
 
     private void Attack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse1) && !anim.GetBool("Attacking") && anim.GetBool("Equipped") && !anim.GetBool("Drinking")) // ataque primario
+        if (InputManager.GetPrimaryAttackInput() && !anim.GetBool("Attacking") && anim.GetBool("Equipped") && !anim.GetBool("Drinking")) // ataque primario
         {
             anim.SetTrigger("LightAttack");
         }
-        if (Input.GetKeyDown(KeyCode.Mouse0) && !anim.GetBool("Attacking") && anim.GetBool("Equipped") && !anim.GetBool("Drinking")) // ataque secundario
+        if (InputManager.GetSecondaryAttackInput() && !anim.GetBool("Attacking") && anim.GetBool("Equipped") && !anim.GetBool("Drinking")) // ataque secundario
         {
             anim.SetTrigger("HeavyAttack");
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse2)) // botao do meio do mouse
+        if (InputManager.GetDrawSwordInput()) // botao do meio do mouse
         {
             anim.SetTrigger("Weapon");
         }
 
-        if (Input.GetKeyDown(KeyCode.C)) // entra e sai do modo de camera de combate
+        if (InputManager.GetCameraInput()) // entra e sai do modo de camera de combate
         {
             if(anim.GetBool("Equipped"))
                 anim.SetBool("LockedCamera", !anim.GetBool("LockedCamera"));
@@ -211,7 +211,7 @@ public class GirlScript : MonoBehaviour
 
     private void EstusFlask()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && !anim.GetBool("Drinking"))
+        if (InputManager.GetEstusInput() && !anim.GetBool("Drinking"))
         {
             anim.SetTrigger("Drink");
             estusFlask.SetActive(true);
@@ -236,7 +236,7 @@ public class GirlScript : MonoBehaviour
     {
         //Vector3 diff = model.transform.eulerAngles - mainCamera.transform.eulerAngles;
 
-        if (Input.GetKeyDown(KeyCode.Space) && CanDodge()) // rola caso nao esteja atacando e nem bebendo estus
+        if (InputManager.GetDodgeInput() && CanDodge()) // rola caso nao esteja atacando e nem bebendo estus
         {
             anim.SetTrigger("Dodge");
         }
