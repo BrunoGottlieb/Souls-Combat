@@ -35,6 +35,11 @@ public class GirlScript : MonoBehaviour
 
     public CameraShaker shaker;
 
+    // Bonfire
+    public Transform bonfire; // pai do bonfire
+    public Text interactText; // texto dizendo para interagir com o bonfire
+    private bool isBonfireLit; // controla se o bonfire esta aceso
+
     void Start()
     {
         anim = model.GetComponent<Animator>();
@@ -63,13 +68,29 @@ public class GirlScript : MonoBehaviour
             return;
         }
 
-        if (!anim.GetCurrentAnimatorStateInfo(2).IsName("None")) return; // retorna caso esteja tomando dano ou esteja morto
+        BonfireInteraction();
+
+        if (!anim.GetCurrentAnimatorStateInfo(2).IsName("None") || isBonfireLit) return; // retorna caso esteja tomando dano ou esteja morto
 
         Move();
         Rotation();
         EstusFlask();
         Attack();
         Dodge();
+    }
+
+    private void BonfireInteraction()
+    {
+        if (Vector3.Distance(model.transform.position, bonfire.position) < 2.5f && bonfire.gameObject.activeSelf)
+        {
+            interactText.gameObject.SetActive(!isBonfireLit);
+            if (Input.GetKeyDown(KeyCode.E) && !isBonfireLit)
+            {
+                anim.SetTrigger("LightBonfire");
+                isBonfireLit = true;
+            }
+        }
+        else interactText.gameObject.SetActive(false);
     }
 
     private void Move()

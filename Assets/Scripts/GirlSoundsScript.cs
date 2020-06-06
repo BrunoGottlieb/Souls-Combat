@@ -16,6 +16,8 @@ public class GirlSoundsScript : MonoBehaviour
     public AudioClip[] footStep; // sons dos passos
     public AudioClip[] takeDamage; // personagem foi atingida
 
+    public GameObject bonfireLit; // pai do bonfire aceso
+
     private Animator anim;
 
     private void Start()
@@ -77,6 +79,11 @@ public class GirlSoundsScript : MonoBehaviour
     public void PlayKilled()
     {
         CreateAndPlay(killed, 2, 1);
+    }
+
+    public void LightBonFire()
+    {
+        bonfireLit.SetActive(true);
     }
 
     private void CreateAndPlay(AudioClip clip, float destructionTime, float volume = 1f)

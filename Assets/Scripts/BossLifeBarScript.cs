@@ -18,6 +18,7 @@ public class BossLifeBarScript : MonoBehaviour
     private int barHeight = 17; // altura da barra de vida
     public Animator bossAnim; // animator do boss
 
+    [Header("LifeBar")]
     public Image lifeBar; // barra de vida verdadeira
     public Image lifeGhost; // ghost da barra de vida
     private Animator lifeBarAnim; // animator da barra de vida, para ela encher no comeco
@@ -27,6 +28,12 @@ public class BossLifeBarScript : MonoBehaviour
 
     [HideInInspector]
     public bool fillBossLifeBar = false;
+
+    [Header("Win")]
+    public GameObject winnerScreen;
+    public GameObject bonfire;
+    public GameObject winEffect;
+
 
     private void Start()
     {
@@ -106,6 +113,17 @@ public class BossLifeBarScript : MonoBehaviour
         bossAnim.SetBool("Dead", true); // seta o boss como morto
         bossAnim.SetFloat("Vertical", 0); // para o movimento do boss
         bossAnim.SetFloat("Horizontal", 0); // para o movimento do boss
+        StartCoroutine(AfterWin());
+    }
+
+    IEnumerator AfterWin()
+    {
+        yield return new WaitForSeconds(1.5f); // espera um pouco ate o boss cair
+        Vector3 offset = new Vector3(0, 0, 1);
+        Instantiate(winEffect, bossAnim.gameObject.transform.position + offset, quaternion.identity); // efeito de onda de choque
+        winnerScreen.SetActive(true); // escrita de sucesso
+        bonfire.SetActive(true); // ativa o bonfire
+        this.gameObject.SetActive(false); // desativa a barra de vida
     }
 
 }

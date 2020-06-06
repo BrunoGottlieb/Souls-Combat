@@ -53,13 +53,8 @@ public class IKFootPlacement : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, distanceToGround + 1f, layerMask))
         {
-            if(this.gameObject.tag == "Boss")
-                print(hit.transform.name);
             if (hit.transform.tag == "Walkable")
             {
-                if (hit.transform.name.Contains("Sand")) print("Sand");
-                else print("Stone");
-
                 Vector3 footPosition = hit.point;
                 footPosition.y += distanceToGround;
                 anim.SetIKPosition(AvatarIKGoal.LeftFoot, footPosition);

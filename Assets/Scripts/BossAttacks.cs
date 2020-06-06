@@ -36,9 +36,9 @@ public class BossAttacks : MonoBehaviour
     public Text distanceDebug;
     public Text brainDebug;
     public Text damageDebug;
-
-    [Header("Audio")]
-    public AudioClip preFireballSound;
+    public Color farColor;
+    public Color middleColor;
+    public Color nearColor;
 
     [Header("AI Manager")]
     public float nearValue;
@@ -68,7 +68,6 @@ public class BossAttacks : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Keypad0)) AI = !AI;
 
         distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
-        distanceDebug.text = distance.ToString("0.0"); // mostra a distancia no debug
 
         DebugUI(); // indicadores no canvas
 
@@ -108,6 +107,10 @@ public class BossAttacks : MonoBehaviour
         bossAttackingDebug.gameObject.SetActive(anim.GetBool("Attacking"));
         bossMovingDebug.gameObject.SetActive(action == "Move");
         brainIcon.gameObject.SetActive(AI); // icone que indica se a AI esta ativada ou nao
+        distanceDebug.text = distance.ToString("0.0"); // mostra a distancia no debug
+        if (distance <= nearValue) distanceDebug.color = nearColor;
+        else if (distance >= farValue) distanceDebug.color = farColor;
+        else distanceDebug.color = middleColor;
     }
 
     private void FarAttack()
@@ -296,18 +299,18 @@ public class BossAttacks : MonoBehaviour
     {
         lastActionTime = Time.time; // atualiza o tempo onde mandou executar a ultima acao
 
-        if (distance >= farValue) // caso o boss esteja longe do player
+        if (distance >= farValue && !anim.GetBool("Dead")) // caso o boss esteja longe do player
         {
             action = "Move";
         } 
-        else if (distance > nearValue && distance < farValue) // caso esteja no meio termo
+        else if (distance > nearValue && distance < farValue && !anim.GetBool("Dead")) // caso esteja no meio termo
         {
             int rand = Random.Range(0, 2);
             if (rand == 0) chillDirection = -0.5f;
             if (rand == 1) chillDirection = 0.5f;
             action = "WaitForPlayer";
         }
-        else if (distance <= nearValue)// caso esteja proximo ao jogador
+        else if (distance <= nearValue && !anim.GetBool("Dead"))// caso esteja proximo ao jogador
         {
             action = "NearAttack";
         }
