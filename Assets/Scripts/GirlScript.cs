@@ -51,6 +51,8 @@ public class GirlScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if (!GameManagerScript.gameHasStarted) return; // retorna caso o jogo ainda nao tenha comecado
+
         stickDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
         if (anim.GetBool("Equipped")) moveSpeed = 4; // velocidade com a espada

@@ -68,6 +68,8 @@ public class BossAttacks : MonoBehaviour
 
         distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
 
+        this.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+
         DebugUI(); // indicadores no canvas
 
         if (distance < 15 && !anim.GetBool("Equipped")) // pega a GreatSword quando o player chegar
@@ -475,6 +477,7 @@ public class BossAttacks : MonoBehaviour
         GameObject impactObj1 = Instantiate(impactPrefab[1], greatSword.transform.position, Quaternion.identity);
         Destroy(impactObj, 1.5f);
         Destroy(impactObj1, 1.5f);
+        shaker.ShakeCamera(0.5f);
     }
 
     public void LightGreatSwordUp()

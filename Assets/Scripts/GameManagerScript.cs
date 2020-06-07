@@ -7,12 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerScript : MonoBehaviour
 {
+    // Control
     public bool music; // booleana que decide se havera musica ou nao
     public bool isScenaryOn; // booleana que decide se sera o modo default ou o completo
+    public static bool gameHasStarted; // controla se o jogo ja iniciou, para que o personagem nao possa se mover antes da hora
 
     public AudioSource musicSource; // source que tocara a musica do jogo
     public AudioSource windSource; // som do vento antes de comecar a musica
-    private bool hasTriggeredMusic = false; // booleana controla o inicio da musica quando o boss saca a GreatSword
 
     // Modes
     public GameObject defaultMode; // parent dos objetos do default mode
@@ -46,14 +47,19 @@ public class GameManagerScript : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        HideCursor();
 
         if (!music)
         {
             musicSource.Stop();
             windSource.Stop();
         }
+    }
+
+    public void HideCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void DeliverObjectsMaterials()
