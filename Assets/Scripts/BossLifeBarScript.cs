@@ -53,7 +53,7 @@ public class BossLifeBarScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(life <= ((maxLife * 40) / 100) && !bossAnim.GetBool("Phase2")) // caso a vida chegou a 40% e ainda nao fez a transicao
+        if(life <= ((maxLife * 50) / 100) && !bossAnim.GetBool("Phase2")) // caso a vida chegou a 50% e ainda nao fez a transicao
         {
             bossAnim.SetTrigger("BeginPhase2");
             bossAnim.SetBool("Phase2", true);

@@ -11,6 +11,7 @@ public class BossSoundsScript : MonoBehaviour
     public AudioClip killed;
     public AudioClip transposing;
     public AudioClip impact;
+    public AudioClip scream;
     public AudioClip[] takeDamage;
     public AudioClip[] footStep;
     public AudioClip[] greatSwordHit;
@@ -68,6 +69,11 @@ public class BossSoundsScript : MonoBehaviour
     }
 
     public void PlayImpact()
+    {
+        CreateAndPlay(impact, 3, 1, 20);
+    }
+
+    public void PlayScream()
     {
         CreateAndPlay(impact, 3, 1, 20);
     }

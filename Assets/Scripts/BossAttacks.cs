@@ -25,6 +25,7 @@ public class BossAttacks : MonoBehaviour
     public GameObject magicSwordFromSky;
     public GameObject spell;
     public GameObject auraMagic;
+    public GameObject screamMagic;
     public GameObject[] impactPrefab;
 
     private Animator anim;
@@ -128,7 +129,8 @@ public class BossAttacks : MonoBehaviour
         int rand = 0;
         do
         {
-            rand = Random.Range(0, 5);
+            if (!anim.GetBool("Phase2")) rand = Random.Range(0, 6);
+            if (anim.GetBool("Phase2")) rand = Random.Range(0, 7);
         } while (rand == lastAttack);
         lastAttack = rand;
 
@@ -154,6 +156,12 @@ public class BossAttacks : MonoBehaviour
             case 4:
                 anim.SetTrigger("Spell"); // Fireball
                 break;
+            case 5:
+                anim.SetTrigger("Scream"); 
+                break;
+            case 6:
+                anim.SetTrigger("SuperSpinner");
+                break;
             default:
                 break;
         }
@@ -169,8 +177,8 @@ public class BossAttacks : MonoBehaviour
         int rand = 0;
         do
         {
-            if (!anim.GetBool("Phase2")) rand = Random.Range(0, 10);
-            if (anim.GetBool("Phase2")) rand = Random.Range(0, 12);
+            if (!anim.GetBool("Phase2")) rand = Random.Range(0, 11);
+            if (anim.GetBool("Phase2")) rand = Random.Range(0, 14);
         } while (rand == lastAttack);
         lastAttack = rand;
 
@@ -217,12 +225,20 @@ public class BossAttacks : MonoBehaviour
                 brainDebug.text = "ForwardAttack";
                 break;
             case 10:
+                anim.SetTrigger("Scream");
+                brainDebug.text = "Scream";
+                break;
+            case 11:
                 anim.SetTrigger("Impact");
                 brainDebug.text = "Impact";
                 break;
-            case 11:
+            case 12:
                 anim.SetTrigger("Strong");
                 brainDebug.text = "Strong";
+                break;
+            case 13:
+                anim.SetTrigger("JumpAttack");
+                brainDebug.text = "Jump Attack";
                 break;
             default:
                 break;
@@ -310,27 +326,17 @@ public class BossAttacks : MonoBehaviour
             FarAttack();
         } else
 
-        if ((Time.time - lastActionTime > chillTime) || phase2)
+        if ((Time.time - lastActionTime > chillTime) || phase2 && Time.time - lastActionTime > chillTime/2)
         {
-            int maxRange = phase2? 4 : 2;
-            int rand = Random.Range(0, maxRange);
+            int rand = Random.Range(0, 3);
 
-            if (rand == 0)
+            if (rand % 2 == 0)
             {
                 FarAttack();
-            } else if (rand == 1)
+            }
+            else if (rand % 2 == 1)
             {
                 NearAttack();
-            } else if (rand == 2)
-            {
-                anim.SetTrigger("JumpAttack");
-                brainDebug.text = "Jump Attack";
-                action = "Wait";
-            } else
-            {
-                anim.SetTrigger("SuperSpinner");
-                brainDebug.text = "Super Spinner";
-                action = "Wait";
             }
         }
 
@@ -452,6 +458,11 @@ public class BossAttacks : MonoBehaviour
         {
             anim.SetTrigger("ForwardAttack");
         }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            anim.SetTrigger("Scream");
+        }
     }
 
     #endregion
@@ -470,6 +481,12 @@ public class BossAttacks : MonoBehaviour
         Destroy(earthShatter, 4);
 
         shaker.ShakeCamera(1.5f);
+    }
+
+    public void Scream()
+    {
+        GameObject scream = Instantiate(screamMagic, model.transform.position, Quaternion.identity);
+        scream.transform.eulerAngles = new Vector3(90, 0, 0);
     }
 
     public void SwordsFromSkyAttack() // metodo chamado pela animacao

@@ -5880,6 +5880,7 @@ MonoBehaviour:
   killed: {fileID: 8300000, guid: feaa9da474b6ee64ea34962f365090e5, type: 3}
   transposing: {fileID: 8300000, guid: 434040aff1534c7418a4b5922907e753, type: 3}
   impact: {fileID: 8300000, guid: 52c6f39d7fed8c242be59943d35df37c, type: 3}
+  scream: {fileID: 8300000, guid: 471d20fbfd2450f4cb22ae5d5ef4c7cb, type: 3}
   takeDamage:
   - {fileID: 8300000, guid: b2fba22710038ca488a46edb0f1f10bf, type: 3}
   - {fileID: 8300000, guid: ff3aa1ba4d99e60498a85b56dc8fd04c, type: 3}
@@ -6007,6 +6008,8 @@ MonoBehaviour:
     type: 3}
   spell: {fileID: 5229877847241669992, guid: 60ce1e9546f4d434b90ae2a10bc49b8b, type: 3}
   auraMagic: {fileID: 2045493224851173985, guid: 0fda7fe5037629547b630f35b759092c,
+    type: 3}
+  screamMagic: {fileID: 8647984688615104156, guid: 0f1f0cd0b51a653489448d6eb15f92e5,
     type: 3}
   impactPrefab:
   - {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00, type: 3}
@@ -11009,7 +11012,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 387997240}
-  m_LocalRotation: {x: -0.6391891, y: -0.20111491, z: 0.539264, w: -0.5100828}
+  m_LocalRotation: {x: -0.63918924, y: -0.20111434, z: 0.5392636, w: -0.5100832}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -18464,7 +18467,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728827580}
-  m_LocalRotation: {x: 0.621433, y: 0.26815075, z: -0.597661, w: 0.4297877}
+  m_LocalRotation: {x: 0.621432, y: 0.26815313, z: -0.5976627, w: 0.42978543}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -25223,7 +25226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c221ca4b335f7946b665216057ae76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  music: 0
+  music: 1
   isScenaryOn: 1
   musicSource: {fileID: 20358603}
   windSource: {fileID: 397391905}
@@ -54681,7 +54684,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010216062}
-  m_LocalRotation: {x: -0.16049306, y: 0.67127025, z: -0.48430568, w: -0.5376674}
+  m_LocalRotation: {x: -0.16049594, y: 0.6712696, z: -0.48430344, w: -0.5376695}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
