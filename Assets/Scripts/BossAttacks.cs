@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -168,8 +169,8 @@ public class BossAttacks : MonoBehaviour
         int rand = 0;
         do
         {
-            if (!anim.GetBool("Phase2")) rand = Random.Range(0, 9);
-            if (anim.GetBool("Phase2")) rand = Random.Range(0, 11);
+            if (!anim.GetBool("Phase2")) rand = Random.Range(0, 10);
+            if (anim.GetBool("Phase2")) rand = Random.Range(0, 12);
         } while (rand == lastAttack);
         lastAttack = rand;
 
@@ -212,10 +213,14 @@ public class BossAttacks : MonoBehaviour
                 brainDebug.text = "Aura Cast";
                 break;
             case 9:
+                anim.SetTrigger("ForwardAttack");
+                brainDebug.text = "ForwardAttack";
+                break;
+            case 10:
                 anim.SetTrigger("Impact");
                 brainDebug.text = "Impact";
                 break;
-            case 10:
+            case 11:
                 anim.SetTrigger("Strong");
                 brainDebug.text = "Strong";
                 break;
@@ -307,12 +312,25 @@ public class BossAttacks : MonoBehaviour
 
         if ((Time.time - lastActionTime > chillTime) || phase2)
         {
-            if (chillDirection < 0)
+            int maxRange = phase2? 4 : 2;
+            int rand = Random.Range(0, maxRange);
+
+            if (rand == 0)
             {
                 FarAttack();
-            } else
+            } else if (rand == 1)
             {
                 NearAttack();
+            } else if (rand == 2)
+            {
+                anim.SetTrigger("JumpAttack");
+                brainDebug.text = "Jump Attack";
+                action = "Wait";
+            } else
+            {
+                anim.SetTrigger("SuperSpinner");
+                brainDebug.text = "Super Spinner";
+                action = "Wait";
             }
         }
 
@@ -418,6 +436,21 @@ public class BossAttacks : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             anim.SetTrigger("Combo");
+        }
+
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            anim.SetTrigger("SuperSpinner");
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            anim.SetTrigger("JumpAttack");
+        }
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            anim.SetTrigger("ForwardAttack");
         }
     }
 

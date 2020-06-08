@@ -5879,6 +5879,7 @@ MonoBehaviour:
   reachGreatSword: {fileID: 8300000, guid: 4ee79314b84bcb74e8582a6e75d51b08, type: 3}
   killed: {fileID: 8300000, guid: feaa9da474b6ee64ea34962f365090e5, type: 3}
   transposing: {fileID: 8300000, guid: 434040aff1534c7418a4b5922907e753, type: 3}
+  impact: {fileID: 8300000, guid: 52c6f39d7fed8c242be59943d35df37c, type: 3}
   takeDamage:
   - {fileID: 8300000, guid: b2fba22710038ca488a46edb0f1f10bf, type: 3}
   - {fileID: 8300000, guid: ff3aa1ba4d99e60498a85b56dc8fd04c, type: 3}
@@ -6022,7 +6023,7 @@ MonoBehaviour:
   nearColor: {r: 0.33876878, g: 0.7830189, b: 0.31394625, a: 1}
   nearValue: 4
   farValue: 7
-  chillTime: 5
+  chillTime: 4
 --- !u!114 &132738817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11008,7 +11009,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 387997240}
-  m_LocalRotation: {x: -0.6391895, y: -0.20111367, z: 0.5392631, w: -0.5100838}
+  m_LocalRotation: {x: -0.6391891, y: -0.20111491, z: 0.539264, w: -0.5100828}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -18463,7 +18464,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728827580}
-  m_LocalRotation: {x: 0.6214333, y: 0.26815003, z: -0.59766054, w: 0.4297884}
+  m_LocalRotation: {x: 0.621433, y: 0.26815075, z: -0.597661, w: 0.4297877}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -20436,7 +20437,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 845772706}
-  m_LocalRotation: {x: 0.6846688, y: 0.17733155, z: -0.57653755, w: 0.40912926}
+  m_LocalRotation: {x: 0.6846688, y: 0.17733152, z: -0.5765375, w: 0.4091292}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -25222,7 +25223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c221ca4b335f7946b665216057ae76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  music: 1
+  music: 0
   isScenaryOn: 1
   musicSource: {fileID: 20358603}
   windSource: {fileID: 397391905}
@@ -54680,7 +54681,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010216062}
-  m_LocalRotation: {x: -0.1604908, y: 0.6712708, z: -0.4843075, w: -0.5376657}
+  m_LocalRotation: {x: -0.16049306, y: 0.67127025, z: -0.48430568, w: -0.5376674}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
