@@ -39,6 +39,9 @@ public class GameManagerScript : MonoBehaviour
     public Material dustSkybox; // skybox laranja da dust
     private Material defaultSkybox = null; // modo default nao possui skybox
 
+    public CanvasGroup transitionFade;
+    private bool restarting;
+
     private void Awake()
     {
         SetEnvironmentLighting(); // seta todas as configuracoes de cena dependendo do modo escolhido
@@ -47,6 +50,8 @@ public class GameManagerScript : MonoBehaviour
 
     void Start()
     {
+        StartCoroutine(TransitionFadeOut());
+
         HideCursor();
 
         if (!music)
@@ -54,6 +59,18 @@ public class GameManagerScript : MonoBehaviour
             musicSource.Stop();
             windSource.Stop();
         }
+    }
+
+    IEnumerator TransitionFadeOut()
+    {
+        transitionFade.gameObject.SetActive(true);
+        transitionFade.alpha = 1;
+        while (transitionFade.alpha > 0) // inicia o fade da transicao entre cenas
+        {
+            transitionFade.alpha -= 0.05f;
+            yield return new WaitForSeconds(0.1f);
+        }
+        transitionFade.gameObject.SetActive(false);
     }
 
     public void HideCursor()
@@ -122,10 +139,23 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (InputManager.GetRestartInput())
+        if (InputManager.GetRestartInput() && !restarting)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            restarting = true;
+            StartCoroutine(TransitionFadeIn());
         }
+    }
+
+    IEnumerator TransitionFadeIn()
+    {
+        transitionFade.gameObject.SetActive(true);
+        transitionFade.alpha = 0;
+        while (transitionFade.alpha < 1) // inicia o fade da transicao entre cenas
+        {
+            transitionFade.alpha += 0.05f;
+            yield return new WaitForSeconds(0.1f);
+        }
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void BeginMusic()

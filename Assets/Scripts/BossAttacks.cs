@@ -60,6 +60,10 @@ public class BossAttacks : MonoBehaviour
     {
         anim = model.GetComponent<Animator>();
         playerAnim = player.GetComponent<Animator>();
+
+        Vector3 size = new Vector3(0.00075f, 0.0004f, 0.014f);
+        Vector3 center = new Vector3(0f, 0f, 0.007f);
+        SetGreatSwordSize(size, center);
     }
 
     private void Update()
@@ -483,6 +487,17 @@ public class BossAttacks : MonoBehaviour
     public void LightGreatSwordUp()
     {
         greatSword.gameObject.GetComponent<GreatSwordScript>().EnableGreatSwordFire(); // ativa o fogo da GreatSword
+
+        Vector3 size = new Vector3(0.00075f, 0.0004f, 0.018f);
+        Vector3 center = new Vector3(0f, 0f, 0.009f);
+        SetGreatSwordSize(size, center);
+
+    }
+
+    private void SetGreatSwordSize(Vector3 size, Vector3 center) // altera o tamanho da hitbox da GreatSword
+    {
+        greatSword.gameObject.GetComponent<BoxCollider>().size = size;
+        greatSword.gameObject.GetComponent<BoxCollider>().center = center;
     }
 
     #endregion

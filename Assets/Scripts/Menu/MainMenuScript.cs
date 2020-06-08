@@ -2,35 +2,59 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
 {
-    // Super main menu
+    [Header("Super Main Menu")]
     public GameObject pressAnyButton;
     private CanvasGroup pressAnyBtnCanvasGroup;
 
-    // Main menu
+    [Header("Main Menu")]
+    public GameObject mainMenu;
     public GameObject buttonsMenu;
-    public GameObject firstSelected;
 
-    // Audio
+    [Header("Tutorial")]
+    public GameObject tutorial;
+
+    [Header("Audio")]
     public AudioSource ClickSound;
+
+    private bool pressedAnyBtn;
 
     private void Start()
     {
         GetReferences();
         SetObjects();
     }
-
     private void GetReferences()
     {
         pressAnyBtnCanvasGroup = pressAnyButton.GetComponent<CanvasGroup>();
     }
 
+
+    private void Update()
+    {
+        if (!pressedAnyBtn && pressAnyButton.activeSelf)
+        {
+            foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKey(vKey))
+                {
+                    OnPressedStart();
+                    pressedAnyBtn = true;
+                }
+            }
+        }
+    }
+
+    
     private void SetObjects()
     {
         pressAnyButton.SetActive(true);
         buttonsMenu.SetActive(false);
+        mainMenu.SetActive(true);
+        tutorial.SetActive(false);
     }
 
     public void OnPressedStart()
@@ -48,9 +72,6 @@ public class MainMenuScript : MonoBehaviour
         }
         pressAnyButton.SetActive(false);
         buttonsMenu.SetActive(true);
-        GameObject myEventSystem = GameObject.Find("EventSystem");
-        myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(null);
-        myEventSystem.GetComponent<UnityEngine.EventSystems.EventSystem>().SetSelectedGameObject(firstSelected);
     }
 
     public void Exit()
