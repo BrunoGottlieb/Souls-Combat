@@ -33,6 +33,7 @@ public class BossLifeBarScript : MonoBehaviour
     public GameObject winnerScreen;
     public GameObject bonfire;
     public GameObject winEffect;
+    public AudioSource musicSource;
 
 
     private void Start()
@@ -53,7 +54,7 @@ public class BossLifeBarScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(life <= ((maxLife * 40) / 100) && !bossAnim.GetBool("Phase2")) // caso a vida chegou a 40% e ainda nao fez a transicao
+        if(life <= ((maxLife * 50) / 100) && !bossAnim.GetBool("Phase2")) // caso a vida chegou a 50% e ainda nao fez a transicao
         {
             bossAnim.SetTrigger("BeginPhase2");
             bossAnim.SetBool("Phase2", true);
@@ -118,12 +119,21 @@ public class BossLifeBarScript : MonoBehaviour
 
     IEnumerator AfterWin()
     {
+        StartCoroutine(FadeMusic());
         yield return new WaitForSeconds(1.5f); // espera um pouco ate o boss cair
         Vector3 offset = new Vector3(0, 0, 1);
         Instantiate(winEffect, bossAnim.gameObject.transform.position + offset, quaternion.identity); // efeito de onda de choque
         winnerScreen.SetActive(true); // escrita de sucesso
         bonfire.SetActive(true); // ativa o bonfire
+        bossAnim.gameObject.GetComponent<BoxCollider>().isTrigger = true; // desativa o collider do boss depois que ele morre
         this.gameObject.SetActive(false); // desativa a barra de vida
+    }
+
+    IEnumerator FadeMusic()
+    {
+        yield return new WaitForSeconds(0.25f);
+        musicSource.volume -= 0.225f;
+        StartCoroutine(FadeMusic());
     }
 
 }

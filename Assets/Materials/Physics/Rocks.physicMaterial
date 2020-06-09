@@ -9,6 +9,6 @@ PhysicMaterial:
   m_Name: Rocks
   dynamicFriction: 0.2
   staticFriction: 0.2
-  bounciness: 1
+  bounciness: 0.5
   frictionCombine: 0
   bounceCombine: 0

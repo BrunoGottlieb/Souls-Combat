@@ -99641,15 +99641,15 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.2333333
-    functionName: PlayImpact
+  - time: 0.8333333
+    functionName: PlayPreImpact
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
   - time: 1.4
-    functionName: PlayGreatSwordHit
+    functionName: PlayImpact
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
@@ -99657,6 +99657,13 @@ AnimationClip:
     messageOptions: 0
   - time: 1.4333333
     functionName: Impact
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 1.4666667
+    functionName: PlayGreatSwordHit
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

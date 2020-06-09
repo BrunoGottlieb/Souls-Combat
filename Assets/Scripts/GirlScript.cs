@@ -127,36 +127,36 @@ public class GirlScript : MonoBehaviour
         relativeLeft.y = 0;
         relativeBack.y = 0;
 
-        if (Input.GetAxis("Horizontal") > 0 && Input.GetAxis("Vertical") > 0 && (Input.GetKey(InputManager.dodgeKeyboard) || Input.GetKey(InputManager.dodgeJoystick)))
+        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = (relativeForward + relativeRight).normalized;
         }
-        else if (Input.GetAxis("Horizontal") > 0 && Input.GetAxis("Vertical") < 0 && (Input.GetKey(InputManager.dodgeKeyboard) || Input.GetKey(InputManager.dodgeJoystick)))
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = (relativeBack + relativeRight).normalized;
         }
-        else if (Input.GetAxis("Horizontal") < 0 && Input.GetAxis("Vertical") < 0 && (Input.GetKey(InputManager.dodgeKeyboard) || Input.GetKey(InputManager.dodgeJoystick)))
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = (relativeBack + relativeLeft).normalized;
         }
-        else if (Input.GetAxis("Horizontal") < 0 && Input.GetAxis("Vertical") > 0 && (Input.GetKey(InputManager.dodgeKeyboard) || Input.GetKey(InputManager.dodgeJoystick)))
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = (relativeForward + relativeLeft).normalized;
         }
 
-        else if (Input.GetAxis("Horizontal") > 0 && (Input.GetKey(InputManager.dodgeKeyboard) || Input.GetKey(InputManager.dodgeJoystick)))
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = relativeRight;
         }
-        else if (Input.GetAxis("Horizontal") < 0 && (Input.GetKey(InputManager.dodgeKeyboard) || Input.GetKey(InputManager.dodgeJoystick)))
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = relativeLeft;
         }
-        else if (Input.GetAxis("Vertical") > 0 && (Input.GetKey(InputManager.dodgeKeyboard) || Input.GetKey(InputManager.dodgeJoystick)))
+        else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = relativeForward;
         }
-        else if (Input.GetAxis("Vertical") < 0 && (Input.GetKey(InputManager.dodgeKeyboard) || Input.GetKey(InputManager.dodgeJoystick)))
+        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
         {
             forwardLocked = relativeBack;
         }

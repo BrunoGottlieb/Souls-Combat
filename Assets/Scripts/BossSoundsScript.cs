@@ -10,7 +10,9 @@ public class BossSoundsScript : MonoBehaviour
     public AudioClip reachGreatSword;
     public AudioClip killed;
     public AudioClip transposing;
+    public AudioClip preImpact;
     public AudioClip impact;
+    public AudioClip scream;
     public AudioClip[] takeDamage;
     public AudioClip[] footStep;
     public AudioClip[] greatSwordHit;
@@ -67,7 +69,17 @@ public class BossSoundsScript : MonoBehaviour
         CreateAndPlay(greatSwordHit[Random.Range(0, greatSwordHit.Length)], 1.5f, 1, 10);
     }
 
+    public void PlayPreImpact()
+    {
+        CreateAndPlay(preImpact, 3, 1, 20);
+    }
+
     public void PlayImpact()
+    {
+        CreateAndPlay(impact, 2, 1, 50);
+    }
+
+    public void PlayScream()
     {
         CreateAndPlay(impact, 3, 1, 20);
     }

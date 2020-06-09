@@ -2056,11 +2056,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: -444521105353760620, guid: 4e8086bac3935f7498d7da8e0838c09b,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: -435481993901814288, guid: 4e8086bac3935f7498d7da8e0838c09b,
         type: 3}
       propertyPath: m_Layer
@@ -5884,7 +5879,9 @@ MonoBehaviour:
   reachGreatSword: {fileID: 8300000, guid: 4ee79314b84bcb74e8582a6e75d51b08, type: 3}
   killed: {fileID: 8300000, guid: feaa9da474b6ee64ea34962f365090e5, type: 3}
   transposing: {fileID: 8300000, guid: 434040aff1534c7418a4b5922907e753, type: 3}
-  impact: {fileID: 8300000, guid: 52c6f39d7fed8c242be59943d35df37c, type: 3}
+  preImpact: {fileID: 8300000, guid: 52c6f39d7fed8c242be59943d35df37c, type: 3}
+  impact: {fileID: 8300000, guid: ac4c28a72ae9b964e99ac939087c8945, type: 3}
+  scream: {fileID: 8300000, guid: 471d20fbfd2450f4cb22ae5d5ef4c7cb, type: 3}
   takeDamage:
   - {fileID: 8300000, guid: b2fba22710038ca488a46edb0f1f10bf, type: 3}
   - {fileID: 8300000, guid: ff3aa1ba4d99e60498a85b56dc8fd04c, type: 3}
@@ -6013,8 +6010,8 @@ MonoBehaviour:
   spell: {fileID: 5229877847241669992, guid: 60ce1e9546f4d434b90ae2a10bc49b8b, type: 3}
   auraMagic: {fileID: 2045493224851173985, guid: 0fda7fe5037629547b630f35b759092c,
     type: 3}
-  magicFarSword: {fileID: 8296172669149643037}
-  botPosition: {fileID: 1598338264}
+  screamMagic: {fileID: 8647984688615104156, guid: 0f1f0cd0b51a653489448d6eb15f92e5,
+    type: 3}
   impactPrefab:
   - {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00, type: 3}
   - {fileID: 1828176872806910, guid: 64891a0eb28db934898420d80ca07cb3, type: 3}
@@ -6359,6 +6356,7 @@ MonoBehaviour:
   bonfire: {fileID: 193498579}
   winEffect: {fileID: 5413203997971331392, guid: e8571d2d63d92ab43aad5eddc36ff5ac,
     type: 3}
+  musicSource: {fileID: 20358603}
 --- !u!225 &149851284
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -11016,7 +11014,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 387997240}
-  m_LocalRotation: {x: -0.6391891, y: -0.20111494, z: 0.539264, w: -0.5100827}
+  m_LocalRotation: {x: -0.63918924, y: -0.20111434, z: 0.5392636, w: -0.5100832}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -16451,6 +16449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 678669693}
   - component: {fileID: 678669692}
+  - component: {fileID: 678669694}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: SoundManager
@@ -16484,6 +16483,102 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &678669694
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678669691}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 4f833a3797c13054e9c43f46d44658e0, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &681715978
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18471,7 +18566,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728827580}
-  m_LocalRotation: {x: 0.6214329, y: 0.26815093, z: -0.5976612, w: 0.42978752}
+  m_LocalRotation: {x: 0.62143207, y: 0.26815307, z: -0.5976627, w: 0.42978552}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -20444,7 +20539,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 845772706}
-  m_LocalRotation: {x: 0.6846688, y: 0.17733152, z: -0.5765375, w: 0.4091292}
+  m_LocalRotation: {x: 0.6846688, y: 0.17733155, z: -0.57653755, w: 0.40912926}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -25230,7 +25325,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c221ca4b335f7946b665216057ae76f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  music: 0
+  music: 1
   isScenaryOn: 1
   musicSource: {fileID: 20358603}
   windSource: {fileID: 397391905}
@@ -37951,37 +38046,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1579255023}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1598338263
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1598338264}
-  m_Layer: 11
-  m_Name: BotPosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1598338264
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1598338263}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.393, y: -0.038, z: 0.7309995}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 5006512734853853966}
-  m_Father: {fileID: 421706264}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1600932376
 GameObject:
   m_ObjectHideFlags: 0
@@ -54719,7 +54783,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010216062}
-  m_LocalRotation: {x: -0.16049322, y: 0.67127025, z: -0.48430556, w: -0.5376675}
+  m_LocalRotation: {x: -0.16049615, y: 0.67126954, z: -0.48430324, w: -0.5376696}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -57774,90 +57838,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 34120983168320205}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &852377750079018872
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1598338264}
-    m_Modifications:
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.92816913
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.37215865
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -136.302
-      objectReference: {fileID: 0}
-    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8716061882656495205, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_Name
-      value: Magic Far Sword Bot
-      objectReference: {fileID: 0}
-    - target: {fileID: 8716061882656495205, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8716061882934748508, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_Name
-      value: Magic Far Sword
-      objectReference: {fileID: 0}
-    - target: {fileID: 8716061882934748508, guid: ad30b02130b0b5e45ba1944180dd168a,
-        type: 3}
-      propertyPath: m_TagString
-      value: GreatSword
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ad30b02130b0b5e45ba1944180dd168a, type: 3}
 --- !u!1001 &989137557523972158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72932,12 +72912,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09dd1df125b370e448a0fa88882bbca1, type: 3}
---- !u!4 &5006512734853853966 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
-    type: 3}
-  m_PrefabInstance: {fileID: 852377750079018872}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5006512735127914981
 Transform:
   m_ObjectHideFlags: 0
@@ -78773,12 +78747,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2493238803420608969, guid: ed0f0b2cfbc5478428e71f29854f6bf4,
     type: 3}
   m_PrefabInstance: {fileID: 7485958627285838982}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8296172669149643037 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8716061882656495205, guid: ad30b02130b0b5e45ba1944180dd168a,
-    type: 3}
-  m_PrefabInstance: {fileID: 852377750079018872}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8296172669407214582
 GameObject:
