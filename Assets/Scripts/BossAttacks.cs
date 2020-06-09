@@ -25,6 +25,8 @@ public class BossAttacks : MonoBehaviour
     public GameObject magicSwordFromSky;
     public GameObject spell;
     public GameObject auraMagic;
+    public GameObject magicFarSword;
+    public Transform botPosition;
     public GameObject[] impactPrefab;
 
     private Animator anim;
@@ -452,6 +454,11 @@ public class BossAttacks : MonoBehaviour
         {
             anim.SetTrigger("ForwardAttack");
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            MagicFarSword();
+        }
     }
 
     #endregion
@@ -531,6 +538,21 @@ public class BossAttacks : MonoBehaviour
     {
         greatSword.gameObject.GetComponent<BoxCollider>().size = size;
         greatSword.gameObject.GetComponent<BoxCollider>().center = center;
+    }
+
+    private void MagicFarSword()
+    {
+        //GameObject obj = Instantiate(magicFarSword, botPosition.position, Quaternion.identity, botPosition);
+        StartCoroutine(MagicFarSwordTimer());
+        //Destroy(obj, 4);
+    }
+
+    IEnumerator MagicFarSwordTimer()
+    {
+        magicFarSword.SetActive(true);
+        yield return new WaitForSeconds(3.5f);
+        magicFarSword.SetActive(false);
+
     }
 
     #endregion

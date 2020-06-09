@@ -2056,6 +2056,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: -444521105353760620, guid: 4e8086bac3935f7498d7da8e0838c09b,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -435481993901814288, guid: 4e8086bac3935f7498d7da8e0838c09b,
         type: 3}
       propertyPath: m_Layer
@@ -6008,6 +6013,8 @@ MonoBehaviour:
   spell: {fileID: 5229877847241669992, guid: 60ce1e9546f4d434b90ae2a10bc49b8b, type: 3}
   auraMagic: {fileID: 2045493224851173985, guid: 0fda7fe5037629547b630f35b759092c,
     type: 3}
+  magicFarSword: {fileID: 8296172669149643037}
+  botPosition: {fileID: 1598338264}
   impactPrefab:
   - {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00, type: 3}
   - {fileID: 1828176872806910, guid: 64891a0eb28db934898420d80ca07cb3, type: 3}
@@ -11009,7 +11016,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 387997240}
-  m_LocalRotation: {x: -0.6391891, y: -0.20111491, z: 0.539264, w: -0.5100828}
+  m_LocalRotation: {x: -0.6391891, y: -0.20111494, z: 0.539264, w: -0.5100827}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -18464,7 +18471,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 728827580}
-  m_LocalRotation: {x: 0.621433, y: 0.26815075, z: -0.597661, w: 0.4297877}
+  m_LocalRotation: {x: 0.6214329, y: 0.26815093, z: -0.5976612, w: 0.42978752}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -37944,6 +37951,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1579255023}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1598338263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1598338264}
+  m_Layer: 11
+  m_Name: BotPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1598338264
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1598338263}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.393, y: -0.038, z: 0.7309995}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5006512734853853966}
+  m_Father: {fileID: 421706264}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1600932376
 GameObject:
   m_ObjectHideFlags: 0
@@ -54681,7 +54719,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010216062}
-  m_LocalRotation: {x: -0.16049306, y: 0.67127025, z: -0.48430568, w: -0.5376674}
+  m_LocalRotation: {x: -0.16049322, y: 0.67127025, z: -0.48430556, w: -0.5376675}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -57736,6 +57774,90 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 34120983168320205}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &852377750079018872
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1598338264}
+    m_Modifications:
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.92816913
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.37215865
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -136.302
+      objectReference: {fileID: 0}
+    - target: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8716061882656495205, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_Name
+      value: Magic Far Sword Bot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8716061882656495205, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8716061882934748508, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_Name
+      value: Magic Far Sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 8716061882934748508, guid: ad30b02130b0b5e45ba1944180dd168a,
+        type: 3}
+      propertyPath: m_TagString
+      value: GreatSword
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ad30b02130b0b5e45ba1944180dd168a, type: 3}
 --- !u!1001 &989137557523972158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72810,6 +72932,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09dd1df125b370e448a0fa88882bbca1, type: 3}
+--- !u!4 &5006512734853853966 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5669739197356237942, guid: ad30b02130b0b5e45ba1944180dd168a,
+    type: 3}
+  m_PrefabInstance: {fileID: 852377750079018872}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5006512735127914981
 Transform:
   m_ObjectHideFlags: 0
@@ -78645,6 +78773,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2493238803420608969, guid: ed0f0b2cfbc5478428e71f29854f6bf4,
     type: 3}
   m_PrefabInstance: {fileID: 7485958627285838982}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8296172669149643037 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8716061882656495205, guid: ad30b02130b0b5e45ba1944180dd168a,
+    type: 3}
+  m_PrefabInstance: {fileID: 852377750079018872}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8296172669407214582
 GameObject:
