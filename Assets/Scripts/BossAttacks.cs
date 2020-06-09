@@ -26,6 +26,7 @@ public class BossAttacks : MonoBehaviour
     public GameObject spell;
     public GameObject auraMagic;
     public GameObject screamMagic;
+    public GameObject magicFarSword;
     public GameObject[] impactPrefab;
 
     private Animator anim;
@@ -129,8 +130,8 @@ public class BossAttacks : MonoBehaviour
         int rand = 0;
         do
         {
-            if (!anim.GetBool("Phase2")) rand = Random.Range(0, 6);
-            if (anim.GetBool("Phase2")) rand = Random.Range(0, 7);
+            if (!anim.GetBool("Phase2")) rand = Random.Range(0, 7);
+            if (anim.GetBool("Phase2")) rand = Random.Range(0, 8);
         } while (rand == lastAttack);
         lastAttack = rand;
 
@@ -160,6 +161,9 @@ public class BossAttacks : MonoBehaviour
                 anim.SetTrigger("Scream"); 
                 break;
             case 6:
+                anim.SetTrigger("Fishing"); // Magic Far Sword
+                break;
+            case 7:
                 anim.SetTrigger("SuperSpinner");
                 break;
             default:
@@ -177,8 +181,8 @@ public class BossAttacks : MonoBehaviour
         int rand = 0;
         do
         {
-            if (!anim.GetBool("Phase2")) rand = Random.Range(0, 11);
-            if (anim.GetBool("Phase2")) rand = Random.Range(0, 14);
+            if (!anim.GetBool("Phase2")) rand = Random.Range(0, 10);
+            if (anim.GetBool("Phase2")) rand = Random.Range(0, 13);
         } while (rand == lastAttack);
         lastAttack = rand;
 
@@ -209,34 +213,30 @@ public class BossAttacks : MonoBehaviour
                 brainDebug.text = "Combo1";
                 break;
             case 6:
-                anim.SetTrigger("CastMagicSwords");
-                brainDebug.text = "Magic";
-                break;
-            case 7:
                 anim.SetTrigger("Spell");
                 brainDebug.text = "Spell";
                 break;
-            case 8:
+            case 7:
                 anim.SetTrigger("AuraCast");
                 brainDebug.text = "Aura Cast";
                 break;
-            case 9:
+            case 8:
                 anim.SetTrigger("ForwardAttack");
                 brainDebug.text = "ForwardAttack";
                 break;
-            case 10:
+            case 9:
                 anim.SetTrigger("Scream");
                 brainDebug.text = "Scream";
                 break;
-            case 11:
+            case 10:
                 anim.SetTrigger("Impact");
                 brainDebug.text = "Impact";
                 break;
-            case 12:
+            case 11:
                 anim.SetTrigger("Strong");
                 brainDebug.text = "Strong";
                 break;
-            case 13:
+            case 12:
                 anim.SetTrigger("JumpAttack");
                 brainDebug.text = "Jump Attack";
                 break;
@@ -475,6 +475,11 @@ public class BossAttacks : MonoBehaviour
         {
             anim.SetTrigger("Scream");
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            anim.SetTrigger("Fishing");
+        }
     }
 
     #endregion
@@ -560,6 +565,12 @@ public class BossAttacks : MonoBehaviour
     {
         greatSword.gameObject.GetComponent<BoxCollider>().size = size;
         greatSword.gameObject.GetComponent<BoxCollider>().center = center;
+    }
+
+    private void MagicFarSword()
+    {
+        GameObject obj = Instantiate(magicFarSword, greatSword.transform.position, Quaternion.identity);
+        Destroy(obj, 3.5f);
     }
 
     #endregion

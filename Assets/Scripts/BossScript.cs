@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
@@ -13,7 +14,7 @@ public class BossScript : MonoBehaviour
     public Transform player;
     public GirlScript girlScript;
 
-    public AudioClip takeDamageSound;
+    public AudioClip[] takeDamageSound;
     public BossLifeBarScript bossLifeScript;
 
     public GameObject hitCounterParent;
@@ -61,7 +62,7 @@ public class BossScript : MonoBehaviour
         if(other.gameObject.tag == "Sword" && other.gameObject.GetComponentInParent<Animator>().GetBool("Attacking") && !anim.GetBool("Attacking") && DamageInterval())
         {
             lastDamageTakenTime = Time.time;
-            CreateAndPlay(takeDamageSound, 2); // som de dano
+            CreateAndPlay(takeDamageSound[UnityEngine.Random.Range(0, takeDamageSound.Length)], 2); // som de dano
             //bossLifeScript.UpdateLife(-girlScript.swordCurrentDamage); // diminui a vida do boss com o dano da espada do player
             StopAllCoroutines(); // reinicia o timer de 2seg do texto
             StartCoroutine(ShowHitCounter()); // exibe informacao sobre o dano

@@ -61,7 +61,6 @@ public class IKFootPlacement : MonoBehaviour
                 Vector3 forward = Vector3.ProjectOnPlane(transform.forward, hit.normal);
                 anim.SetIKRotation(AvatarIKGoal.LeftFoot, Quaternion.FromToRotation(transform.up, hit.normal) * transform.rotation);
             }
-
         }
 
         ray = new Ray(anim.GetIKPosition(AvatarIKGoal.RightFoot) + Vector3.up, Vector3.down);

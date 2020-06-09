@@ -91,6 +91,7 @@ public class BossSoundsScript : MonoBehaviour
         audioSource.volume = volume;
         audioSource.spatialBlend = 1;
         audioSource.minDistance = minDistance;
+        audioSource.maxDistance = 50;
         audioSource.Play();
         Destroy(audioSource, destructionTime);
     }

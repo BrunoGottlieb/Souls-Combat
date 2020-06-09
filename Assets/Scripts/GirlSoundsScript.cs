@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GirlSoundsScript : MonoBehaviour
 {
+    public GirlRayCaster rayCaster; // rayCast disparado para o chao
     public AudioClip heavySwordAttack; // botao direito do mouse
     public AudioClip swordAttack; // ataque principal
     public AudioClip secondHit; // segundo ataque do combo do botao esquerdo do mouse
@@ -13,8 +14,10 @@ public class GirlSoundsScript : MonoBehaviour
     public AudioClip standingUp; // som de se levantar do chao
     public AudioClip fallOnGround; // caindo no chao
     public AudioClip reachWeapon; // sacando a arma
-    public AudioClip[] footStep; // sons dos passos
+    public AudioClip[] footStepSand; // sons dos passos na areia
+    public AudioClip[] footStepStone; // sons dos passos nas pedras
     public AudioClip[] takeDamage; // personagem foi atingida
+    public AudioSource footSource; // audiosource que toca o som dos passos
 
     public GameObject bonfireLit; // pai do bonfire aceso
 
@@ -52,8 +55,20 @@ public class GirlSoundsScript : MonoBehaviour
 
     public void PlayFootStep()
     {
-        if(!anim.GetBool("Intangible") && !anim.GetBool("Attacking"))
-            CreateAndPlay(footStep[Random.Range(0, footStep.Length)], 0.5f, 0.5f);
+        if(!anim.GetBool("Intangible") && !anim.GetBool("Attacking") && !anim.GetBool("Dead") && !anim.GetBool("Dodging"))
+        {
+            //if (!footSource.isPlaying)
+            {
+                if(rayCaster.IamOver == "Sand")
+                {
+                    footSource.PlayOneShot(footStepSand[Random.Range(0, footStepSand.Length)]);
+                }
+                else if (rayCaster.IamOver == "Stone")
+                {
+                    footSource.PlayOneShot(footStepStone[Random.Range(0, footStepStone.Length)]);
+                }
+            }
+        }
     }
 
     public void PlayStandindUp()
@@ -91,6 +106,8 @@ public class GirlSoundsScript : MonoBehaviour
         AudioSource audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.clip = clip;
         audioSource.volume = volume;
+        audioSource.minDistance = 10;
+        audioSource.maxDistance = 50;
         audioSource.spatialBlend = 1;
         audioSource.Play();
         Destroy(audioSource, destructionTime);
