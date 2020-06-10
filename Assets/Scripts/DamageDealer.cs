@@ -6,6 +6,7 @@ public class DamageDealer : MonoBehaviour
 {
     public bool damageOn; // dano esta ativo
     public float damageAmount; // quantia de dano que ira causar no player
+    //public float increaseOnPhase2; // valor que sera adicionado ao dano na fase 2
     public AudioClip[] impactSound; // som que fara ao impactar com alguma coisa
 
     private float lastSoundTime = 0;

@@ -370,12 +370,20 @@ public class BossAttacks : MonoBehaviour
 
         if(action == "FarAttack")
         {
-            FarAttack(); // executa um unico ataque a distancia
+            if (!anim.GetBool("TakingDamage"))
+                FarAttack(); // executa um unico ataque a longa distancia
         }
 
         if(action == "NearAttack")
         {
-            NearAttack();
+            if (!anim.GetBool("TakingDamage"))
+            {
+                print("Posso atacar");
+                NearAttack(); // executa um ataque de curta distancia
+            } else
+            {
+                print("Nao posso atacar");
+            }
         }
     }
 
