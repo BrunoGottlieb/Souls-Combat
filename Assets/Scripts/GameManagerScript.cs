@@ -144,6 +144,12 @@ public class GameManagerScript : MonoBehaviour
             restarting = true;
             StartCoroutine(TransitionFadeIn());
         }
+
+        if (InputManager.GetPauseInput() && !restarting)
+        {
+            Time.timeScale = Time.timeScale == 1? Time.timeScale = 0 : Time.timeScale = 1;
+            //Time.timeScale = 0.1f;
+        }
     }
 
     IEnumerator TransitionFadeIn()

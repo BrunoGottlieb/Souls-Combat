@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class Destructible : MonoBehaviour
 {
-    public GameObject destroyedObj; 
-    public AudioClip destructionSound;
-    public GameObject spark;
-    public GameManagerScript gameManager;
-
-    private void Start()
-    {
-        gameManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
-    }
+    public GameObject destroyedObj; // objeto destruido que ocupara seu lugar
+    public AudioClip destructionSound; // som ao ser destruido
+    public GameObject sandImpactEffect; // poeira
 
     private void OnTriggerEnter(Collider other)
     {
@@ -43,27 +37,13 @@ public class Destructible : MonoBehaviour
 
     private void Destroy()
     {
-        Instantiate(spark, this.transform.position, Quaternion.identity);
-        PlayDestructionSound();
+        GameObject poeira = Instantiate(sandImpactEffect, this.transform.position, Quaternion.identity);
+        Destroy(poeira, 2);
         Vector3 scale = this.transform.localScale;
         Instantiate(destroyedObj, transform.position, transform.rotation, transform.parent);
-        Renderer[] rend = destroyedObj.GetComponentsInChildren<Renderer>();
-        foreach (Renderer r in rend) r.material = gameManager.objectsMaterial;
         destroyedObj.transform.localScale = scale;
-        Destroy(this.gameObject);
-    }
-
-    private void PlayDestructionSound()
-    {
-        GameObject audio = Instantiate(new GameObject());
-        audio.transform.parent = this.transform.parent;
-        audio.transform.position = this.transform.position;
-        AudioSource audioSource = audio.AddComponent<AudioSource>();
-        audioSource.clip = destructionSound;
-        audioSource.spatialBlend = 1;
-        audioSource.minDistance = 40;
-        audioSource.Play();
-        Destroy(audioSource, 3);
+        this.gameObject.SetActive(false);
+        Destroy(this.gameObject,2);
     }
 
 }

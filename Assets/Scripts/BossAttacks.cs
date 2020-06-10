@@ -252,7 +252,7 @@ public class BossAttacks : MonoBehaviour
     {
         anim.SetFloat("Vertical", Mathf.Lerp(anim.GetFloat("Vertical"), 0, 1 * Time.deltaTime));
 
-        if(anim.GetFloat("Vertical") <= 0.2f)
+        if(anim.GetFloat("Vertical") <= 0.35f)
         {
             slowDown = false;
             if (actionAfterSlowDown == "CallNextMove")
@@ -449,11 +449,6 @@ public class BossAttacks : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.T))
         {
             anim.SetTrigger("Dash");
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            anim.SetTrigger("Combo");
         }
 
         if (Input.GetKeyDown(KeyCode.N))

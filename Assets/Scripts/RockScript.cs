@@ -28,7 +28,7 @@ public class RockScript : MonoBehaviour
         return (Mathf.Abs(rb.velocity.x) + Mathf.Abs(rb.velocity.y) + Mathf.Abs(rb.velocity.z) > 1);
     }
 
-    private void OnParticleCollision(GameObject other)
+    private void OnParticleCollision(GameObject other) // colisao com o ataque de impacto
     {
         // Calculate Angle Between the collision point and the player
         Vector3 dir = other.transform.position - transform.position;

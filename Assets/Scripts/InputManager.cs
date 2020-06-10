@@ -34,6 +34,10 @@ public class InputManager : MonoBehaviour
     public static KeyCode restartKeyboard = KeyCode.R;
     public static KeyCode restartJoystick = KeyCode.Joystick1Button6;
 
+    // Pause
+    public static KeyCode pauseKeyboard = KeyCode.P;
+    public static KeyCode pauseJoystick = KeyCode.Joystick1Button7;
+
     private static bool triggerPressed = false;
 
     private void Update()
@@ -75,6 +79,11 @@ public class InputManager : MonoBehaviour
     public static bool GetRestartInput()
     {
         return Input.GetKeyDown(restartKeyboard) || Input.GetKeyDown(restartJoystick);
+    }
+
+    public static bool GetPauseInput()
+    {
+        return Input.GetKeyDown(pauseKeyboard) || Input.GetKeyDown(pauseJoystick);
     }
 
 }

@@ -58,11 +58,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acf7bfcfb3ccbec41b975f7eed01383a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myMaterial: {fileID: 2100000, guid: 5674184a87d87e54ca8047426601a57b, type: 2}
   destroyedObj: {fileID: -927199367670048503, guid: 1fbaf1f9dc00f0a4aaed290c7631e6e5,
     type: 3}
   destructionSound: {fileID: 8300000, guid: e83f7483bc3d10e4d930bf71a3b24fc5, type: 3}
-  spark: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e, type: 3}
+  sandImpactEffect: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
+    type: 3}
 --- !u!1 &4958128990640729671
 GameObject:
   m_ObjectHideFlags: 0

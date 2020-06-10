@@ -78,8 +78,8 @@ MonoBehaviour:
   destroyedObj: {fileID: 3868930159166837124, guid: f5524cc3e27dafd40a3cbdf803c22ebe,
     type: 3}
   destructionSound: {fileID: 8300000, guid: e83f7483bc3d10e4d930bf71a3b24fc5, type: 3}
-  spark: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e, type: 3}
-  gameManager: {fileID: 0}
+  sandImpactEffect: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
+    type: 3}
 --- !u!1001 &128930744415472180
 PrefabInstance:
   m_ObjectHideFlags: 0

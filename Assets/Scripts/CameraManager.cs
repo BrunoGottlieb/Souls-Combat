@@ -6,13 +6,14 @@ public class CameraManager : MonoBehaviour
 {
     public CinemachineFreeLook freeLookCam;
     public CinemachineFreeLook lockedCam;
+    public Transform listener;
+    private Transform player;
 
-    void Start()
+    private void Start()
     {
-
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
         float y_input = Input.GetAxis("Mouse Y") + Input.GetAxis("Right Stick Y");
@@ -23,14 +24,7 @@ public class CameraManager : MonoBehaviour
 
         lockedCam.m_YAxis.m_InputAxisValue = y_input;
 
-        /*
-        foreach (KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
-        {
-            if (Input.GetKey(vKey))
-            {
-                print(vKey);
-            }
-        }*/
-
+        listener.position = freeLookCam.gameObject.transform.position;
+        listener.transform.LookAt(player.position);
     }
 }
