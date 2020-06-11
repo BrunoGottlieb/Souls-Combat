@@ -21,6 +21,8 @@ public class BossScript : MonoBehaviour
     public GameObject bloodPrefab;
     public Transform bloodPos;
 
+    private float rotationSpeed = 6;
+
     private float lastDamageTakenTime = 0;
 
     // Hit Counter
@@ -47,7 +49,12 @@ public class BossScript : MonoBehaviour
         }
         else if (!anim.GetBool("Attacking"))
         {
-            model.transform.LookAt(player.transform.position); // olha para o player caso nao esteja atacando
+            //model.transform.LookAt(player.transform.position); // olha para o player caso nao esteja atacando
+
+            var targetRotation = Quaternion.LookRotation(player.transform.position - model.transform.position);
+
+            // Smoothly rotate towards the target point.
+            model.transform.rotation = Quaternion.Slerp(model.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
         model.transform.eulerAngles = new Vector3(0, model.transform.eulerAngles.y, 0);
