@@ -87,11 +87,24 @@ public class BossScript : MonoBehaviour
     public void SwordHit(int hit) // recebe o hit atual da animacao
     {
         this.hit = hit;
+        if (hit == 0)
+            ClearCurrentHit();
+    }
+
+    public void ClearCurrentHit() // animacao diz que terminou o combo
+    {
+        this.currentHit = 0;
     }
 
     public void HitManager() // Gerencia o combo verdadeiro
     {
-        if (currentHit == 0 && hit != 1 && hit != 4) currentHit = 1;
+        if(currentHit == 0 && hit == 4) // hit unico do ataque duplo
+        {
+            hitCounterText.text = "1 Hit";
+            hitAdderText.text = "+50%";
+            bossLifeScript.UpdateLife(-1.5f);
+            return;
+        }
 
         currentHit++; // incrementa a variavel que guarda quantos hits foram ate agora
 
@@ -99,27 +112,24 @@ public class BossScript : MonoBehaviour
 
         if (currentHit == 1 && hit == 1) // hit unico, o comum
         {
-            currentHit = 0;
             hitCounterText.text = "1 Hit";
             hitAdderText.text = " ";
             bossLifeScript.UpdateLife(-1);
         }
         else if (currentHit == 1 && hit == 4) // combo duplo de ataque simples e o direito
         {
-            currentHit = 0; // zera pois hit 4 finaliza 
             hitCounterText.text = "2 Hits";
             hitAdderText.text = "+75%";
             bossLifeScript.UpdateLife(-1.75f);
         }
         else if (currentHit == 0 && hit == 4) // hit unico do ataque direito
         {
-            currentHit = 0; // zera pois hit 4 finaliza 
             hitCounterText.text = "1 Hit";
             hitAdderText.text = "+50%";
             bossLifeScript.UpdateLife(-1.5f);
         }
 
-        if (currentHit == 2 && hit == 2) // segundo ataque do combo
+        if (currentHit == 2 && hit == 2) // segundo ataque do combo simples
         {
             hitCounterText.text = "2 Hits";
             hitAdderText.text = "+50%";
@@ -127,7 +137,6 @@ public class BossScript : MonoBehaviour
         }
         else if (currentHit == 2 && hit == 4) // ataque forte finalizando combo duplo
         {
-            currentHit = 0; // zera pois hit 4 finaliza 
             hitCounterText.text = "2 Hits";
             hitAdderText.text = "+75%";
             bossLifeScript.UpdateLife(-1.75f);
@@ -141,7 +150,6 @@ public class BossScript : MonoBehaviour
         }
         else if (currentHit == 3 && hit == 4) // ataque duplo finalizando um combo triplo
         {
-            currentHit = 0; // zera pois hit 4 finaliza 
             hitCounterText.text = "3 Hits";
             hitAdderText.text = "+100%";
             bossLifeScript.UpdateLife(-2f);
@@ -149,7 +157,6 @@ public class BossScript : MonoBehaviour
 
         if (currentHit == 4) // ataque duplo finalizando combo quadruplo
         {
-            currentHit = 0; // zera pois hit 4 finaliza 
             hitCounterText.text = "4 Hits";
             hitAdderText.text = "+150%";
             bossLifeScript.UpdateLife(-2.5f);
