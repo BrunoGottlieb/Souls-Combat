@@ -31,6 +31,10 @@ public class LifeBarScript : MonoBehaviour
     public Image bleedingBar;
     private float bleeding;
 
+    private bool SloDownTime;
+    private float journeyLength = 15;
+    private float startTime = -1;
+
     private void Start()
     {
         estusFlaskText.text = estusFlask.ToString();
@@ -43,6 +47,16 @@ public class LifeBarScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (SloDownTime && Time.timeScale > 0.5f) // player morreu, desacelerar o tempo
+        {
+            print("a");
+            if(startTime <= 0)
+                startTime = Time.time;
+            float distCovered = (Time.time - startTime) * 0.1f;
+            float fractionOfJourney = distCovered / journeyLength;
+            Time.timeScale = Mathf.Lerp(Time.timeScale, 0.5f, fractionOfJourney);   
+        }
+
         if (life > ghost) // caso a vida seja maior que o ghost, ambos passam a ter o mesmo tamanho
         {
             ghost = life;
@@ -124,6 +138,7 @@ public class LifeBarScript : MonoBehaviour
         youDiedScreen.SetActive(true); // ativa a tela final
         girlAnim.gameObject.GetComponent<IKFootPlacement>().SetIntangibleOn();
         bleedingParent.SetActive(false); // tira o bleeding para ele não ficar na frente da escrita
+        //SloDownTime = true;
     }
 
     public bool IsDead()

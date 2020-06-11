@@ -42,6 +42,9 @@ public class GameManagerScript : MonoBehaviour
     public CanvasGroup transitionFade;
     private bool restarting;
 
+    // pause screen
+    public GameObject pauseScreen;
+
     private void Awake()
     {
         SetEnvironmentLighting(); // seta todas as configuracoes de cena dependendo do modo escolhido
@@ -147,9 +150,17 @@ public class GameManagerScript : MonoBehaviour
 
         if (InputManager.GetPauseInput() && !restarting)
         {
-            Time.timeScale = Time.timeScale == 1? Time.timeScale = 0 : Time.timeScale = 1;
-            //Time.timeScale = 0.1f;
+            PauseManager();
         }
+    }
+
+    private void PauseManager()
+    {
+        if(!pauseScreen.activeSelf) // Ativa a tela de pause
+            pauseScreen.SetActive(true);
+
+
+        //Time.timeScale = Time.timeScale == 1 ? Time.timeScale = 0 : Time.timeScale = 1;
     }
 
     IEnumerator TransitionFadeIn()

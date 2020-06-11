@@ -10,6 +10,7 @@ public class BossAttacks : MonoBehaviour
 {
     [Header("Control")]
     public bool AI; // comanda se a inteligencia artificial estara ativada ou nao
+    public bool debug; // comanda se o debug da AI aparecera na tela
 
     [Header("References")]
     public Transform model; // boneco do boss
@@ -72,12 +73,14 @@ public class BossAttacks : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Keypad0)) AI = !AI;
+        brainIcon.gameObject.SetActive(AI); // icone que indica se a AI esta ativada ou nao
 
         distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
 
         this.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
 
-        DebugUI(); // indicadores no canvas
+        if(debug)
+            DebugUI(); // indicadores no canvas
 
         if (distance < 15 && !anim.GetBool("Equipped")) // pega a GreatSword quando o player chegar
         {
@@ -114,7 +117,6 @@ public class BossAttacks : MonoBehaviour
         damageDebug.text = greatSword.damageAmount.ToString();
         bossAttackingDebug.gameObject.SetActive(anim.GetBool("Attacking"));
         bossMovingDebug.gameObject.SetActive(action == "Move");
-        brainIcon.gameObject.SetActive(AI); // icone que indica se a AI esta ativada ou nao
         distanceDebug.text = distance.ToString("0.0"); // mostra a distancia no debug
         if (distance <= nearValue) distanceDebug.color = nearColor;
         else if (distance >= farValue) distanceDebug.color = farColor;
