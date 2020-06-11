@@ -11,6 +11,8 @@ public class GirlScript : MonoBehaviour
     public Transform targetLock;
     public GameObject estusFlask;
     public GameObject healEffect;
+    public GameObject bloodPrefab;
+    public Transform bloodPos;
     public Transform boss;
     public Animator bossAnim;
 
@@ -213,7 +215,7 @@ public class GirlScript : MonoBehaviour
 
     private void EstusFlask()
     {
-        if (InputManager.GetEstusInput() && !anim.GetBool("Drinking"))
+        if (InputManager.GetEstusInput() && !anim.GetBool("Drinking") && !anim.GetBool("Dodging"))
         {
             anim.SetTrigger("Drink");
             estusFlask.SetActive(true);
@@ -224,7 +226,7 @@ public class GirlScript : MonoBehaviour
     IEnumerator DrinkEstus()
     {
         yield return new WaitForSeconds(1f);
-        if (/*anim.GetCurrentAnimatorStateInfo(2).IsName("None") &&*/ lifeBarScript.estusFlask > 0) // confere se o jogador ainda tem estus flask
+        if (/*anim.GetCurrentAnimatorStateInfo(2).IsName("None") &&*/ lifeBarScript.estusFlask > 0 && !anim.GetBool("Dead")) // confere se o jogador ainda tem estus flask
         {
             lifeBarScript.UpdateLife(3);
             Instantiate(healEffect, model.position, Quaternion.identity, model.transform);
@@ -295,6 +297,10 @@ public class GirlScript : MonoBehaviour
         lifeBarScript.UpdateLife(-damageAmount); // diminui a quantia de dano na vida
         DamageAnimation(damageAmount);
         shaker.ShakeCamera(0.3f);
+
+        GameObject blood = Instantiate(bloodPrefab, bloodPos.position, Quaternion.identity);
+        blood.transform.LookAt(boss.position);
+        Destroy(blood, 0.2f);
     }
 
     private void DamageAnimation(float damageAmount)

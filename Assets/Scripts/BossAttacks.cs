@@ -250,9 +250,7 @@ public class BossAttacks : MonoBehaviour
 
     private void SlowBossDown()
     {
-        anim.SetFloat("Vertical", Mathf.Lerp(anim.GetFloat("Vertical"), 0, 1 * Time.deltaTime));
-
-        if(anim.GetFloat("Vertical") <= 0.35f)
+        if (anim.GetFloat("Vertical") <= 0.25f)
         {
             slowDown = false;
             if (actionAfterSlowDown == "CallNextMove")
@@ -260,15 +258,19 @@ public class BossAttacks : MonoBehaviour
                 action = "Wait";
                 anim.SetFloat("Vertical", 0);
                 StartCoroutine(WaitAfterNearMove());
-            } 
+            }
             else if (actionAfterSlowDown == "FarAttack")
             {
                 action = "FarAttack";
-            } 
+            }
             else
             {
                 Debug.LogError("Not supposed to be here");
             }
+        }
+        else
+        {
+            anim.SetFloat("Vertical", Mathf.Lerp(anim.GetFloat("Vertical"), 0, 1 * Time.deltaTime));
         }
     }
 
@@ -378,12 +380,8 @@ public class BossAttacks : MonoBehaviour
         {
             if (!anim.GetBool("TakingDamage"))
             {
-                print("Posso atacar");
                 NearAttack(); // executa um ataque de curta distancia
-            } else
-            {
-                print("Nao posso atacar");
-            }
+            } 
         }
     }
 

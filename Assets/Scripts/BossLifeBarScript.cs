@@ -125,7 +125,7 @@ public class BossLifeBarScript : MonoBehaviour
         Instantiate(winEffect, bossAnim.gameObject.transform.position + offset, quaternion.identity); // efeito de onda de choque
         winnerScreen.SetActive(true); // escrita de sucesso
         bonfire.SetActive(true); // ativa o bonfire
-        bossAnim.gameObject.GetComponent<BoxCollider>().isTrigger = true; // desativa o collider do boss depois que ele morre
+        bossAnim.gameObject.GetComponent<CapsuleCollider>().isTrigger = true; // desativa o collider do boss depois que ele morre
         this.gameObject.SetActive(false); // desativa a barra de vida
     }
 

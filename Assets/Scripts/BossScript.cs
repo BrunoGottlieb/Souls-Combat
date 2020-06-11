@@ -18,6 +18,8 @@ public class BossScript : MonoBehaviour
     public BossLifeBarScript bossLifeScript;
 
     public GameObject hitCounterParent;
+    public GameObject bloodPrefab;
+    public Transform bloodPos;
 
     private float lastDamageTakenTime = 0;
 
@@ -68,6 +70,10 @@ public class BossScript : MonoBehaviour
             StartCoroutine(ShowHitCounter()); // exibe informacao sobre o dano
             if (!anim.GetBool("TakingDamage") && !anim.GetBool("Attacking") && anim.GetBool("NotAttacking")) // caso ja nao esteja tocando a animacao de dano
                 anim.SetTrigger("TakeDamage"); // animacao de dano
+
+            GameObject blood = Instantiate(bloodPrefab, bloodPos.position, Quaternion.identity);
+            blood.transform.LookAt(player.position);
+            Destroy(blood, 0.2f);
         }
     }
 
