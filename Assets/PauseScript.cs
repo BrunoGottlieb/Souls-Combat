@@ -11,6 +11,7 @@ public class PauseScript : MonoBehaviour
     private Animator anim;
     private bool lerpDone;
     public AudioSource transitionSource;
+    public AudioSource selectSource;
 
     [Header("Configuration Screen")]
     public GameObject configurationScreen;
@@ -41,6 +42,7 @@ public class PauseScript : MonoBehaviour
 
     public void CloseMenu()
     {
+        selectSource.Play();
         anim.SetTrigger("Close");
         transitionSource.Play();
         StartCoroutine(BlurLerpOff(1.5f));
@@ -81,18 +83,21 @@ public class PauseScript : MonoBehaviour
 
     public void OpenConfigurationScreen()
     {
+        selectSource.Play();
         configurationScreen.SetActive(true);
         transitionSource.Play();
     }
 
     public void OpenAchievementsScreen()
     {
+        selectSource.Play();
         achievementScreen.SetActive(true);
         transitionSource.Play();
     }
 
     public void ExitBtn() // Chamado ao clicar no botao de Exit Game
     {
+        selectSource.Play();
         transitionSource.Play();
         confirmationScreen.SetActive(true);
     }

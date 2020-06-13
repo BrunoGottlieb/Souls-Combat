@@ -59,7 +59,7 @@ public class GirlSoundsScript : MonoBehaviour
         {
             //if (!footSource.isPlaying)
             {
-                if(rayCaster.IamOver == "Sand")
+                if(!rayCaster.gameObject.activeSelf || rayCaster.IamOver == "Sand")
                 {
                     footSource.PlayOneShot(footStepSand[Random.Range(0, footStepSand.Length)]);
                 }

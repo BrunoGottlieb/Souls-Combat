@@ -18,7 +18,7 @@ public class MainMenuScript : MonoBehaviour
     public GameObject tutorial;
 
     [Header("Audio")]
-    public AudioSource ClickSound;
+    public AudioSource startSound;
 
     private bool pressedAnyBtn;
 
@@ -64,7 +64,7 @@ public class MainMenuScript : MonoBehaviour
 
     IEnumerator FadeStartButton()
     {
-        ClickSound.Play();
+        startSound.Play();
         while (pressAnyBtnCanvasGroup.alpha > 0)
         {
             pressAnyBtnCanvasGroup.alpha -= 0.05f;

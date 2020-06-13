@@ -42,6 +42,7 @@ public class ButtonScript : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     public void MyToggleMethod() // metodo chamado quando o valor do toggle eh alterado
     {
         if (!Application.isPlaying) return;
+        pressedBtnSource.Play();
         PlayerPrefs.SetInt(playerPrefName, this.GetComponent<Toggle>().isOn ? 1 : 0);
         if(gameManager == null) gameManager = GameObject.FindGameObjectWithTag("GameManager");
         gameManager.GetComponent<GameManagerScript>().CheckForChanges(); // aplica as mudancas

@@ -42,6 +42,7 @@ public class GameManagerScript : MonoBehaviour
     [HideInInspector]
     public Material objectsMaterial; // recebe o material que esta sendo usado
     public GameObject stonesOnGround; // pedras que ficam no chao da dust mode
+    public GameObject raycaster; // desativa junto com as pedras no chao
     public GameObject destructibleObjects; // objetos do cenario
     public GameObject FPSCounter; // contador de FPS
 
@@ -99,7 +100,7 @@ public class GameManagerScript : MonoBehaviour
         } 
         else if (PlayerPrefs.GetInt("IsMusicOn") == 1)
         {
-            musicSource.volume = 1;
+            musicSource.volume = 0.7f;
         }
 
     }
@@ -114,7 +115,7 @@ public class GameManagerScript : MonoBehaviour
         if (!PlayerPrefs.HasKey("IsScenaryOn")) PlayerPrefs.SetInt("IsScenaryOn", 1);
         if (!PlayerPrefs.HasKey("StonesOnGround")) PlayerPrefs.SetInt("StonesOnGround", 1);
         if (!PlayerPrefs.HasKey("IsHighQualityOn")) PlayerPrefs.SetInt("IsHighQualityOn", 1);
-
+        /*
         print("IsObjectsOn: " + PlayerPrefs.GetInt("IsObjectsOn"));
         print("IsFPSOn: " + PlayerPrefs.GetInt("IsFPSOn"));
         print("IsMusicOn: " + PlayerPrefs.GetInt("IsMusicOn"));
@@ -123,7 +124,7 @@ public class GameManagerScript : MonoBehaviour
         print("IsScenaryOn: " + PlayerPrefs.GetInt("IsScenaryOn"));
         print("StonesOnGround: " + PlayerPrefs.GetInt("StonesOnGround"));
         print("IsHighQualityOn: " + PlayerPrefs.GetInt("IsHighQualityOn"));
-
+        */
         isObjectsOn = PlayerPrefs.GetInt("IsObjectsOn") == 1 ? true : false;
         showFPS = PlayerPrefs.GetInt("IsFPSOn") == 1 ? true : false;
         music = PlayerPrefs.GetInt("IsMusicOn") == 1 ? true : false;
@@ -274,11 +275,13 @@ public class GameManagerScript : MonoBehaviour
         if (PlayerPrefs.GetInt("StonesOnGround") == 1)
         {
             stonesOnGround.SetActive(true);
+            raycaster.SetActive(true);
             isStonesOnGroundOn = true;
         }
         else
         {
             stonesOnGround.SetActive(false);
+            raycaster.SetActive(false);
             isStonesOnGroundOn = false;
         }
     }

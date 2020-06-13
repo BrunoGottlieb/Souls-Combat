@@ -133,7 +133,8 @@ public class BossLifeBarScript : MonoBehaviour
     {
         yield return new WaitForSeconds(0.25f);
         musicSource.volume -= 0.225f;
-        StartCoroutine(FadeMusic());
+        if(musicSource.volume > 0)
+            StartCoroutine(FadeMusic());
     }
 
 }
