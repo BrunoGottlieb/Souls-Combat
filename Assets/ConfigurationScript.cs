@@ -6,23 +6,30 @@ public class ConfigurationScript : MonoBehaviour
 {
     public GameObject pauseMenuzinho;
     public GameObject insideContent;
+    public GameObject continueBtn;
     public AudioSource transitionSource;
     private bool closing = false;
 
     private void OnEnable()
     {
+        closing = false;
         insideContent.SetActive(false);
         pauseMenuzinho.SetActive(false);
+        continueBtn.SetActive(false);
     }
 
     private void EnableInsideContent()
     {
-        if(!closing)
+        if (!closing)
+        {
             insideContent.SetActive(true);
+            continueBtn.SetActive(true);
+        }
         else
         {
             insideContent.SetActive(false);
             StartCoroutine(DisableConfigScreen());
+            closing = false;
         }
     }
 

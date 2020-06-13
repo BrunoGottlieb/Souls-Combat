@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class ButtonScript : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private EventSystem eventSystem; // referencia ao event system
+    private GameObject gameManager; // referencia ao GameManager para ser usado pelos toggles
     private Animator anim;
 
     [Header("Audio")]
@@ -26,6 +27,7 @@ public class ButtonScript : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     private void Start()
     {
         eventSystem = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
+        gameManager = GameObject.FindGameObjectWithTag("GameManager");
         anim = this.GetComponent<Animator>();
     }
 
@@ -35,6 +37,14 @@ public class ButtonScript : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
         {
             this.GetComponent<Toggle>().isOn = PlayerPrefs.GetInt(playerPrefName) == 1 ? true : false;
         }
+    }
+
+    public void MyToggleMethod() // metodo chamado quando o valor do toggle eh alterado
+    {
+        if (!Application.isPlaying) return;
+        PlayerPrefs.SetInt(playerPrefName, this.GetComponent<Toggle>().isOn ? 1 : 0);
+        if(gameManager == null) gameManager = GameObject.FindGameObjectWithTag("GameManager");
+        gameManager.GetComponent<GameManagerScript>().CheckForChanges(); // aplica as mudancas
     }
 
     public void OnSelect(BaseEventData eventData)

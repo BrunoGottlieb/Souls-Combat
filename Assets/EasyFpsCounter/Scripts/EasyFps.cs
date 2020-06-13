@@ -56,6 +56,9 @@ public class EasyFps : MonoBehaviour {
         txt = transform.Find("Text").GetComponent<Text>();                         // COMMENT THIS LINE
         //txt = transform.Find("Text").GetComponent<TMPro.TextMeshPro>();         // UNCOMMENT THIS LINE
 
+        if (PlayerPrefs.GetInt("IsVSyncOn") == 1) maxFR = 60;
+        else maxFR = 700;
+
         if (ncm == true)
         {
             mx = maxFR;

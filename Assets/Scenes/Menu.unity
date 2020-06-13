@@ -3330,6 +3330,8 @@ MonoBehaviour:
   selectedBtnSource: {fileID: 1148385288984200817}
   screenBeforeTransition: {fileID: 1148385288047634976}
   screenAfterTransition: {fileID: 2017740269}
+  iAmToggle: 0
+  playerPrefName: 
 --- !u!95 &1818670915
 Animator:
   serializedVersion: 3
@@ -3808,7 +3810,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2017740270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4055,6 +4057,8 @@ MonoBehaviour:
   selectedBtnSource: {fileID: 1148385288984200817}
   screenBeforeTransition: {fileID: 1148385288667810319}
   screenAfterTransition: {fileID: 1146535875}
+  iAmToggle: 0
+  playerPrefName: 
 --- !u!95 &2141555220
 Animator:
   serializedVersion: 3
@@ -4475,6 +4479,8 @@ MonoBehaviour:
   selectedBtnSource: {fileID: 1148385288984200817}
   screenBeforeTransition: {fileID: 0}
   screenAfterTransition: {fileID: 0}
+  iAmToggle: 0
+  playerPrefName: 
 --- !u!1 &1148385287048369556
 GameObject:
   m_ObjectHideFlags: 0
@@ -4490,7 +4496,7 @@ GameObject:
   - component: {fileID: 1148385287048369545}
   - component: {fileID: 1148385287048369546}
   m_Layer: 5
-  m_Name: System
+  m_Name: Achievements
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5634,6 +5640,8 @@ MonoBehaviour:
   selectedBtnSource: {fileID: 1148385288984200817}
   screenBeforeTransition: {fileID: 0}
   screenAfterTransition: {fileID: 0}
+  iAmToggle: 0
+  playerPrefName: 
 --- !u!1 &1148385287490266098
 GameObject:
   m_ObjectHideFlags: 0
@@ -6747,6 +6755,8 @@ MonoBehaviour:
   selectedBtnSource: {fileID: 1148385288984200817}
   screenBeforeTransition: {fileID: 1148385288703037906}
   screenAfterTransition: {fileID: 1148385288602715638}
+  iAmToggle: 0
+  playerPrefName: 
 --- !u!1 &1148385287820783923
 GameObject:
   m_ObjectHideFlags: 0
@@ -6913,6 +6923,8 @@ MonoBehaviour:
   selectedBtnSource: {fileID: 1148385288984200817}
   screenBeforeTransition: {fileID: 0}
   screenAfterTransition: {fileID: 0}
+  iAmToggle: 0
+  playerPrefName: 
 --- !u!1 &1148385287848630827
 GameObject:
   m_ObjectHideFlags: 0
@@ -7276,6 +7288,8 @@ MonoBehaviour:
   selectedBtnSource: {fileID: 1148385288984200817}
   screenBeforeTransition: {fileID: 1146535875}
   screenAfterTransition: {fileID: 1148385288667810319}
+  iAmToggle: 0
+  playerPrefName: 
 --- !u!1 &1148385288040434180
 GameObject:
   m_ObjectHideFlags: 0
@@ -8029,7 +8043,7 @@ GameObject:
   - component: {fileID: 1148385288443968556}
   - component: {fileID: 1148385288443968555}
   m_Layer: 5
-  m_Name: System Text
+  m_Name: Achievements
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8085,7 +8099,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: System
+  m_Text: Achievements
 --- !u!222 &1148385288443968556
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8804,6 +8818,8 @@ MonoBehaviour:
   selectedBtnSource: {fileID: 1148385288984200817}
   screenBeforeTransition: {fileID: 1148385288602715638}
   screenAfterTransition: {fileID: 1148385288703037906}
+  iAmToggle: 0
+  playerPrefName: 
 --- !u!1 &1148385288886381244
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,7 +16,13 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
-        if (GameManagerScript.gameIsPaused) return;
+        if (GameManagerScript.gameIsPaused)
+        {
+            freeLookCam.m_YAxis.m_InputAxisValue = 0;
+            freeLookCam.m_XAxis.m_InputAxisValue = 0;
+            lockedCam.m_YAxis.m_InputAxisValue = 0;
+            return;
+        }
 
         float y_input = Input.GetAxis("Mouse Y") + Input.GetAxis("Right Stick Y");
         float x_input = Input.GetAxis("Mouse X") + Input.GetAxis("Right Stick X");
