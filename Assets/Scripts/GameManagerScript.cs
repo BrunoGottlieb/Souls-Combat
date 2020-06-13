@@ -252,7 +252,7 @@ public class GameManagerScript : MonoBehaviour
     public void CheckMusicState() // chamado pelo botao na tela de configuracoes
     {
         if (!Application.isPlaying) return;
-        if (PlayerPrefs.GetInt("IsMusicOn") == 1 && !musicSource.isPlaying)
+        if (PlayerPrefs.GetInt("IsMusicOn") == 1 && !musicSource.isPlaying && gameHasStarted)
         {
             musicSource.Play();
         }

@@ -35,6 +35,7 @@ public class LifeBarScript : MonoBehaviour
     private float journeyLength = 15;
     private float startTime = -1;
 
+    public GameObject deathCounter;
     public GameManagerScript gameManager; // usado para reiniciar depois de morrer
 
     private void Start()
@@ -141,11 +142,21 @@ public class LifeBarScript : MonoBehaviour
         girlAnim.gameObject.GetComponent<IKFootPlacement>().SetIntangibleOn();
         bleedingParent.SetActive(false); // tira o bleeding para ele não ficar na frente da escrita
         //SloDownTime = true;
+        StartCoroutine(ShowDeathCounter());
 
         if (gameManager.isAutoRestartOn)
         {
             StartCoroutine(WaitToRestart());
         }
+    }
+
+    IEnumerator ShowDeathCounter()
+    {
+        yield return new WaitForSeconds(0.5f);
+        int deathNum = PlayerPrefs.GetInt("DeathCount") + 1;
+        PlayerPrefs.SetInt("DeathCount", deathNum);
+        deathCounter.SetActive(true); // exibe o contador de mortes
+        deathCounter.GetComponentInChildren<Text>().text = deathNum.ToString();
     }
 
     IEnumerator WaitToRestart()

@@ -6,6 +6,8 @@ public class PauseScript : MonoBehaviour
 {
     public Material blur;
     public GameObject insideMenuzinho;
+    public GameObject confirmationScreen;
+    public GameObject achievementScreen;
     private Animator anim;
     private bool lerpDone;
     public AudioSource transitionSource;
@@ -81,6 +83,23 @@ public class PauseScript : MonoBehaviour
     {
         configurationScreen.SetActive(true);
         transitionSource.Play();
+    }
+
+    public void OpenAchievementsScreen()
+    {
+        achievementScreen.SetActive(true);
+        transitionSource.Play();
+    }
+
+    public void ExitBtn() // Chamado ao clicar no botao de Exit Game
+    {
+        transitionSource.Play();
+        confirmationScreen.SetActive(true);
+    }
+
+    public void Exit() // Realmente sai do jogo
+    {
+        Application.Quit();
     }
 
 }
