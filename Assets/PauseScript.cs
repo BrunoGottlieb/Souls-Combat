@@ -5,23 +5,27 @@ using UnityEngine;
 public class PauseScript : MonoBehaviour
 {
     public Material blur;
-    public GameObject menuzinho;
+    public GameObject insideMenuzinho;
     private Animator anim;
     private bool lerpDone;
-    private float enabledTime;
+    public AudioSource transitionSource;
+
+    [Header("Configuration Screen")]
+    public GameObject configurationScreen;
 
     void Start()
     {
-        anim = this.GetComponent<Animator>();
-        print("Start");
+        anim = insideMenuzinho.transform.parent.GetComponent<Animator>();
     }
 
     private void OnEnable()
     {
-        print("Enable");
+        transitionSource.Play();
+        GameManagerScript.gameIsPaused = true;
+        GameManagerScript.HideCursor(false);
         lerpDone = false;
+        insideMenuzinho.SetActive(false);
         StartCoroutine(BlurLerpOn(0));
-        enabledTime = Time.time;
     }
 
     // Update is called once per frame
@@ -29,14 +33,15 @@ public class PauseScript : MonoBehaviour
     {
         if (InputManager.GetPauseInput() && lerpDone)
         {
-            anim.SetTrigger("Close");
-            StartCoroutine(BlurLerpOff(1.5f));
+            CloseMenu();
         }
+    }
 
-        if (Time.time - enabledTime >= 0.4f)
-        {
-            menuzinho.SetActive(true);
-        }
+    public void CloseMenu()
+    {
+        anim.SetTrigger("Close");
+        transitionSource.Play();
+        StartCoroutine(BlurLerpOff(1.5f));
     }
 
     IEnumerator BlurLerpOn(float value)
@@ -45,6 +50,7 @@ public class PauseScript : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         if(value < 1.5f)
         {
+            if(value < 0.5f) insideMenuzinho.SetActive(true);
             StartCoroutine(BlurLerpOn(value + 0.25f));
         } else
         {
@@ -54,17 +60,27 @@ public class PauseScript : MonoBehaviour
 
     IEnumerator BlurLerpOff(float value)
     {
-        menuzinho.SetActive(false);
         blur.SetFloat("_Size", value);
         yield return new WaitForSeconds(0.1f);
         if (value > 0)
         {
+            if (value > 0.5f) insideMenuzinho.SetActive(false);
             StartCoroutine(BlurLerpOff(value - 0.25f));
         }
         else
         {
+            GameManagerScript.HideCursor(true);
+            GameManagerScript.gameIsPaused = false;
             this.gameObject.SetActive(false);
         }
+    }
+
+    // Configuration Screen
+
+    public void OpenConfigurationScreen()
+    {
+        configurationScreen.SetActive(true);
+        transitionSource.Play();
     }
 
 }

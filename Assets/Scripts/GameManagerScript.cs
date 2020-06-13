@@ -4,13 +4,25 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
+using System.Runtime.InteropServices;
+using System;
 
 public class GameManagerScript : MonoBehaviour
 {
+    [DllImport("user32.dll")]
+    static extern bool SetCursorPos(int X, int Y);
+
     // Control
     public bool music; // booleana que decide se havera musica ou nao
     public bool isScenaryOn; // booleana que decide se sera o modo default ou o completo
+    private bool isStonesOnGroundOn; // booleana que decide se havera pedras no chao do cenario da dust
+    private bool isHighQualityOn; // booleana que decide se o jogo estara no ultra
+    private bool isVSyncOn; // booleana que decide se o VSync estara ligado ou nao
+    private bool isObjectsOn; // booleana que decide se terao objetos no cenario
+    private bool showFPS; // booleana que decide se o contador de FPS sera exibido ou nao
     public static bool gameHasStarted; // controla se o jogo ja iniciou, para que o personagem nao possa se mover antes da hora
+    [HideInInspector]
+    public bool isAutoRestartOn; // booleana que decide se o jogo se reinicia sozinho apos o jogador morrer
 
     public AudioSource musicSource; // source que tocara a musica do jogo
     public AudioSource windSource; // som do vento antes de comecar a musica
@@ -25,6 +37,9 @@ public class GameManagerScript : MonoBehaviour
     public GameObject[] scenaryObjects;
     [HideInInspector]
     public Material objectsMaterial; // recebe o material que esta sendo usado
+    public GameObject stonesOnGround; // pedras que ficam no chao da dust mode
+    public GameObject destructibleObjects; // objetos do cenario
+    public GameObject FPSCounter; // contador de FPS
 
     // Lightining Settings
     public Color skyColor; // gradiente do modo default
@@ -44,6 +59,7 @@ public class GameManagerScript : MonoBehaviour
 
     // pause screen
     public GameObject pauseScreen;
+    public static bool gameIsPaused = false;
 
     private void Awake()
     {
@@ -55,13 +71,60 @@ public class GameManagerScript : MonoBehaviour
     {
         StartCoroutine(TransitionFadeOut());
 
-        HideCursor();
+        SetGameStart();
 
-        if (!music)
+    }
+
+    void Update()
+    {
+        if (InputManager.GetRestartInput() && !restarting && !gameIsPaused)
         {
-            musicSource.Stop();
-            windSource.Stop();
+            Restart();
         }
+
+        if (InputManager.GetPauseInput() && !restarting)
+        {
+            PauseManager();
+        }
+
+    }
+
+    private void SetGameStart()
+    {
+        HideCursor(true);
+
+        if (!PlayerPrefs.HasKey("IsObjectsOn")) PlayerPrefs.SetInt("IsObjectsOn", 1);
+        if (!PlayerPrefs.HasKey("IsFPSOn")) PlayerPrefs.SetInt("IsFPSOn", 0);
+        if (!PlayerPrefs.HasKey("IsMusicOn")) PlayerPrefs.SetInt("IsMusicOn", 1);
+        if (!PlayerPrefs.HasKey("AutoRestart")) PlayerPrefs.SetInt("AutoRestart", 0);
+        if (!PlayerPrefs.HasKey("IsVSyncOn")) PlayerPrefs.SetInt("IsVSyncOn", 0);
+        if (!PlayerPrefs.HasKey("IsScenaryOn")) PlayerPrefs.SetInt("IsScenaryOn", 1);
+        if (!PlayerPrefs.HasKey("StonesOnGround")) PlayerPrefs.SetInt("StonesOnGround", 1);
+        if (!PlayerPrefs.HasKey("IsHighQualityOn")) PlayerPrefs.SetInt("IsHighQualityOn", 1);
+
+
+        isObjectsOn = PlayerPrefs.GetInt("IsObjectsOn") == 1 ? true : false;
+        showFPS = PlayerPrefs.GetInt("IsFPSOn") == 1 ? true : false;
+        music = PlayerPrefs.GetInt("IsMusicOn") == 1 ? true : false;
+        isAutoRestartOn = PlayerPrefs.GetInt("AutoRestart") == 1 ? true : false;
+        isVSyncOn = PlayerPrefs.GetInt("IsVSyncOn") == 1 ? true : false;
+        isScenaryOn = PlayerPrefs.GetInt("IsScenaryOn") == 1 ? true : false;
+        isStonesOnGroundOn = PlayerPrefs.GetInt("StonesOnGround") == 1? true : false;
+        isHighQualityOn = PlayerPrefs.GetInt("IsHighQualityOn") == 1 ? true : false;
+
+        ApplyDesctructibleObjetcsState();
+        ApplyFPSState();
+        ApplyMusicState();
+        ApplyVSyncState();
+        SetEnvironmentLighting();
+        ApplyStonesOnGroundState();
+        ApplyHighQualityState();
+    }
+
+    public void Restart()
+    {
+        restarting = true;
+        StartCoroutine(TransitionFadeIn());
     }
 
     IEnumerator TransitionFadeOut()
@@ -76,10 +139,20 @@ public class GameManagerScript : MonoBehaviour
         transitionFade.gameObject.SetActive(false);
     }
 
-    public void HideCursor()
+    public static void HideCursor(bool b)
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        if (b) // hide
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else // visible
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            int xPos = Screen.width/2, yPos = Screen.height/3;
+            SetCursorPos(xPos, yPos);//Call this when you want to set the mouse position
+        }
     }
 
     private void DeliverObjectsMaterials()
@@ -117,6 +190,7 @@ public class GameManagerScript : MonoBehaviour
             colorGradingLayer.mixerRedOutRedIn.value = 100f;
             colorGradingLayer.mixerBlueOutRedIn.value = -150f;
             colorGradingLayer.mixerGreenOutRedIn.value = 40f;
+            PlayerPrefs.SetInt("IsScenaryOn", 1);
         }
         else // DEFAULT MODE
         {
@@ -135,30 +209,18 @@ public class GameManagerScript : MonoBehaviour
             colorGradingLayer.mixerRedOutRedIn.value = 100f;
             colorGradingLayer.mixerBlueOutRedIn.value = 0f;
             colorGradingLayer.mixerGreenOutRedIn.value = 0f;
+            PlayerPrefs.SetInt("IsScenaryOn", 0);
         }
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (InputManager.GetRestartInput() && !restarting)
-        {
-            restarting = true;
-            StartCoroutine(TransitionFadeIn());
-        }
-
-        if (InputManager.GetPauseInput() && !restarting)
-        {
-            PauseManager();
-        }
     }
 
     private void PauseManager()
     {
-        if(!pauseScreen.activeSelf) // Ativa a tela de pause
+        if (!pauseScreen.activeSelf) // Ativa a tela de pause
+        {
+            HideCursor(true);
             pauseScreen.SetActive(true);
-
+        }
 
         //Time.timeScale = Time.timeScale == 1 ? Time.timeScale = 0 : Time.timeScale = 1;
     }
@@ -178,6 +240,147 @@ public class GameManagerScript : MonoBehaviour
     public void BeginMusic()
     {
         if(music) musicSource.Play();
+    }
+
+    // Configuration
+
+    public void ChangeMusicState() // chamado pelo botao na tela de configuracoes
+    {
+        music = !music;
+        ApplyMusicState();
+    }
+
+    public void ChangeScenaryState()
+    {
+        isScenaryOn = !isScenaryOn;
+        SetEnvironmentLighting();
+    }
+
+    public void ChangeStonesOnGroundState()
+    {
+        isStonesOnGroundOn = !isStonesOnGroundOn;
+        ApplyStonesOnGroundState();
+    }
+
+    public void ChangeHighQualityState()
+    {
+        isHighQualityOn = !isHighQualityOn;
+        ApplyHighQualityState();
+    }
+
+    public void ChangeVSyncState()
+    {
+        isVSyncOn = !isVSyncOn;
+        ApplyVSyncState();
+    }
+
+    public void ChangeShowFPSState()
+    {
+        showFPS = !showFPS;
+        ApplyFPSState();
+    }
+
+    public void ChangeDesctructibleObjetcsState()
+    {
+        isObjectsOn = !isObjectsOn;
+        ApplyDesctructibleObjetcsState();
+    }
+
+    public void ChangeAutoRestartState()
+    {
+        isAutoRestartOn = !isAutoRestartOn;
+        if (isAutoRestartOn)
+        {
+            PlayerPrefs.SetInt("AutoRestart", 1);
+        } 
+        else
+        {
+            PlayerPrefs.SetInt("AutoRestart", 0);
+        }
+    }
+
+    private void ApplyDesctructibleObjetcsState()
+    {
+        if (isObjectsOn)
+        {
+            destructibleObjects.SetActive(true);
+            PlayerPrefs.SetInt("IsObjectsOn", 1);
+        }
+        else
+        {
+            destructibleObjects.SetActive(false);
+            PlayerPrefs.SetInt("IsObjectsOn", 0);
+        }
+    }
+
+    private void ApplyMusicState()
+    {
+        if (music)
+        {
+            musicSource.Play();
+            PlayerPrefs.GetInt("IsMusicOn", 1);
+        }
+        else
+        {
+            musicSource.Stop();
+            PlayerPrefs.GetInt("IsMusicOn", 0);
+        }
+    }
+
+    private void ApplyFPSState()
+    {
+        if (showFPS)
+        {
+            FPSCounter.SetActive(true);
+            PlayerPrefs.SetInt("IsFPSOn", 1);
+        }
+        else
+        {
+            FPSCounter.SetActive(false);
+            PlayerPrefs.SetInt("IsFPSOn", 0);
+        }
+    }
+
+    private void ApplyVSyncState()
+    {
+        if (isVSyncOn)
+        {
+            QualitySettings.vSyncCount = 1;
+            PlayerPrefs.SetInt("IsVSyncOn", 1);
+        }
+        else
+        {
+            QualitySettings.vSyncCount = 0;
+            PlayerPrefs.SetInt("IsVSyncOn", 0);
+        }
+    }
+
+    private void ApplyStonesOnGroundState()
+    {
+        if (isStonesOnGroundOn)
+        {
+            stonesOnGround.SetActive(true);
+            PlayerPrefs.SetInt("StonesOnGround", 1);
+        }
+        else
+        {
+            stonesOnGround.SetActive(false);
+            PlayerPrefs.SetInt("StonesOnGround", 0);
+        }
+    }
+
+    private void ApplyHighQualityState()
+    {
+        if (isHighQualityOn)
+        {
+            QualitySettings.SetQualityLevel(5);
+            PlayerPrefs.SetInt("IsHighQualityOn", 1);
+        }
+        else
+        {
+            QualitySettings.SetQualityLevel(0);
+            PlayerPrefs.SetInt("IsHighQualityOn", 0);
+        }
     }
 
 }

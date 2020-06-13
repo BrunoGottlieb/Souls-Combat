@@ -4,11 +4,12 @@ using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class ButtonScript : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private EventSystem eventSystem; // referencia ao event system
-    //public UnityEvent onTransition;
+    private Animator anim;
 
     [Header("Audio")]
     public AudioSource pressedBtnSource; // source que toca o som de click
@@ -18,9 +19,22 @@ public class ButtonScript : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     public GameObject screenBeforeTransition;
     public GameObject screenAfterTransition;
 
+    [Header("Toggle")]
+    public bool iAmToggle;
+    public string playerPrefName;
+
     private void Start()
     {
         eventSystem = GameObject.Find("EventSystem").GetComponent<UnityEngine.EventSystems.EventSystem>();
+        anim = this.GetComponent<Animator>();
+    }
+
+    private void OnEnable()
+    {
+        if (iAmToggle) // controla se o toggle esta ligado ou desligado, caso ele seja um
+        {
+            this.GetComponent<Toggle>().isOn = PlayerPrefs.GetInt(playerPrefName) == 1 ? true : false;
+        }
     }
 
     public void OnSelect(BaseEventData eventData)
@@ -37,6 +51,7 @@ public class ButtonScript : MonoBehaviour, ISelectHandler, IPointerEnterHandler,
     public void OnPointerExit(PointerEventData eventData)
     {
         eventSystem.SetSelectedGameObject(null);
+        anim.SetTrigger("Normal");
     }
 
     public void OnClickTransition()

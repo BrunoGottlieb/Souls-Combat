@@ -35,6 +35,8 @@ public class LifeBarScript : MonoBehaviour
     private float journeyLength = 15;
     private float startTime = -1;
 
+    public GameManagerScript gameManager; // usado para reiniciar depois de morrer
+
     private void Start()
     {
         estusFlaskText.text = estusFlask.ToString();
@@ -139,6 +141,17 @@ public class LifeBarScript : MonoBehaviour
         girlAnim.gameObject.GetComponent<IKFootPlacement>().SetIntangibleOn();
         bleedingParent.SetActive(false); // tira o bleeding para ele não ficar na frente da escrita
         //SloDownTime = true;
+
+        if (gameManager.isAutoRestartOn)
+        {
+            StartCoroutine(WaitToRestart());
+        }
+    }
+
+    IEnumerator WaitToRestart()
+    {
+        yield return new WaitForSeconds(2);
+        gameManager.Restart();
     }
 
     public bool IsDead()

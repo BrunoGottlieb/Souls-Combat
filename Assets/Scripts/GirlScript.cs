@@ -64,7 +64,7 @@ public class GirlScript : MonoBehaviour
 
         //if (anim.GetBool("Dead") || anim.GetCurrentAnimatorStateInfo(2).IsName("Sweep Fall") || anim.GetCurrentAnimatorStateInfo(2).IsName("Getting Thrown")) return; // retorna caso o jogador tenha caido ou esteja morto
 
-        if (insideAuraMagic) // caso esteja dentro da aura magica
+        if (insideAuraMagic || GameManagerScript.gameIsPaused) // caso esteja dentro da aura magica ou o jogo esteja com o menu de pause aberto
         {
             anim.SetFloat("Speed", 0);
             anim.SetFloat("Horizontal", 0);

@@ -16,6 +16,8 @@ public class CameraManager : MonoBehaviour
 
     void Update()
     {
+        if (GameManagerScript.gameIsPaused) return;
+
         float y_input = Input.GetAxis("Mouse Y") + Input.GetAxis("Right Stick Y");
         float x_input = Input.GetAxis("Mouse X") + Input.GetAxis("Right Stick X");
 
