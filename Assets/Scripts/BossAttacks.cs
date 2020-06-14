@@ -34,6 +34,7 @@ public class BossAttacks : MonoBehaviour
 
     [Header("Debug")]
     public GameObject brainIcon;
+    public GameObject waitingDebug;
     public Image bossAttackingDebug;
     public Image bossMovingDebug;
     public Text walkTimeDebug;
@@ -252,13 +253,14 @@ public class BossAttacks : MonoBehaviour
 
     private void SlowBossDown()
     {
-        if (anim.GetFloat("Vertical") <= 0.25f)
+        if (anim.GetFloat("Vertical") <= 0.35f)
         {
             slowDown = false;
             if (actionAfterSlowDown == "CallNextMove")
             {
                 action = "Wait";
                 anim.SetFloat("Vertical", 0);
+                anim.SetFloat("Horizontal", 0);
                 StartCoroutine(WaitAfterNearMove());
             }
             else if (actionAfterSlowDown == "FarAttack")
@@ -272,17 +274,26 @@ public class BossAttacks : MonoBehaviour
         }
         else
         {
-            anim.SetFloat("Vertical", Mathf.Lerp(anim.GetFloat("Vertical"), 0, 1 * Time.deltaTime));
+            anim.SetFloat("Vertical", Mathf.Lerp(anim.GetFloat("Vertical"), 0, 0.5f * Time.deltaTime));
         }
     }
 
     IEnumerator WaitAfterNearMove()
     {
-        int waitTime = 0;
-        int decision = Random.Range(0, 4); // probabilidade de 33% de que ele va esperar antes de atacar
-        if (decision == 0) waitTime = Random.Range(0, 3); // tempo de espera aleatorio
+        waitingDebug.SetActive(true);
+        float maxWaitTime = 3;
+        float possibility = 3;
+        if (anim.GetBool("Phase2"))
+        {
+            maxWaitTime = 1.5f;
+            possibility = 2;
+        }
+        float waitTime = 0;
+        float decision = Random.Range(0, possibility); // probabilidade de X % de que ele va esperar antes de atacar
+        if (decision == 0) waitTime = Random.Range(0.5f, maxWaitTime); // tempo de espera aleatorio
         else waitTime = 0;
         yield return new WaitForSeconds(waitTime); // espera o tempo decidido antes de atacar
+        waitingDebug.SetActive(false);
         CallNextMove();
     }
 
@@ -348,11 +359,11 @@ public class BossAttacks : MonoBehaviour
 
             if (rand % 2 == 0)
             {
-                FarAttack();
+                NearAttack();
             }
             else if (rand % 2 == 1)
             {
-                NearAttack();
+                FarAttack();
             }
         }
 
@@ -376,6 +387,7 @@ public class BossAttacks : MonoBehaviour
         {
             if (!anim.GetBool("TakingDamage"))
                 FarAttack(); // executa um unico ataque a longa distancia
+            else print("Esperar");
         }
 
         if(action == "NearAttack")
@@ -383,7 +395,8 @@ public class BossAttacks : MonoBehaviour
             if (!anim.GetBool("TakingDamage"))
             {
                 NearAttack(); // executa um ataque de curta distancia
-            } 
+            }
+            else print("Esperar");
         }
     }
 

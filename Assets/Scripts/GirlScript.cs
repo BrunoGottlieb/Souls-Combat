@@ -57,8 +57,8 @@ public class GirlScript : MonoBehaviour
 
         stickDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-        if (anim.GetBool("Equipped")) moveSpeed = 4; // velocidade com a espada
-        else moveSpeed = 5; // velocidade sem a espada
+        if (anim.GetBool("Equipped")) moveSpeed = 4.5f; // velocidade com a espada
+        else moveSpeed = 6; // velocidade sem a espada
 
         if (anim.GetBool("Drinking")) moveSpeed = 2; // velocidade bebendo estus
 
@@ -232,7 +232,7 @@ public class GirlScript : MonoBehaviour
             Instantiate(healEffect, model.position, Quaternion.identity, model.transform);
         }
         yield return new WaitForSeconds(0.5f);
-        estusFlask.SetActive(false);
+        //estusFlask.SetActive(false);
         yield return new WaitForSeconds(3f);
     }
 
