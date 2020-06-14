@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MainMenuScript : MonoBehaviour
 {
+    public GameObject canvas;
+
     [Header("Super Main Menu")]
     public GameObject pressAnyButton;
     private CanvasGroup pressAnyBtnCanvasGroup;
@@ -26,6 +29,8 @@ public class MainMenuScript : MonoBehaviour
     {
         GetReferences();
         SetObjects();
+        if(Camera.main.aspect > 2) // canvas para o ultra-wide
+            canvas.GetComponent<CanvasScaler>().referenceResolution = new Vector2(2560, 1080);
     }
     private void GetReferences()
     {
