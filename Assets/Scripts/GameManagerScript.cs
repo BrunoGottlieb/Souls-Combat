@@ -25,6 +25,7 @@ public class GameManagerScript : MonoBehaviour
     private bool isObjectsOn; // booleana que decide se terao objetos no cenario
     private bool showFPS; // booleana que decide se o contador de FPS sera exibido ou nao
     public static bool gameHasStarted; // controla se o jogo ja iniciou, para que o personagem nao possa se mover antes da hora
+    public static bool isBossDead; // indica se o boss esta morto
     [HideInInspector]
     public bool isAutoRestartOn; // booleana que decide se o jogo se reinicia sozinho apos o jogador morrer
 
@@ -80,6 +81,7 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         StartCoroutine(TransitionFadeOut());
+        isBossDead = false;
     }
 
     void Update()
@@ -100,7 +102,7 @@ public class GameManagerScript : MonoBehaviour
         {
             musicSource.volume = 0.2f;
         } 
-        else if (PlayerPrefs.GetInt("IsMusicOn") == 1)
+        else if (PlayerPrefs.GetInt("IsMusicOn") == 1 && !isBossDead)
         {
             musicSource.volume = 0.7f;
         }
@@ -359,6 +361,13 @@ public class GameManagerScript : MonoBehaviour
         {
             PlayerPrefs.SetInt("AutoRestart", 0);
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        Debug.Log("Application ending after " + Time.time + " seconds");
+        int totalTime = (int)(PlayerPrefs.GetInt("TotalTime") + Time.time); // Atualiza o tempo total
+        PlayerPrefs.SetInt("TotalTime", totalTime); // armazena o valor
     }
 
 }

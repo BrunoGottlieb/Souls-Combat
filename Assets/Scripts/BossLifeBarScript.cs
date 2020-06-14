@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Unity.Mathematics;
 using UnityEditor;
@@ -37,6 +38,7 @@ public class BossLifeBarScript : MonoBehaviour
 
     public AchievementManager achievementManager;
     public LifeBarScript playerLifeBarScript;
+    public GirlScript girlScript;
 
     private void Start()
     {
@@ -118,6 +120,7 @@ public class BossLifeBarScript : MonoBehaviour
         bossAnim.SetFloat("Vertical", 0); // para o movimento do boss
         bossAnim.SetFloat("Horizontal", 0); // para o movimento do boss
         StartCoroutine(AfterWin());
+        GameManagerScript.isBossDead = true; // seta o boss como morto, usado para parar a musica
     }
 
     public float GetBossLifeAmount() // retorna a quantia de vida do boss
@@ -139,6 +142,8 @@ public class BossLifeBarScript : MonoBehaviour
         achievementManager.TriggerDefeatBoss(); // achievement de vitoria
         if (playerLifeBarScript.GetNoDamageTaken()) achievementManager.TriggerNoDamageTaken(); // confere se venceu sem receber dano
         if (playerLifeBarScript.GetEstusFlaskAmount() == 5) achievementManager.TriggerNoHeals(); // confere se venceu sem receber dano
+        girlScript.DisableEstusFlask(); // desativa o estus para o player poder ascender o bonfire
+        musicSource.volume = 0; // assegura que nao havera mais musica
         this.gameObject.SetActive(false); // desativa a barra de vida
     }
 

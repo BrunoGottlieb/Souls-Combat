@@ -43,6 +43,7 @@ public class GirlScript : MonoBehaviour
     private bool isBonfireLit; // controla se o bonfire esta aceso
 
     public AchievementManager achievementManager;
+    public GameObject credits;
 
     void Start()
     {
@@ -50,12 +51,13 @@ public class GirlScript : MonoBehaviour
         mainCamera = Camera.main;
         capsuleCol = model.GetComponentInChildren<CapsuleCollider>();
         rb = this.GetComponent<Rigidbody>();
+        credits.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (!GameManagerScript.gameHasStarted) return; // retorna caso o jogo ainda nao tenha comecado
+        if (GameManagerScript.isBossDead) anim.SetBool("LockedCamera", false); // nao pode estar em modo de combate caso o boss esteja morto
 
         stickDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
@@ -85,6 +87,11 @@ public class GirlScript : MonoBehaviour
         Dodge();
     }
 
+    public void DisableEstusFlask() // metodo chamado apos o boss ser derrotado
+    {
+        estusFlask.SetActive(false);
+    }
+
     private void BonfireInteraction()
     {
         if (Vector3.Distance(model.transform.position, bonfire.position) < 2.5f && bonfire.gameObject.activeSelf)
@@ -95,6 +102,7 @@ public class GirlScript : MonoBehaviour
                 anim.SetTrigger("LightBonfire");
                 isBonfireLit = true;
                 achievementManager.TriggerBonfireLit();
+                credits.SetActive(true);
             }
         }
         else interactText.gameObject.SetActive(false);
@@ -209,7 +217,7 @@ public class GirlScript : MonoBehaviour
             anim.SetTrigger("Weapon");
         }
 
-        if (InputManager.GetCameraInput()) // entra e sai do modo de camera de combate
+        if (InputManager.GetCameraInput() && !GameManagerScript.isBossDead) // entra e sai do modo de camera de combate
         {
             if(anim.GetBool("Equipped"))
                 anim.SetBool("LockedCamera", !anim.GetBool("LockedCamera"));
@@ -221,7 +229,7 @@ public class GirlScript : MonoBehaviour
         if (InputManager.GetEstusInput() && !anim.GetBool("Drinking") && !anim.GetBool("Dodging"))
         {
             anim.SetTrigger("Drink");
-            estusFlask.SetActive(true);
+            //estusFlask.SetActive(true);
             StartCoroutine(DrinkEstus());
         }
     }
