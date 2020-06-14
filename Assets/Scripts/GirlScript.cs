@@ -42,6 +42,8 @@ public class GirlScript : MonoBehaviour
     public Text interactText; // texto dizendo para interagir com o bonfire
     private bool isBonfireLit; // controla se o bonfire esta aceso
 
+    public AchievementManager achievementManager;
+
     void Start()
     {
         anim = model.GetComponent<Animator>();
@@ -92,6 +94,7 @@ public class GirlScript : MonoBehaviour
             {
                 anim.SetTrigger("LightBonfire");
                 isBonfireLit = true;
+                achievementManager.TriggerBonfireLit();
             }
         }
         else interactText.gameObject.SetActive(false);

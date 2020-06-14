@@ -16,6 +16,9 @@ public class PauseScript : MonoBehaviour
     [Header("Configuration Screen")]
     public GameObject configurationScreen;
 
+    [Header("Achievements")]
+    public GameObject[] achievements;
+
     void Start()
     {
         anim = insideMenuzinho.transform.parent.GetComponent<Animator>();
@@ -29,6 +32,7 @@ public class PauseScript : MonoBehaviour
         lerpDone = false;
         insideMenuzinho.SetActive(false);
         StartCoroutine(BlurLerpOn(0));
+        foreach (GameObject ach in achievements) ach.SetActive(true);
     }
 
     // Update is called once per frame
@@ -45,6 +49,7 @@ public class PauseScript : MonoBehaviour
         selectSource.Play();
         anim.SetTrigger("Close");
         transitionSource.Play();
+        foreach (GameObject ach in achievements) ach.SetActive(false);
         StartCoroutine(BlurLerpOff(1.5f));
     }
 

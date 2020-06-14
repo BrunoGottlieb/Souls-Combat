@@ -37,6 +37,8 @@ public class LifeBarScript : MonoBehaviour
 
     public GameObject deathCounter;
     public GameManagerScript gameManager; // usado para reiniciar depois de morrer
+    public BossLifeBarScript bossLifeManager; // usado para conferir o achievement Almost There
+    public AchievementManager achievementManager;
 
     private void Start()
     {
@@ -141,7 +143,11 @@ public class LifeBarScript : MonoBehaviour
         youDiedScreen.SetActive(true); // ativa a tela final
         girlAnim.gameObject.GetComponent<IKFootPlacement>().SetIntangibleOn();
         bleedingParent.SetActive(false); // tira o bleeding para ele não ficar na frente da escrita
-        //SloDownTime = true;
+
+        achievementManager.TriggerFirstDeath(); // pede para o achievementManager conferir First Death
+
+        if (bossLifeManager.GetBossLifeAmount() <= 4) achievementManager.TriggerAlmostThere(); // morreu e o boss tinha 10% ou menos de vida
+
         StartCoroutine(ShowDeathCounter());
 
         if (gameManager.isAutoRestartOn)
@@ -157,6 +163,8 @@ public class LifeBarScript : MonoBehaviour
         PlayerPrefs.SetInt("DeathCount", deathNum);
         deathCounter.SetActive(true); // exibe o contador de mortes
         deathCounter.GetComponentInChildren<Text>().text = deathNum.ToString();
+
+        if (deathNum == 10) achievementManager.TriggerTenDeathMark(); // achievementManager 10 deaths trigger
     }
 
     IEnumerator WaitToRestart()
@@ -168,6 +176,16 @@ public class LifeBarScript : MonoBehaviour
     public bool IsDead()
     {
         return girlAnim.GetBool("Dead");
+    }
+
+    public bool GetNoDamageTaken()
+    {
+        return life == 10;
+    }
+
+    public int GetEstusFlaskAmount()
+    {
+        return estusFlask;
     }
 
 }

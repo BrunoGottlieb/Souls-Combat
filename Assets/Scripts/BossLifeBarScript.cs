@@ -35,6 +35,8 @@ public class BossLifeBarScript : MonoBehaviour
     public GameObject winEffect;
     public AudioSource musicSource;
 
+    public AchievementManager achievementManager;
+    public LifeBarScript playerLifeBarScript;
 
     private void Start()
     {
@@ -58,6 +60,7 @@ public class BossLifeBarScript : MonoBehaviour
         {
             bossAnim.SetTrigger("BeginPhase2");
             bossAnim.SetBool("Phase2", true);
+            achievementManager.TriggerIamLearning(); // pede para achievementManager conferir I am Learning
         }
 
         if (life > ghost && !lifeBarAnim.enabled) // caso a vida seja maior que o ghost, ambos passam a ter o mesmo tamanho. Barra de vida ja deve ter sido preenchida
@@ -117,6 +120,11 @@ public class BossLifeBarScript : MonoBehaviour
         StartCoroutine(AfterWin());
     }
 
+    public float GetBossLifeAmount() // retorna a quantia de vida do boss
+    {
+        return life;
+    }
+
     IEnumerator AfterWin()
     {
         StartCoroutine(FadeMusic());
@@ -126,6 +134,11 @@ public class BossLifeBarScript : MonoBehaviour
         winnerScreen.SetActive(true); // escrita de sucesso
         bonfire.SetActive(true); // ativa o bonfire
         bossAnim.gameObject.GetComponent<CapsuleCollider>().isTrigger = true; // desativa o collider do boss depois que ele morre
+        CapsuleCollider[] legs = bossAnim.gameObject.GetComponentsInChildren<CapsuleCollider>();
+        foreach (CapsuleCollider leg in legs) leg.isTrigger = true; // desativa o collider das pernas ao morrer
+        achievementManager.TriggerDefeatBoss(); // achievement de vitoria
+        if (playerLifeBarScript.GetNoDamageTaken()) achievementManager.TriggerNoDamageTaken(); // confere se venceu sem receber dano
+        if (playerLifeBarScript.GetEstusFlaskAmount() == 5) achievementManager.TriggerNoHeals(); // confere se venceu sem receber dano
         this.gameObject.SetActive(false); // desativa a barra de vida
     }
 
