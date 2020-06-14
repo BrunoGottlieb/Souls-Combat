@@ -84,6 +84,8 @@ public class GameManagerScript : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter)) Time.timeScale = 0.1f;
+
         if (InputManager.GetRestartInput() && !restarting && !gameIsPaused)
         {
             Restart();

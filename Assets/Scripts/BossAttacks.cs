@@ -17,6 +17,7 @@ public class BossAttacks : MonoBehaviour
     public Transform player; // garota
     public BoxCollider leftFootCollider; // pe esquerdo para o chute
     public Transform spellPosition; // mao esquerda, posicao da spell
+    public Transform impactPosition; // onde sera spawnado o golpe de impacto
     private Animator playerAnim; // referencia ao animator do player, pega no start
     public DamageDealer greatSword; // script que controla o dano da GreatSword
     public CameraShaker shaker; // script na camera que treme a tela
@@ -28,13 +29,12 @@ public class BossAttacks : MonoBehaviour
     public GameObject auraMagic;
     public GameObject screamMagic;
     public GameObject magicFarSword;
-    public GameObject[] impactPrefab;
+    public GameObject impactPrefab;
 
     private Animator anim;
 
     [Header("Debug")]
     public GameObject brainIcon;
-    public GameObject waitingDebug;
     public Image bossAttackingDebug;
     public Image bossMovingDebug;
     public Text walkTimeDebug;
@@ -280,7 +280,6 @@ public class BossAttacks : MonoBehaviour
 
     IEnumerator WaitAfterNearMove()
     {
-        waitingDebug.SetActive(true);
         float maxWaitTime = 3;
         float possibility = 3;
         if (anim.GetBool("Phase2"))
@@ -293,7 +292,6 @@ public class BossAttacks : MonoBehaviour
         if (decision == 0) waitTime = Random.Range(0.5f, maxWaitTime); // tempo de espera aleatorio
         else waitTime = 0;
         yield return new WaitForSeconds(waitTime); // espera o tempo decidido antes de atacar
-        waitingDebug.SetActive(false);
         CallNextMove();
     }
 
@@ -387,7 +385,6 @@ public class BossAttacks : MonoBehaviour
         {
             if (!anim.GetBool("TakingDamage"))
                 FarAttack(); // executa um unico ataque a longa distancia
-            else print("Esperar");
         }
 
         if(action == "NearAttack")
@@ -396,7 +393,6 @@ public class BossAttacks : MonoBehaviour
             {
                 NearAttack(); // executa um ataque de curta distancia
             }
-            else print("Esperar");
         }
     }
 
@@ -467,11 +463,6 @@ public class BossAttacks : MonoBehaviour
             anim.SetTrigger("CastMagicSwords");
         }
 
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            anim.SetTrigger("Dash");
-        }
-
         if (Input.GetKeyDown(KeyCode.N))
         {
             anim.SetTrigger("SuperSpinner");
@@ -496,6 +487,7 @@ public class BossAttacks : MonoBehaviour
         {
             anim.SetTrigger("Fishing");
         }
+
     }
 
     #endregion
@@ -560,10 +552,9 @@ public class BossAttacks : MonoBehaviour
 
     public void Impact() // Metodo chamado pela animacao de impact attack
     {
-        GameObject impactObj = Instantiate(impactPrefab[0], greatSword.transform.position, Quaternion.identity);
-        GameObject impactObj1 = Instantiate(impactPrefab[1], greatSword.transform.position, Quaternion.identity);
+        print("Impact");
+        GameObject impactObj = Instantiate(impactPrefab, impactPosition.position, Quaternion.identity);
         Destroy(impactObj, 1.5f);
-        Destroy(impactObj1, 1.5f);
         shaker.ShakeCamera(0.5f);
     }
 
@@ -606,5 +597,15 @@ public class BossAttacks : MonoBehaviour
     }
 
     #endregion
+
+    private void SetNotAttackingFalse() // a cada inicio de animacao de ataque
+    {
+        anim.SetBool("NotAttacking", false);
+    }
+
+    private void SetNotAttackingTrue()
+    {
+        anim.SetBool("NotAttacking", true);
+    }
 
 }
