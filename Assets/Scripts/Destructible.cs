@@ -42,8 +42,8 @@ public class Destructible : MonoBehaviour
         GameObject poeira = Instantiate(sandImpactEffect, this.transform.position, Quaternion.identity);
         Destroy(poeira, 2);
         Vector3 scale = this.transform.localScale;
-        Instantiate(destroyedObj, transform.position, transform.rotation, transform.parent);
-        destroyedObj.transform.localScale = scale;
+        GameObject obj = Instantiate(destroyedObj, transform.position, transform.rotation, transform.parent);
+        obj.transform.localScale = scale;
         this.gameObject.SetActive(false);
         Destroy(this.gameObject,2);
     }

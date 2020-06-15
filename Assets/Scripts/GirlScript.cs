@@ -269,7 +269,6 @@ public class GirlScript : MonoBehaviour
 
     private void OnParticleCollision(GameObject other)
     {
-        print("Impact register");
         if(other.gameObject.name.Contains("Shock") && !anim.GetBool("Intangible"))
         {
             RegisterDamage(4);

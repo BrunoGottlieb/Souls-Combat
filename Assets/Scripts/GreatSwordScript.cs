@@ -72,7 +72,6 @@ public class GreatSwordScript : MonoBehaviour
 
                     if (hits.Length > 0)
                     {
-                        print("Filler colidiu com: " + hits[0].gameObject.name);
                         damageDealer.GreatSwordFiller(hits[0].gameObject);
                     }
                 }

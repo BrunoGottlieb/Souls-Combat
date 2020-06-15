@@ -147,7 +147,7 @@ public class SwordScript : MonoBehaviour
         {
             sparksSource.clip = sparkSound[UnityEngine.Random.Range(0, sparkSound.Length)]; // toca um som de sword hit aleatorio
             sparksSource.Play(); // toca um som de sword hit aleatorio
-            if (other.transform.parent.gameObject.name.Contains("Rochas") || other.transform.parent.gameObject.name.Contains("Arco")) // caso seja uma rocha, instancia o efeito
+            if (other.transform.parent.gameObject.name.Contains("Rochas") || other.transform.parent.gameObject.name.Contains("Arco") || other.transform.parent.gameObject.name.Contains("Hard")) // caso seja uma rocha, instancia o efeito
             {
                 GameObject spark = Instantiate(sparkEffect, this.transform.position, Quaternion.identity); // instancia as faiscas
                 Destroy(spark, 0.3f);
