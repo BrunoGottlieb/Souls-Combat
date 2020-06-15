@@ -39,6 +39,7 @@ public class BossLifeBarScript : MonoBehaviour
     public AchievementManager achievementManager;
     public LifeBarScript playerLifeBarScript;
     public GirlScript girlScript;
+    public GameManagerScript gameManager;
 
     private void Start()
     {
@@ -50,7 +51,7 @@ public class BossLifeBarScript : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.O) && gameManager.master)
         {
             UpdateLife(-10);
         }

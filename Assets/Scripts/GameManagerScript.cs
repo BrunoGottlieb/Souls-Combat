@@ -14,6 +14,7 @@ public class GameManagerScript : MonoBehaviour
     static extern bool SetCursorPos(int X, int Y);
 
     // Control
+    public bool master; // permite comandar o jogo como administrador
     public bool resetCacheOnStart;
     [HideInInspector]
     public bool music; // booleana que decide se havera musica ou nao
@@ -67,6 +68,9 @@ public class GameManagerScript : MonoBehaviour
     public GameObject pauseScreen;
     public static bool gameIsPaused = false;
 
+    public bool playerIsDead;
+    private float keyInterval;
+
     private void Awake()
     {
         if(resetCacheOnStart) PlayerPrefs.DeleteAll();
@@ -86,9 +90,17 @@ public class GameManagerScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter)) Time.timeScale = 0.1f;
+        if (Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.Keypad4) && Input.GetKey(KeyCode.Keypad2) && Time.time - keyInterval > 0.5f)
+        {
+            print("Master: " + master);
+            keyInterval = Time.time;
+            master = !master;
+        }
 
-        if (InputManager.GetRestartInput() && !restarting && !gameIsPaused)
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) && master && Time.timeScale == 1) Time.timeScale = 0.1f;
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) && master && Time.timeScale < 1) Time.timeScale = 1f;
+
+        if (InputManager.GetRestartInput() && !restarting && !gameIsPaused && (playerIsDead || master))
         {
             Restart();
         }

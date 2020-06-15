@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +9,8 @@ public class MagicFarSword : MonoBehaviour
     private Transform botPosition;
 
     public AudioSource swingSource;
+
+    public Material render_material;
 
     private float beginTime;
     private float lerpVelocity = 10f;
@@ -21,6 +24,14 @@ public class MagicFarSword : MonoBehaviour
         damageDealer = this.GetComponentInChildren<DamageDealer>();
     }
 
+    private void OnEnable()
+    {
+        render_material.SetFloat("_Metallic", 0.6f);
+        Color32 col = render_material.GetColor("_Color");
+        col.a = 255;
+        render_material.SetColor("_Color", col);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -31,6 +42,23 @@ public class MagicFarSword : MonoBehaviour
             lerpVelocity = 100;
         }
         this.transform.parent.rotation = player.rotation;
+    }
+
+    private void FadeMaterial()
+    {
+        StartCoroutine(FadeMat());
+    }
+
+    IEnumerator FadeMat()
+    {
+        while(render_material.GetFloat("_Metallic") > 0|| render_material.GetColor("_Color").a > 0)
+        {
+            render_material.SetFloat("_Metallic", render_material.GetFloat("_Metallic") - 0.1f);
+            Color32 col = render_material.GetColor("_Color");
+            col.a -= 20;
+            render_material.SetColor("_Color", col);
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     private void PlaySwing()

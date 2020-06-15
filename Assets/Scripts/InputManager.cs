@@ -11,7 +11,7 @@ public class InputManager : MonoBehaviour
     public static KeyCode dodgeJoystick = KeyCode.Joystick1Button0;
 
     // Heal
-    public static KeyCode estusKeyboard = KeyCode.Q;
+    public static KeyCode estusKeyboard = KeyCode.R;
     public static KeyCode estusJoystick = KeyCode.Joystick1Button2;
 
     // Primary Attack
@@ -35,7 +35,7 @@ public class InputManager : MonoBehaviour
     public static KeyCode restartJoystick = KeyCode.Joystick1Button6;
 
     // Pause
-    public static KeyCode pauseKeyboard = KeyCode.P;
+    public static KeyCode pauseKeyboard = KeyCode.Escape;
     public static KeyCode pauseJoystick = KeyCode.Joystick1Button7;
 
     private static bool triggerPressed = false;
@@ -83,7 +83,7 @@ public class InputManager : MonoBehaviour
 
     public static bool GetPauseInput()
     {
-        return Input.GetKeyDown(pauseKeyboard) || Input.GetKeyDown(pauseJoystick);
+        return Input.GetKeyDown(pauseKeyboard) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(pauseJoystick);
     }
 
 }

@@ -48,6 +48,8 @@ public class LifeBarScript : MonoBehaviour
 
         PostProcessVolume volume = Camera.main.GetComponent<PostProcessVolume>();
         volume.profile.TryGetSettings(out colorGradingLayer);
+
+        gameManager.playerIsDead = false;
     }
 
     private void FixedUpdate()
@@ -145,6 +147,8 @@ public class LifeBarScript : MonoBehaviour
         bleedingParent.SetActive(false); // tira o bleeding para ele não ficar na frente da escrita
 
         achievementManager.TriggerFirstDeath(); // pede para o achievementManager conferir First Death
+
+        gameManager.playerIsDead = true; // avisa o game manager de que o player esta morto
 
         if (bossLifeManager.GetBossLifeAmount() <= 4) achievementManager.TriggerAlmostThere(); // morreu e o boss tinha 10% ou menos de vida
 

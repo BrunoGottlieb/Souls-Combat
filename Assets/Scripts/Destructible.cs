@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Destructible : MonoBehaviour
 {
+    public bool playerCanDestroyIt = true;
     public GameObject destroyedObj; // objeto destruido que ocupara seu lugar
     public AudioClip destructionSound; // som ao ser destruido
     public GameObject sandImpactEffect; // poeira
@@ -12,7 +13,7 @@ public class Destructible : MonoBehaviour
     {
         Animator otherAnim = other.transform.root.GetComponentInChildren<Animator>();
         
-        if ((otherAnim != null && otherAnim.GetBool("Attacking")) && (other.gameObject.tag == "GreatSword" || other.gameObject.tag == "Sword")) // atingido por espadas
+        if ((otherAnim != null && otherAnim.GetBool("Attacking")) && (other.gameObject.tag == "GreatSword" || (other.gameObject.tag == "Sword" && playerCanDestroyIt))) // atingido por espadas
         {
             Destroy();
         }

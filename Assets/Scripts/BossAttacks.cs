@@ -21,6 +21,7 @@ public class BossAttacks : MonoBehaviour
     private Animator playerAnim; // referencia ao animator do player, pega no start
     public DamageDealer greatSword; // script que controla o dano da GreatSword
     public CameraShaker shaker; // script na camera que treme a tela
+    public GameManagerScript gameManager; // usado para pegar a booleana master
 
     [Header("Attacks")]
     public GameObject earthShatterPrefab;
@@ -73,7 +74,8 @@ public class BossAttacks : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Keypad0)) AI = !AI;
+        if (Input.GetKeyDown(KeyCode.Keypad0) && gameManager.master) AI = !AI;
+        if (Input.GetKeyDown(KeyCode.Keypad1) && gameManager.master) debug = true;
         brainIcon.gameObject.SetActive(AI); // icone que indica se a AI esta ativada ou nao
 
         distance = Vector3.Distance(model.transform.position, player.transform.position); // distancia do boss para o player
@@ -96,7 +98,8 @@ public class BossAttacks : MonoBehaviour
         if (AI && !playerAnim.GetBool("Dead"))
         {
             AI_Manager(); // gerencia os movimentos do boss
-        } else
+        } 
+        else if (gameManager.master)
         {
             DebugAttack(); // comando manual para ataque
         }
@@ -115,6 +118,8 @@ public class BossAttacks : MonoBehaviour
 
     private void DebugUI()
     {
+        distanceDebug.transform.parent.gameObject.SetActive(true);
+        brainDebug.transform.parent.gameObject.SetActive(true);
         damageDebug.text = greatSword.damageAmount.ToString();
         bossAttackingDebug.gameObject.SetActive(anim.GetBool("Attacking"));
         bossMovingDebug.gameObject.SetActive(action == "Move");
@@ -552,7 +557,6 @@ public class BossAttacks : MonoBehaviour
 
     public void Impact() // Metodo chamado pela animacao de impact attack
     {
-        print("Impact");
         GameObject impactObj = Instantiate(impactPrefab, impactPosition.position, Quaternion.identity);
         Destroy(impactObj, 1.5f);
         shaker.ShakeCamera(0.5f);
@@ -577,7 +581,7 @@ public class BossAttacks : MonoBehaviour
     private void MagicFarSword()
     {
         GameObject obj = Instantiate(magicFarSword, greatSword.transform.position, Quaternion.identity);
-        Destroy(obj, 3.5f);
+        Destroy(obj, 4.5f);
     }
 
     #endregion

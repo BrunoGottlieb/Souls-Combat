@@ -1941,6 +1941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swingSource: {fileID: 2812139754263646045}
+  render_material: {fileID: 2100000, guid: 993daf273902d514e9a7edf0c4c9e7da, type: 2}
 --- !u!54 &4946410933390228220
 Rigidbody:
   m_ObjectHideFlags: 0
