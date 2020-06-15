@@ -12,6 +12,7 @@ public class SwordScript : MonoBehaviour
     private BoxCollider swordCollider;
     public LayerMask hitLayers;
     public float checkSize = 0.117f;
+    [HideInInspector]
     public bool betterColliders;
 
     private void Start()

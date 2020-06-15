@@ -8,6 +8,8 @@ public class GreatSwordScript : MonoBehaviour
     public GameObject dustExplosionPrefab;
     private float lastTime;
     public ParticleSystem[] swordEffects;
+    [HideInInspector]
+    public bool betterColliders;
 
     public void EnableGreatSwordFire()
     {

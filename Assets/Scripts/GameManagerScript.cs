@@ -47,6 +47,7 @@ public class GameManagerScript : MonoBehaviour
     public GameObject raycaster; // desativa junto com as pedras no chao
     public GameObject destructibleObjects; // objetos do cenario
     public GameObject FPSCounter; // contador de FPS
+    public GameObject dustStorm; // tempestade de areia
 
     // Lightining Settings
     public Color skyColor; // gradiente do modo default
@@ -67,6 +68,10 @@ public class GameManagerScript : MonoBehaviour
     // pause screen
     public GameObject pauseScreen;
     public static bool gameIsPaused = false;
+
+    // Espadas
+    public SwordScript swordScript;
+    public GreatSwordScript greatSwordScript;
 
     public bool playerIsDead;
     private float keyInterval;
@@ -131,6 +136,8 @@ public class GameManagerScript : MonoBehaviour
         if (!PlayerPrefs.HasKey("IsScenaryOn")) PlayerPrefs.SetInt("IsScenaryOn", 1);
         if (!PlayerPrefs.HasKey("StonesOnGround")) PlayerPrefs.SetInt("StonesOnGround", 1);
         if (!PlayerPrefs.HasKey("IsHighQualityOn")) PlayerPrefs.SetInt("IsHighQualityOn", 1);
+        if (!PlayerPrefs.HasKey("DustStorm")) PlayerPrefs.SetInt("DustStorm", 1);
+        if (!PlayerPrefs.HasKey("BetterColliders")) PlayerPrefs.SetInt("BetterColliders", 1);
         /*
         print("IsObjectsOn: " + PlayerPrefs.GetInt("IsObjectsOn"));
         print("IsFPSOn: " + PlayerPrefs.GetInt("IsFPSOn"));
@@ -140,6 +147,8 @@ public class GameManagerScript : MonoBehaviour
         print("IsScenaryOn: " + PlayerPrefs.GetInt("IsScenaryOn"));
         print("StonesOnGround: " + PlayerPrefs.GetInt("StonesOnGround"));
         print("IsHighQualityOn: " + PlayerPrefs.GetInt("IsHighQualityOn"));
+        print("DustStorm: " + PlayerPrefs.GetInt("DustStorm"));
+        print("BetterColliders: " + PlayerPrefs.GetInt("BetterColliders"));
         */
         isObjectsOn = PlayerPrefs.GetInt("IsObjectsOn") == 1 ? true : false;
         showFPS = PlayerPrefs.GetInt("IsFPSOn") == 1 ? true : false;
@@ -158,6 +167,8 @@ public class GameManagerScript : MonoBehaviour
         CheckScenaryState();
         CheckStonesOnGroundState();
         CheckHighQualityState();
+        CheckSwordColliders();
+        CheckDustStorm();
     }
 
     public void Restart()
@@ -372,6 +383,32 @@ public class GameManagerScript : MonoBehaviour
         else
         {
             PlayerPrefs.SetInt("AutoRestart", 0);
+        }
+    }
+
+    public void CheckDustStorm()
+    {
+        if (!Application.isPlaying) return;
+        if (PlayerPrefs.GetInt("DustStorm") == 1)
+        {
+            dustStorm.SetActive(true);
+        } else
+        {
+            dustStorm.SetActive(false);
+        }
+    }
+
+    public void CheckSwordColliders()
+    {
+        if (!Application.isPlaying) return;
+        if (PlayerPrefs.GetInt("BetterColliders") == 1)
+        {
+            swordScript.betterColliders = true;
+            greatSwordScript.betterColliders = true;
+        } else
+        {
+            swordScript.betterColliders = false;
+            greatSwordScript.betterColliders = false;
         }
     }
 
