@@ -30,7 +30,6 @@ public class SwordScript : MonoBehaviour
     }
 
     private LinkedList<BufferObj> trailList = new LinkedList<BufferObj>(); // lista encadeada
-    private LinkedList<BufferObj> trailFillerList = new LinkedList<BufferObj>();
     private int maxFrameBuffer = 2;
 
     private void Update()
@@ -66,15 +65,19 @@ public class SwordScript : MonoBehaviour
             if (!isFirstRound)
             {
                 LinkedList<BufferObj> calculated = FillTrail(bo, lastBo);
-                print("FillTrail count: " + calculated.Count);
                 foreach (BufferObj cbo in calculated)
                 {
                     Collider[] hits = Physics.OverlapBox(cbo.position, cbo.size / 2, cbo.rotation, hitLayers, QueryTriggerInteraction.Ignore);
 
                     if (hits.Length > 0)
                     {
-                        if (hits[0].gameObject.GetComponent<Destructible>() != null)
+                        if (hits[0].gameObject.GetComponent<Destructible>() != null) // confere se atacou algo do cenario
                             hits[0].gameObject.GetComponent<Destructible>().SwordTrailDetectedMe();
+
+                        if (girlAnim.GetBool("Attacking") && hits[0].gameObject.GetComponentInParent<BossScript>() != null) // confere se atacou o boss
+                        {
+                            hits[0].gameObject.GetComponentInParent<BossScript>().RegisterPlayerSwordFillDamage();
+                        }
                     }
                 }
             }

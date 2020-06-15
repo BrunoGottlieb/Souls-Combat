@@ -72,7 +72,23 @@ public class BossScript : MonoBehaviour
         {
             lastDamageTakenTime = Time.time;
             CreateAndPlay(takeDamageSound[UnityEngine.Random.Range(0, takeDamageSound.Length)], 2); // som de dano
-            //bossLifeScript.UpdateLife(-girlScript.swordCurrentDamage); // diminui a vida do boss com o dano da espada do player
+            StopAllCoroutines(); // reinicia o timer de 2seg do texto
+            StartCoroutine(ShowHitCounter()); // exibe informacao sobre o dano
+            if (!anim.GetBool("TakingDamage") && !anim.GetBool("Attacking") && anim.GetBool("NotAttacking")) // caso ja nao esteja tocando a animacao de dano
+                anim.SetTrigger("TakeDamage"); // animacao de dano
+
+            GameObject blood = Instantiate(bloodPrefab, bloodPos.position, Quaternion.identity);
+            blood.transform.LookAt(player.position);
+            Destroy(blood, 0.2f);
+        }
+    }
+
+    public void RegisterPlayerSwordFillDamage()
+    {
+        if (!anim.GetBool("Attacking") && DamageInterval() && !anim.GetBool("Dead")) // ja esta sendo conferido se o jogador esta atacando antes de vir pra ca
+        {
+            lastDamageTakenTime = Time.time;
+            CreateAndPlay(takeDamageSound[UnityEngine.Random.Range(0, takeDamageSound.Length)], 2); // som de dano
             StopAllCoroutines(); // reinicia o timer de 2seg do texto
             StartCoroutine(ShowHitCounter()); // exibe informacao sobre o dano
             if (!anim.GetBool("TakingDamage") && !anim.GetBool("Attacking") && anim.GetBool("NotAttacking")) // caso ja nao esteja tocando a animacao de dano

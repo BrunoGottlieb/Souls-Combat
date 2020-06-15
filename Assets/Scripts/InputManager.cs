@@ -83,7 +83,7 @@ public class InputManager : MonoBehaviour
 
     public static bool GetPauseInput()
     {
-        return Input.GetKeyDown(pauseKeyboard) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(pauseJoystick);
+        return /*Input.GetKeyDown(pauseKeyboard) ||*/ Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(pauseJoystick);
     }
 
 }
