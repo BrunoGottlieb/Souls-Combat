@@ -569,9 +569,8 @@ public class BossAttacks : MonoBehaviour
         Vector3 size = new Vector3(0.00075f, 0.0004f, 0.018f);
         Vector3 center = new Vector3(0f, 0f, 0.009f);
         SetGreatSwordSize(size, center);
-
+        greatSword.gameObject.GetComponent<GreatSwordScript>().customSize += new Vector3(0, 0, 0.012f);
     }
-
     private void SetGreatSwordSize(Vector3 size, Vector3 center) // altera o tamanho da hitbox da GreatSword
     {
         greatSword.gameObject.GetComponent<BoxCollider>().size = size;

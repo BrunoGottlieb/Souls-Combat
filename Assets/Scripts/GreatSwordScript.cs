@@ -68,7 +68,7 @@ public class GreatSwordScript : MonoBehaviour
                 LinkedList<BufferObj> calculated = FillTrail(bo, lastBo);
                 foreach (BufferObj cbo in calculated)
                 {
-                    Collider[] hits = Physics.OverlapBox(cbo.position, cbo.size, cbo.rotation, hitLayers, QueryTriggerInteraction.Ignore);
+                    Collider[] hits = Physics.OverlapBox(cbo.position, Vector3.Scale(bo.size, bo.scale), cbo.rotation, hitLayers, QueryTriggerInteraction.Ignore);
 
                     if (hits.Length > 0)
                     {
