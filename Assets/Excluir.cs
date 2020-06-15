@@ -10,9 +10,8 @@ public class Excluir : MonoBehaviour
         print(this.gameObject.name + ": " + transform.childCount);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnClick()
     {
-        
+        Application.OpenURL("http://unity3d.com/");
     }
 }

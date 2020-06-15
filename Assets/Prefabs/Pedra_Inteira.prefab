@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 128930745015095449}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 4949659514822156590}
   m_Father: {fileID: 0}
@@ -42,7 +42,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 128930745015095449}
   serializedVersion: 2
-  m_Mass: 0.1
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -75,11 +75,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acf7bfcfb3ccbec41b975f7eed01383a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerCanDestroyIt: 1
   destroyedObj: {fileID: 3868930159166837124, guid: f5524cc3e27dafd40a3cbdf803c22ebe,
     type: 3}
   destructionSound: {fileID: 8300000, guid: e83f7483bc3d10e4d930bf71a3b24fc5, type: 3}
   sandImpactEffect: {fileID: 1137643560742564823, guid: b9490d8ba06a2e04c97ef18e7ffd3c2e,
     type: 3}
+  girlAnim: {fileID: 0}
 --- !u!1001 &128930744415472180
 PrefabInstance:
   m_ObjectHideFlags: 0

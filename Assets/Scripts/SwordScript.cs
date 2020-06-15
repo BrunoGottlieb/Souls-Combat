@@ -9,8 +9,10 @@ public class SwordScript : MonoBehaviour
     private AudioSource sparksSource; // audioSource que ira tocar o som, aleatoriamente
     public GameObject sparkEffect; // prefab das faiscas
     public AudioClip[] sparkSound; // som quando a espada bate em algo
-    public bool debug;
     private BoxCollider swordCollider;
+    public LayerMask hitLayers;
+    public float checkSize = 0.117f;
+    public bool betterColliders;
 
     private void Start()
     {
@@ -25,13 +27,14 @@ public class SwordScript : MonoBehaviour
         public Vector3 size;
         public Vector3 scale;
     }
+
     private LinkedList<BufferObj> trailList = new LinkedList<BufferObj>(); // lista encadeada
     private LinkedList<BufferObj> trailFillerList = new LinkedList<BufferObj>();
-    private int maxFrameBuffer = 10;
+    private int maxFrameBuffer = 2;
 
     private void Update()
     {
-        if (debug)
+        if (betterColliders)
         {
             CheckTrail();
         }
@@ -49,20 +52,44 @@ public class SwordScript : MonoBehaviour
         {
             trailList.RemoveLast();
         }
-        //if (trailList.Count > 1)
-        //{
-        //    print("0");
-            trailFillerList = FillTrail(trailList.First.Value, trailList.Last.Value);
-       // }
+
+        DetectTrailCollisions();
     }
 
-    private LinkedList<BufferObj> FillTrail(BufferObj from, BufferObj to)
+    private void DetectTrailCollisions()
+    {
+        bool isFirstRound = true;
+        BufferObj lastBo = new BufferObj();
+        foreach (BufferObj bo in trailList) // para cada um dos azuis
+        {
+            if (!isFirstRound)
+            {
+                LinkedList<BufferObj> calculated = FillTrail(bo, lastBo);
+                print("FillTrail count: " + calculated.Count);
+                foreach (BufferObj cbo in calculated)
+                {
+                    Collider[] hits = Physics.OverlapBox(cbo.position, cbo.size / 2, cbo.rotation, hitLayers, QueryTriggerInteraction.Ignore);
+
+                    if (hits.Length > 0)
+                    {
+                        if (hits[0].gameObject.GetComponent<Destructible>() != null)
+                            hits[0].gameObject.GetComponent<Destructible>().SwordTrailDetectedMe();
+                    }
+                }
+            }
+            isFirstRound = false;
+            lastBo = bo;
+        }
+    }
+
+    private LinkedList<BufferObj> FillTrail(BufferObj from, BufferObj to) // preenche os gaps e retorna uma lista
     {
         LinkedList<BufferObj> fillerList = new LinkedList<BufferObj>();
         float distance = Mathf.Abs((from.position - to.position).magnitude);
-        if (distance > swordCollider.size.z/4)
+
+        if (distance > checkSize)
         {
-            float steps = Mathf.Ceil(distance / swordCollider.size.z);
+            float steps = Mathf.Ceil(distance / checkSize);
             float stepsAmount = 1 / (steps + 1);
             float stepValue = 0;
             for (int i = 0; i < (int)steps; i++)
@@ -77,24 +104,39 @@ public class SwordScript : MonoBehaviour
         }
         return fillerList;
     }
-
+    /*
     private void OnDrawGizmos()
     {
-        foreach (BufferObj bo in trailList)
+        bool isFirstRound = true;
+        BufferObj lastBo = new BufferObj();
+        foreach (BufferObj bo in trailList) // para cada um dos azuis
         {
             Gizmos.color = Color.blue;
             Gizmos.matrix = Matrix4x4.TRS(bo.position, bo.rotation, Vector3.one);
-            Gizmos.DrawWireCube(Vector3.zero, Vector3.Scale(bo.size, bo.scale));
-        }
-        foreach (BufferObj bo in trailFillerList)
-        {
-            print("a");
-            Gizmos.color = Color.yellow;
-            Gizmos.matrix = Matrix4x4.TRS(bo.position, bo.rotation, Vector3.one);
-            Gizmos.DrawWireCube(Vector3.zero, Vector3.Scale(bo.size, bo.scale));
+            Gizmos.DrawWireCube(Vector3.zero, Vector3.Scale(bo.size, bo.scale)); // desenha o collider
+            if (!isFirstRound)
+            {
+                LinkedList<BufferObj> calculated = FillTrail(bo, lastBo);
+                foreach (BufferObj cbo in calculated)
+                {
+                    Gizmos.color = Color.yellow;
+                    Gizmos.matrix = Matrix4x4.TRS(cbo.position, cbo.rotation, Vector3.one);
+                    Gizmos.DrawWireCube(Vector3.zero, Vector3.Scale(bo.size, bo.scale));
+
+                    Collider[] hits = Physics.OverlapBox(cbo.position, cbo.size / 2, cbo.rotation, hitLayers, QueryTriggerInteraction.Ignore);
+
+                    if (hits.Length > 0)
+                    {
+                        if (hits[0].gameObject.GetComponent<Destructible>() != null)
+                            hits[0].gameObject.GetComponent<Destructible>().SwordTrailDetectedMe();
+                    }
+                }
+            }
+            isFirstRound = false;
+            lastBo = bo;
         }
     }
-
+    */
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer == 13 && girlAnim.GetBool("Attacking") && !sparksSource.isPlaying) // caso seja um elemento do cenario

@@ -92,13 +92,13 @@ public class GameManagerScript : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.Keypad4) && Input.GetKey(KeyCode.Keypad2) && Time.time - keyInterval > 0.5f)
         {
-            print("Master: " + master);
             keyInterval = Time.time;
             master = !master;
+            print("Master: " + master);
         }
 
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) && master && Time.timeScale == 1) Time.timeScale = 0.1f;
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) && master && Time.timeScale < 1) Time.timeScale = 1f;
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) && master && Time.timeScale > 0.5f) Time.timeScale = 0.1f;
+        else if (Input.GetKeyDown(KeyCode.KeypadEnter) && master && Time.timeScale < 1) Time.timeScale = 1f;
 
         if (InputManager.GetRestartInput() && !restarting && !gameIsPaused && (playerIsDead || master))
         {

@@ -8,6 +8,7 @@ public class Destructible : MonoBehaviour
     public GameObject destroyedObj; // objeto destruido que ocupara seu lugar
     public AudioClip destructionSound; // som ao ser destruido
     public GameObject sandImpactEffect; // poeira
+    public Animator girlAnim; // para conferir se o player estava atacando durante o fillTrail
 
     private void OnTriggerEnter(Collider other)
     {
@@ -45,6 +46,15 @@ public class Destructible : MonoBehaviour
         destroyedObj.transform.localScale = scale;
         this.gameObject.SetActive(false);
         Destroy(this.gameObject,2);
+    }
+
+    public void SwordTrailDetectedMe() // Serei destruido por conta do FillTrail
+    {
+        if (girlAnim.GetBool("Attacking")) // confere se o player estava atacando
+        {
+            print("I was destroyed by FillTrail");
+            Destroy();
+        }
     }
 
 }
