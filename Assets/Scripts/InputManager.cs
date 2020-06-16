@@ -6,6 +6,7 @@ using UnityEngine.Animations;
 
 public class InputManager : MonoBehaviour
 {
+    public static bool PS4Inputs;
     // Jump
     public static KeyCode dodgeKeyboard = KeyCode.Space;
     public static KeyCode dodgeJoystick = KeyCode.Joystick1Button0;
@@ -33,16 +34,18 @@ public class InputManager : MonoBehaviour
     // Restart
     public static KeyCode restartKeyboard = KeyCode.R;
     public static KeyCode restartJoystick = KeyCode.Joystick1Button6;
+    public static KeyCode restartPS4 = KeyCode.Joystick1Button13;
 
     // Pause
     public static KeyCode pauseKeyboard = KeyCode.Escape;
     public static KeyCode pauseJoystick = KeyCode.Joystick1Button7;
+    public static KeyCode pausePS4 = KeyCode.Joystick1Button8;
 
     private static bool triggerPressed = false;
 
     private void Update()
     {
-        if (Input.GetAxisRaw("JoystickTrigger") == 0) triggerPressed = false;
+        if (Input.GetAxisRaw("JoystickTrigger") > -0.1f && Input.GetAxisRaw("JoystickTrigger") < 0.1f) triggerPressed = false;
         else triggerPressed = true;
     }
 
@@ -78,12 +81,20 @@ public class InputManager : MonoBehaviour
 
     public static bool GetRestartInput()
     {
+        if (PS4Inputs)
+        {
+            return Input.GetKeyDown(restartKeyboard) || Input.GetKeyDown(restartPS4);
+        }
         return Input.GetKeyDown(restartKeyboard) || Input.GetKeyDown(restartJoystick);
     }
 
     public static bool GetPauseInput()
     {
-        return /*Input.GetKeyDown(pauseKeyboard) ||*/ Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(pauseJoystick);
+        if (PS4Inputs)
+        {
+            return Input.GetKeyDown(restartKeyboard) || Input.GetKeyDown(pausePS4);
+        }
+        return Input.GetKeyDown(pauseKeyboard) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(pauseJoystick);
     }
 
 }

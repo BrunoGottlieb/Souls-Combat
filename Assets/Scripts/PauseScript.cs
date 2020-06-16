@@ -30,6 +30,7 @@ public class PauseScript : MonoBehaviour
         GameManagerScript.gameIsPaused = true;
         GameManagerScript.HideCursor(false);
         lerpDone = false;
+        insideMenuzinho.transform.parent.gameObject.SetActive(true);
         insideMenuzinho.SetActive(false);
         StartCoroutine(BlurLerpOn(0));
         foreach (GameObject ach in achievements) ach.SetActive(true);
@@ -46,6 +47,10 @@ public class PauseScript : MonoBehaviour
 
     public void CloseMenu()
     {
+        insideMenuzinho.gameObject.SetActive(true);
+        confirmationScreen.SetActive(false);
+        achievementScreen.SetActive(false);
+        configurationScreen.SetActive(false);
         selectSource.Play();
         anim.SetTrigger("Close");
         transitionSource.Play();

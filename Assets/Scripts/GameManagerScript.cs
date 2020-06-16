@@ -57,6 +57,7 @@ public class GameManagerScript : MonoBehaviour
     public PostProcessVolume volume; // post-processing
     private AmbientOcclusion ambientOcclusionLayer = null; // recebe o ambiente occlusion do post-processing
     private ColorGrading colorGradingLayer = null; // recebe o colorGrading do post-processing
+    private MotionBlur motionBlur = null;
 
     // Skybox materials
     public Material dustSkybox; // skybox laranja da dust
@@ -117,11 +118,11 @@ public class GameManagerScript : MonoBehaviour
 
         if (gameIsPaused && PlayerPrefs.GetInt("IsMusicOn") == 1)
         {
-            musicSource.volume = 0.2f;
+            musicSource.volume = 0.3f;
         } 
         else if (PlayerPrefs.GetInt("IsMusicOn") == 1 && !isBossDead)
         {
-            musicSource.volume = 0.7f;
+            musicSource.volume = 1f;
         }
 
     }
@@ -138,6 +139,8 @@ public class GameManagerScript : MonoBehaviour
         if (!PlayerPrefs.HasKey("IsHighQualityOn")) PlayerPrefs.SetInt("IsHighQualityOn", 1);
         if (!PlayerPrefs.HasKey("DustStorm")) PlayerPrefs.SetInt("DustStorm", 1);
         if (!PlayerPrefs.HasKey("BetterColliders")) PlayerPrefs.SetInt("BetterColliders", 1);
+        if (!PlayerPrefs.HasKey("MotionBlur")) PlayerPrefs.SetInt("MotionBlur", 1);
+        if (!PlayerPrefs.HasKey("PS4Input")) PlayerPrefs.SetInt("PS4Input", 0);
         /*
         print("IsObjectsOn: " + PlayerPrefs.GetInt("IsObjectsOn"));
         print("IsFPSOn: " + PlayerPrefs.GetInt("IsFPSOn"));
@@ -169,6 +172,7 @@ public class GameManagerScript : MonoBehaviour
         CheckHighQualityState();
         CheckSwordColliders();
         CheckDustStorm();
+        CheckPS4Input();
     }
 
     public void Restart()
@@ -276,6 +280,20 @@ public class GameManagerScript : MonoBehaviour
     }
 
     // ----------------------------------------------------- CONFIGURATION -----------------------------------------------------
+
+    private void CheckMotionBlur()
+    {
+        if (PlayerPrefs.GetInt("MotionBlur") == 1)
+        {
+            if (motionBlur == null) volume.profile.TryGetSettings(out motionBlur);
+            motionBlur.active = true;
+        }
+        else
+        {
+            if (motionBlur == null) volume.profile.TryGetSettings(out motionBlur);
+            motionBlur.active = false;
+        }
+    }
 
     public void CheckMusicState() // chamado pelo botao na tela de configuracoes
     {
@@ -395,6 +413,19 @@ public class GameManagerScript : MonoBehaviour
         } else
         {
             dustStorm.SetActive(false);
+        }
+    }
+
+    public void CheckPS4Input()
+    {
+        if (!Application.isPlaying) return;
+        if (PlayerPrefs.GetInt("PS4Input") == 1)
+        {
+            InputManager.PS4Inputs = true;
+        }
+        else
+        {
+            InputManager.PS4Inputs = false;
         }
     }
 

@@ -140,36 +140,36 @@ public class GirlScript : MonoBehaviour
         relativeLeft.y = 0;
         relativeBack.y = 0;
 
-        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space))
+        if (Input.GetAxis("Horizontal") > 0.1f && Input.GetAxis("Vertical") > 0.1f && InputManager.GetDodgeInput())
         {
             forwardLocked = (relativeForward + relativeRight).normalized;
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
+        else if (Input.GetAxis("Horizontal") > 0.1f && Input.GetAxis("Vertical") < -0.1f && InputManager.GetDodgeInput())
         {
             forwardLocked = (relativeBack + relativeRight).normalized;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
+        else if (Input.GetAxis("Horizontal") < -0.1f && Input.GetAxis("Vertical") < -0.1f && InputManager.GetDodgeInput())
         {
             forwardLocked = (relativeBack + relativeLeft).normalized;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space))
+        else if (Input.GetAxis("Horizontal") < -0.1f && Input.GetAxis("Vertical") > 0.1f && InputManager.GetDodgeInput())
         {
             forwardLocked = (relativeForward + relativeLeft).normalized;
         }
 
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.Space))
+        else if (Input.GetAxis("Horizontal") > 0.1f && InputManager.GetDodgeInput())
         {
             forwardLocked = relativeRight;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.Space))
+        else if (Input.GetAxis("Horizontal") < -0.1f && InputManager.GetDodgeInput())
         {
             forwardLocked = relativeLeft;
         }
-        else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.Space))
+        else if (Input.GetAxis("Vertical") > 0.1f && InputManager.GetDodgeInput())
         {
             forwardLocked = relativeForward;
         }
-        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.Space))
+        else if (Input.GetAxis("Vertical") < -0.1f && InputManager.GetDodgeInput())
         {
             forwardLocked = relativeBack;
         }

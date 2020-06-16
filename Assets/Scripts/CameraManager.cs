@@ -8,10 +8,12 @@ public class CameraManager : MonoBehaviour
     public CinemachineFreeLook lockedCam;
     public Transform listener;
     private Transform player;
+    private Animator playerAnim;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        playerAnim = player.GetComponent<Animator>();
     }
 
     void Update()
@@ -32,7 +34,16 @@ public class CameraManager : MonoBehaviour
 
         lockedCam.m_YAxis.m_InputAxisValue = y_input;
 
-        listener.position = freeLookCam.gameObject.transform.position;
-        listener.transform.LookAt(player.position);
+        if (!playerAnim.GetBool("LockedCamera"))
+        {
+            listener.position = freeLookCam.gameObject.transform.position;
+            listener.transform.LookAt(player.position);
+        } else
+        {
+            listener.position = lockedCam.gameObject.transform.position;
+            listener.transform.LookAt(player.position);
+        }
+
+        
     }
 }
