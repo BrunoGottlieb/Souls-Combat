@@ -40,14 +40,14 @@ public class BossScript : MonoBehaviour
     {
         if (anim.GetBool("Dead")) return; // nao faz nada caso esteja morto
 
-        if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && anim.GetCurrentAnimatorStateInfo(1).IsName("None")/* anim.GetBool("NotAttacking")*/) // move as pernas ao rotacionar caso esteja parado
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("idle") && anim.GetCurrentAnimatorStateInfo(1).IsName("None") || !anim.GetBool("CanRotate")) // move as pernas ao rotacionar caso esteja parado
         {
             Vector3 rotationOffset = player.transform.position - model.position;
             rotationOffset.y = 0;
             float lookDirection = Vector3.SignedAngle(model.forward, rotationOffset, Vector3.up);
             anim.SetFloat("LookDirection", lookDirection);
         }
-        else if (!anim.GetBool("Attacking"))
+        else if (!anim.GetBool("Attacking") && anim.GetBool("CanRotate"))
         {
             //model.transform.LookAt(player.transform.position); // olha para o player caso nao esteja atacando
 
@@ -114,7 +114,7 @@ public class BossScript : MonoBehaviour
 
     public void HitManager() // Gerencia o combo verdadeiro
     {
-        if(currentHit == 0 && hit == 4) // hit unico do ataque duplo
+        if (currentHit == 0 && hit == 4) // hit unico do ataque duplo
         {
             hitCounterText.text = "1 Hit";
             hitAdderText.text = "+50%";

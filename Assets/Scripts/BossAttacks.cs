@@ -85,7 +85,7 @@ public class BossAttacks : MonoBehaviour
         if(debug)
             DebugUI(); // indicadores no canvas
 
-        if (distance < 15 && !anim.GetBool("Equipped")) // pega a GreatSword quando o player chegar
+        if (distance < 20 && !anim.GetBool("Equipped")) // pega a GreatSword quando o player chegar
         {
             anim.SetTrigger("DrawSword");
             StartCoroutine(StartAI());
@@ -102,6 +102,10 @@ public class BossAttacks : MonoBehaviour
         else if (gameManager.master)
         {
             DebugAttack(); // comando manual para ataque
+        } else
+        {
+            anim.SetBool("GameEnd", true); // deixa o boss no idle apos vencer
+            anim.SetBool("CanRotate", false);
         }
 
         greatSword.damageOn = anim.GetBool("Attacking"); // GreatSword causa dano apenas se o boss estiver atacando
@@ -606,9 +610,19 @@ public class BossAttacks : MonoBehaviour
         anim.SetBool("NotAttacking", false);
     }
 
-    private void SetNotAttackingTrue()
+    private void SetNotAttackingTrue() // setado pelo None e alguns finais de animacao
     {
         anim.SetBool("NotAttacking", true);
+    }
+
+    private void SetCanRotateTrue() // Boss podera olhar para o player
+    {
+        anim.SetBool("CanRotate", true);
+    }
+
+    private void SetCanRotateFalse()
+    {
+        anim.SetBool("CanRotate", false);
     }
 
 }
