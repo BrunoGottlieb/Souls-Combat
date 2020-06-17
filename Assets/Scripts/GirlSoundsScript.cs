@@ -55,7 +55,7 @@ public class GirlSoundsScript : MonoBehaviour
 
     public void PlayFootStep()
     {
-        if(!anim.GetBool("Intangible") && !anim.GetBool("Attacking") && !anim.GetBool("Dead") && !anim.GetBool("Dodging"))
+        if(!anim.GetBool("Intangible") && !anim.GetBool("Attacking") && !anim.GetBool("Dead") && !anim.GetBool("Dodging") && anim.GetBool("CanMove"))
         {
             //if (!footSource.isPlaying)
             {

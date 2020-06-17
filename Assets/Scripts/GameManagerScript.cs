@@ -103,6 +103,12 @@ public class GameManagerScript : MonoBehaviour
             print("Master: " + master);
         }
 
+        if(Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.Backspace) && Time.time - keyInterval > 0.5f)
+        {
+            keyInterval = Time.time;
+            PlayerPrefs.DeleteAll();
+        }
+
         if (Input.GetKeyDown(KeyCode.KeypadEnter) && master && Time.timeScale > 0.5f) Time.timeScale = 0.1f;
         else if (Input.GetKeyDown(KeyCode.KeypadEnter) && master && Time.timeScale < 1) Time.timeScale = 1f;
 

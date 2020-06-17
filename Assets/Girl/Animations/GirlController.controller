@@ -225,7 +225,7 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 4
     m_ConditionEvent: Speed
-    m_EventTreshold: 0.2
+    m_EventTreshold: 0.15
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6313802244773530192}
   m_Solo: 0
@@ -1061,7 +1061,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: Speed
-    m_EventTreshold: 0.2
+    m_EventTreshold: 0.15
   - m_ConditionMode: 2
     m_ConditionEvent: LockedCamera
     m_EventTreshold: 0
@@ -1156,7 +1156,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.1876589
+  m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.8847175
   m_HasExitTime: 0
@@ -1176,7 +1176,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: c0b424ec91b66424bbc3941c49f3e3d8, type: 2}
     m_Threshold: 0
     m_Position: {x: 1, y: 0}
-    m_TimeScale: 2
+    m_TimeScale: 2.2
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
@@ -1184,7 +1184,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: c229d4cc51df8a34b986ba91bdc13060, type: 2}
     m_Threshold: 0.25
     m_Position: {x: -1, y: 0}
-    m_TimeScale: 2
+    m_TimeScale: 2.2
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
@@ -1192,7 +1192,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: d8f1c28588f17284b889aba472d48111, type: 2}
     m_Threshold: 0.5
     m_Position: {x: 0, y: 1}
-    m_TimeScale: 2
+    m_TimeScale: 2.2
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
@@ -1200,7 +1200,7 @@ BlendTree:
     m_Motion: {fileID: 7400000, guid: 6d53885e67da1d244b6798f584f00ca4, type: 2}
     m_Threshold: 0.75
     m_Position: {x: 0, y: -1}
-    m_TimeScale: 2
+    m_TimeScale: 2.2
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
@@ -2087,7 +2087,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: Speed
-    m_EventTreshold: 0.2
+    m_EventTreshold: 0.15
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6313802244773530192}
   m_Solo: 0
@@ -2293,7 +2293,7 @@ AnimatorStateTransition:
     m_EventTreshold: 0
   - m_ConditionMode: 3
     m_ConditionEvent: Speed
-    m_EventTreshold: 0.2
+    m_EventTreshold: 0.15
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3846976514538889640}
   m_Solo: 0
@@ -2400,7 +2400,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: Speed
-    m_EventTreshold: 0.2
+    m_EventTreshold: 0.15
   - m_ConditionMode: 1
     m_ConditionEvent: Equipped
     m_EventTreshold: 0
@@ -2788,7 +2788,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: Speed
-    m_EventTreshold: 0.2
+    m_EventTreshold: 0.15
   - m_ConditionMode: 2
     m_ConditionEvent: Equipped
     m_EventTreshold: 0

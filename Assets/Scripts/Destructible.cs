@@ -44,6 +44,8 @@ public class Destructible : MonoBehaviour
         Vector3 scale = this.transform.localScale;
         GameObject obj = Instantiate(destroyedObj, transform.position, transform.rotation, transform.parent);
         obj.transform.localScale = scale;
+        Vector3 pos = obj.transform.position; pos.y = 0;
+        obj.transform.position = pos;
         this.gameObject.SetActive(false);
         Destroy(this.gameObject,2);
     }

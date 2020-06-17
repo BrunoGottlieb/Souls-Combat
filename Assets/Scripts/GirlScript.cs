@@ -117,7 +117,8 @@ public class GirlScript : MonoBehaviour
 
         if (anim.GetBool("CanMove"))
         {
-            model.position += new Vector3(x * moveSpeed * Time.deltaTime, 0, z * moveSpeed * Time.deltaTime); // move o jogador para frente
+            if(Mathf.Abs(anim.GetFloat("Speed")) > 0.15f)
+                model.position += new Vector3(x * moveSpeed * Time.deltaTime, 0, z * moveSpeed * Time.deltaTime); // move o jogador para frente
             float clampValue = 1; //Input.GetKey(KeyCode.Space) ? 1 : 0.35f; // controla a velocidade de caminhar e correr
             anim.SetFloat("Speed", Vector3.ClampMagnitude(stickDirection, clampValue).magnitude, 0.02f, Time.deltaTime); // clamp para limitar a 1, visto que a diagonal seria de 1.4
             anim.SetFloat("Horizontal", stickDirection.x); // lockedCamera

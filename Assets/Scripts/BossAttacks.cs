@@ -42,6 +42,7 @@ public class BossAttacks : MonoBehaviour
     public Text distanceDebug;
     public Text brainDebug;
     public Text damageDebug;
+    public Text speedText;
     public Color farColor;
     public Color middleColor;
     public Color nearColor;
@@ -62,18 +63,21 @@ public class BossAttacks : MonoBehaviour
     private bool slowDown;
     private string actionAfterSlowDown;
 
+
     private void Start()
     {
         anim = model.GetComponent<Animator>();
         playerAnim = player.GetComponent<Animator>();
 
-        Vector3 size = new Vector3(0.00075f, 0.0004f, 0.014f);
+        Vector3 size = new Vector3(0.00075f, 0.0004f, 0.014f); // tamanho da GreatSword
         Vector3 center = new Vector3(0f, 0f, 0.007f);
         SetGreatSwordSize(size, center);
     }
 
     private void Update()
     {
+        speedText.text = anim.GetFloat("Vertical").ToString("0.0");
+
         if (Input.GetKeyDown(KeyCode.Keypad0) && gameManager.master) AI = !AI;
         if (Input.GetKeyDown(KeyCode.Keypad1) && gameManager.master) debug = true;
         brainIcon.gameObject.SetActive(AI); // icone que indica se a AI esta ativada ou nao
@@ -122,6 +126,7 @@ public class BossAttacks : MonoBehaviour
 
     private void DebugUI()
     {
+        speedText.transform.parent.gameObject.SetActive(true);
         distanceDebug.transform.parent.gameObject.SetActive(true);
         brainDebug.transform.parent.gameObject.SetActive(true);
         damageDebug.text = greatSword.damageAmount.ToString();
@@ -262,7 +267,7 @@ public class BossAttacks : MonoBehaviour
 
     private void SlowBossDown()
     {
-        if (anim.GetFloat("Vertical") <= 0.35f)
+        if (anim.GetFloat("Vertical") <= 0.4f)
         {
             slowDown = false;
             if (actionAfterSlowDown == "CallNextMove")
@@ -283,12 +288,18 @@ public class BossAttacks : MonoBehaviour
         }
         else
         {
-            anim.SetFloat("Vertical", Mathf.Lerp(anim.GetFloat("Vertical"), 0, 0.5f * Time.deltaTime));
+            brainDebug.text = "SlowDown";
+            anim.SetFloat("Vertical", Mathf.Lerp(anim.GetFloat("Vertical"), 0, 1 * Time.deltaTime));
         }
     }
 
     IEnumerator WaitAfterNearMove()
     {
+        brainDebug.text = "WaitRandomly";
+        slowDown = false;
+        action = "Wait";
+        anim.SetFloat("Vertical", 0);
+        anim.SetFloat("Horizontal", 0);
         float maxWaitTime = 3;
         float possibility = 3;
         if (anim.GetBool("Phase2"))
@@ -296,11 +307,12 @@ public class BossAttacks : MonoBehaviour
             maxWaitTime = 1.5f;
             possibility = 2;
         }
-        float waitTime = 0;
+        float waitTime;
         float decision = Random.Range(0, possibility); // probabilidade de X % de que ele va esperar antes de atacar
         if (decision == 0) waitTime = Random.Range(0.5f, maxWaitTime); // tempo de espera aleatorio
         else waitTime = 0;
         yield return new WaitForSeconds(waitTime); // espera o tempo decidido antes de atacar
+        action = "NearAttack";
         CallNextMove();
     }
 

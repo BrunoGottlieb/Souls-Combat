@@ -18,6 +18,12 @@ public class BossSoundsScript : MonoBehaviour
     public AudioClip[] greatSwordHit;
     public AudioSource footSoundSource;
     public BossLifeBarScript bossLifeBar;
+    private Animator anim;
+
+    private void Start()
+    {
+        anim = this.GetComponent<Animator>();
+    }
 
     public void PlaySwordSwing()
     {
@@ -59,7 +65,7 @@ public class BossSoundsScript : MonoBehaviour
     public void PlayFootStep()
     {
         footSoundSource.transform.position = this.transform.root.GetChild(0).transform.position;
-        if(!footSoundSource.isPlaying)
+        if(!footSoundSource.isPlaying && !anim.GetBool("Dead") && !anim.GetBool("GameEnd") && anim.GetBool("CanRotate"))
             footSoundSource.Play();
         //CreateAndPlay(footStep[Random.Range(0, footStep.Length)], 1, 0.5f);
     }
