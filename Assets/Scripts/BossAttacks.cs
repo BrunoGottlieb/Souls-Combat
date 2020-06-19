@@ -300,16 +300,16 @@ public class BossAttacks : MonoBehaviour
         action = "Wait";
         anim.SetFloat("Vertical", 0);
         anim.SetFloat("Horizontal", 0);
-        float maxWaitTime = 3;
-        float possibility = 3;
+        float maxWaitTime = 6;
+        float possibility = 2;
         if (anim.GetBool("Phase2"))
         {
-            maxWaitTime = 1.5f;
+            maxWaitTime = 5.5f;
             possibility = 2;
         }
         float waitTime;
         float decision = Random.Range(0, possibility); // probabilidade de X % de que ele va esperar antes de atacar
-        if (decision == 0) waitTime = Random.Range(0.5f, maxWaitTime); // tempo de espera aleatorio
+        if (decision == 0) waitTime = Random.Range(2.5f, maxWaitTime); // tempo de espera aleatorio
         else waitTime = 0;
         yield return new WaitForSeconds(waitTime); // espera o tempo decidido antes de atacar
         action = "NearAttack";
@@ -362,17 +362,17 @@ public class BossAttacks : MonoBehaviour
         anim.SetFloat("Horizontal", chillDirection);
         anim.SetFloat("Vertical", 0);
 
-        if ((distance <= nearValue && Time.time - lastActionTime > chillTime/2) && !phase2) // caso esteja proximo do jogador, ataca
+        if ((distance <= nearValue && Time.time - lastActionTime > chillTime) && !phase2) // caso esteja proximo do jogador, ataca
         {
             CallNextMove();
         } else
 
-        if((distance > farValue && Time.time - lastActionTime > chillTime/2) && !phase2) // caso se afastou do jogador, executa um ataque de longe
+        if((distance > farValue && Time.time - lastActionTime > chillTime) && !phase2) // caso se afastou do jogador, executa um ataque de longe
         {
             FarAttack();
         } else
 
-        if ((Time.time - lastActionTime > chillTime) || phase2 && Time.time - lastActionTime > chillTime/2)
+        if ((Time.time - lastActionTime > chillTime) || phase2 && Time.time - lastActionTime > chillTime)
         {
             int rand = Random.Range(0, 3);
 
@@ -507,6 +507,11 @@ public class BossAttacks : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             anim.SetTrigger("Fishing");
+        }
+
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            anim.SetTrigger("Combo");
         }
 
     }

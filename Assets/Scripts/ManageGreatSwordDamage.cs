@@ -14,7 +14,7 @@ public class ManageGreatSwordDamage : StateMachineBehaviour
 
         if (animator.GetBool("Phase2")) // incrementa a forca em 0.5 caso seja a phase 2 do boss
         {
-            animator.gameObject.GetComponent<BossAttacks>().greatSword.damageAmount = damageAmount + 0.75f; // atualiza o dano da GreatSword
+            animator.gameObject.GetComponent<BossAttacks>().greatSword.damageAmount = damageAmount + 0.35f; // atualiza o dano da GreatSword
         }
     }
 
