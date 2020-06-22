@@ -47,6 +47,10 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetAxisRaw("JoystickTrigger") > -0.1f && Input.GetAxisRaw("JoystickTrigger") < 0.1f) triggerPressed = false;
         else triggerPressed = true;
+
+        print("Pressed: " + triggerPressed);
+
+        print(Input.GetAxisRaw("JoystickTrigger"));
     }
 
     public static bool GetDodgeInput()
