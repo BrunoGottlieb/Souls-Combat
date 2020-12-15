@@ -96,7 +96,7 @@ public class InputManager : MonoBehaviour
     {
         if (PS4Inputs)
         {
-            return Input.GetKeyDown(restartKeyboard) || Input.GetKeyDown(pausePS4);
+            return Input.GetKeyDown(pauseKeyboard) || Input.GetKeyDown(pausePS4);
         }
         return Input.GetKeyDown(pauseKeyboard) || Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(pauseJoystick);
     }
